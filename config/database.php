@@ -12,8 +12,8 @@ return [
         'mysql' => [
             'host'      => '127.0.0.1',
             'database'  => 'fusioninvoice',
-            'username'  => 'root',
-            'password'  => 'password',
+            'username'  => 'fusioninvoice',
+            'password'  => 'FusionInvoiceLocal_2026!',
             'prefix'    => '',
             'driver'    => 'mysql',
             'charset'   => 'utf8',
