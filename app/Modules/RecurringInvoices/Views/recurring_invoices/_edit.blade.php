@@ -1,0 +1,296 @@
+@include('recurring_invoices._js_edit')
+@include('layouts._select2')
+<section class="content-header">
+    <h1 class="pull-left">{{ trans('fi.recurring_invoice') }} #{{ $recurringInvoice->id }}</h1>
+
+    <div class="pull-right">
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                {{ trans('fi.other') }} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li><a href="javascript:void(0)" id="btn-copy-recurring-invoice"><i
+                                class="fa fa-copy"></i> {{ trans('fi.copy') }}</a></li>
+                <li class="divider"></li>
+                @can('recurring_invoices.delete')
+                <li><a href="#" class="btn-delete-recurring-invoice text-danger"><i class="fa fa-trash-o"></i> {{ trans('fi.delete') }}</a></li>
+                @endcan
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            @if ($returnUrl)
+                <a href="{{ $returnUrl }}" class="btn btn-default"><i
+                            class="fa fa-backward"></i> {{ trans('fi.back') }}</a>
+            @endif
+        </div>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary btn-save-recurring-invoice"><i
+                        class="fa fa-save"></i> {{ trans('fi.save') }}</button>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li><a href="#" class="btn-save-recurring-invoice"
+                       data-apply-exchange-rate="1">{{ trans('fi.save_and_apply_exchange_rate') }}</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="clearfix"></div>
+</section>
+
+<section class="content">
+
+    <div class="row">
+
+        <div class="col-lg-10">
+
+            <div id="form-status-placeholder"></div>
+
+            <div class="box box-primary">
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>
+                                    <div class="box-header" style="padding: 0 0 5px 0">
+                                        <h3 class="box-title">{{ trans('fi.summary') }}</h3>
+                                    </div>
+                                </label>
+                                {!! Form::text('summary', $recurringInvoice->summary, ['id' => 'summary', 'class' => 'form-control']) !!}
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    <div class="box-header" style="padding: 0 0 5px 0">
+                                        <h3 class="box-title">{{ trans('fi.tags') }}</h3>
+                                    </div>
+                                </label>
+                                {!! Form::select('tags[]', $tags, $selectedTags, ['class' => 'form-control client-tags','multiple' => true, 'id' => 'invoice-tags', 'style' => 'width:100%']) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-6" id="col-from">
+
+                    @include('recurring_invoices._edit_from')
+
+                </div>
+
+                <div class="col-sm-6" id="col-to">
+
+                    @include('recurring_invoices._edit_to')
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12 table-responsive" style="overflow-x: visible;">
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            <h3 class="box-title">{{ trans('fi.items') }}</h3>
+
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-primary btn-sm" id="btn-add-item"><i
+                                            class="fa fa-plus"></i> {{ trans('fi.add_item') }}</button>
+                            </div>
+                        </div>
+
+                        <div class="box-body">
+                            <table id="item-table" class="table table-hover table-striped sortable-item">
+                                <thead>
+                                <tr>
+                                    <th style="width: 20%;">{{ trans('fi.product') }}</th>
+                                    <th style="width: 25%;">{{ trans('fi.description') }}</th>
+                                    <th style="width: 10%;">{{ trans('fi.qty') }}</th>
+                                    <th style="width: 10%;">{{ trans('fi.price') }}</th>
+                                    <th style="width: 10%;">{{ trans('fi.tax_1') }}</th>
+                                    <th style="width: 10%;">{{ trans('fi.tax_2') }}</th>
+                                    <th style="width: 10%; text-align: right; padding-right: 25px;">{{ trans('fi.total') }}</th>
+                                    <th style="width: 5%;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr id="new-item" style="display: none;">
+                                    <td>
+                                        {!! Form::hidden('recurring_invoice_id', $recurringInvoice->id) !!}
+                                        {!! Form::hidden('id', '') !!}
+                                        {!! itemLookUpsDropDown() !!}<br>
+                                        <label><input type="checkbox" name="save_item_as_lookup" tabindex="999"> {{ trans('fi.save_item_as_lookup') }}</label>
+                                    </td>
+                                    <td>{!! Form::textarea('description', null, ['class' => 'form-control input-sm', 'rows' => 1]) !!}</td>
+                                    <td>{!! Form::text('quantity', null, ['class' => 'form-control input-sm']) !!}</td>
+                                    <td>{!! Form::text('price', null, ['class' => 'form-control input-sm']) !!}</td>
+                                    <td>{!! Form::select('tax_rate_id', $taxRates, config('fi.itemTaxRate'), ['class' => 'form-control input-sm']) !!}</td>
+                                    <td>{!! Form::select('tax_rate_2_id', $taxRates, config('fi.itemTax2Rate'), ['class' => 'form-control input-sm']) !!}</td>
+                                    <td></td>
+                                    <td>
+                                        <a class="btn btn-xs btn-danger btn-delete-recurring-invoice-item" href="javascript:void(0);"
+                                           title="{{ trans('fi.delete') }}">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @foreach ($recurringInvoice->items as $item)
+                                    <tr class="item" id="tr-item-{{ $item->id }}">
+                                        <td>
+                                            {!! Form::hidden('recurring_invoice_id', $recurringInvoice->id) !!}
+                                            {!! Form::hidden('id', $item->id) !!}
+                                            {!! itemLookUpsDropDown($item, 'item-lookup') !!}
+                                        </td>
+                                        <td>{!! Form::textarea('description', $item->description, ['class' => 'form-control input-sm', 'rows' => 1]) !!}</td>
+                                        <td>{!! Form::text('quantity', $item->formatted_quantity, ['class' => 'form-control input-sm']) !!}</td>
+                                        <td>{!! Form::text('price', $item->formatted_numeric_price, ['class' => 'form-control input-sm']) !!}</td>
+                                        <td>{!! Form::select('tax_rate_id', $taxRates, $item->tax_rate_id, ['class' => 'form-control input-sm']) !!}</td>
+                                        <td>{!! Form::select('tax_rate_2_id', $taxRates, $item->tax_rate_2_id, ['class' => 'form-control input-sm']) !!}</td>
+                                        <td style="text-align: right; padding-right: 25px;">{{ $item->amount->formatted_subtotal }}</td>
+                                        <td>
+                                            <a class="btn btn-xs btn-danger btn-delete-recurring-invoice-item" href="javascript:void(0);"
+                                               title="{{ trans('fi.delete') }}" data-item-id="{{ $item->id }}">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab-additional" data-toggle="tab">{{ trans('fi.additional') }}</a></li>
+                        </ul>
+                        <div class="tab-content">
+
+                            <div class="tab-pane active" id="tab-additional">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>{{ trans('fi.terms_and_conditions') }}</label>
+                                            {!! Form::textarea('terms', $recurringInvoice->terms, ['id' => 'terms', 'class' => 'form-control', 'rows' => 5]) !!}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>{{ trans('fi.footer') }}</label>
+                                            {!! Form::textarea('footer', $recurringInvoice->footer, ['id' => 'footer', 'class' => 'form-control', 'rows' => 5]) !!}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if ($customFields)
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            @include('custom_fields._custom_fields_unbound', ['object' => $recurringInvoice])
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+
+            <div id="div-totals">
+                @include('recurring_invoices._edit_totals')
+            </div>
+
+            <div class="box box-primary">
+
+                <div class="box-header">
+                    <h3 class="box-title">{{ trans('fi.options') }}</h3>
+                </div>
+
+                <div class="box-body">
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.next_date') }}</label>
+                        {!! Form::text('next_date', $recurringInvoice->formatted_next_date, ['id' => 'next_date', 'class' => 'form-control input-sm']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.every') }}</label>
+                        {!! Form::select('recurring_frequency', array_combine(range(1, 90), range(1, 90)), $recurringInvoice->recurring_frequency, ['id' => 'recurring_frequency', 'class' => 'form-control input-sm']) !!}
+                        {!! Form::select('recurring_period', $frequencies, $recurringInvoice->recurring_period, ['id' => 'recurring_period', 'class' => 'form-control input-sm']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.stop_date') }}</label>
+                        {!! Form::text('stop_date', $recurringInvoice->formatted_stop_date, ['id' => 'stop_date', 'class' => 'form-control input-sm']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.discount') }}</label>
+
+                        <div class="input-group">
+                            {!! Form::text('discount', $recurringInvoice->formatted_numeric_discount, ['id' =>
+                            'discount', 'class' => 'form-control input-sm']) !!}
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.currency') }}</label>
+                        {!! Form::select('currency_code', $currencies, $recurringInvoice->currency_code, ['id' =>
+                        'currency_code', 'class' => 'form-control input-sm', 'style' => config('fi.baseCurrency') != $recurringInvoice->currency_code ? 'background:#fff8dc' : '']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.exchange_rate') }}</label>
+
+                        <div class="input-group">
+                            {!! Form::text('exchange_rate', $recurringInvoice->exchange_rate, ['id' => 'exchange_rate', 'class' => 'form-control input-sm', 'style' => config('fi.baseCurrency') != $recurringInvoice->currency_code ? 'background:#fff8dc' : '']) !!}
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-sm" id="btn-update-exchange-rate" type="button"
+                                        data-toggle="tooltip" data-placement="left" title="{{ trans('fi.update_exchange_rate') }}">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                         <label>{{ trans('fi.document_number_schemes') }}</label>
+                        {!! Form::select('document_number_scheme_id', $documentNumberSchemes, $recurringInvoice->document_number_scheme_id, ['id' => 'document_number_scheme_id', 'class' => 'form-control input-sm']) !!}
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ trans('fi.template') }}</label>
+                        {!! Form::select('template', $templates, $recurringInvoice->template, ['id' => 'template', 'class' => 'form-control input-sm']) !!}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>

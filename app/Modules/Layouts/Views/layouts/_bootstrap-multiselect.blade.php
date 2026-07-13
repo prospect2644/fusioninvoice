@@ -1,0 +1,2 @@
+<script src='{{ asset('assets/plugins/bootstrap-multiselect/bootstrap-multiselect.js') }}'></script>
+<link href="{{ asset('assets/plugins/bootstrap-multiselect/bootstrap-multiselect.css') }}" rel="stylesheet" type="text/css"/>
