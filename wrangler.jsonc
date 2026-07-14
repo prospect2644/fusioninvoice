@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kindred-invoice",
+  "compatibility_date": "2026-07-13",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "invoice-db",
+      "database_id": "02642319-c078-4ed5-ab31-212a76aab87b",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

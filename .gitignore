@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .env
+.wrangler/
 server/data.json
 *.log
 .DS_Store

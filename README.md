@@ -24,7 +24,10 @@ The API validates the `Cf-Access-Jwt-Assertion` signature against Cloudflare's J
 
 ## Production notes
 
-- Replace the JSON store with PostgreSQL before multi-user production use.
-- Add explicit organization membership and role tables before inviting staff from multiple organizations.
+- Cloudflare D1 is bound in `wrangler.jsonc` as `env.DB` and named `invoice-db`.
+- The `invoice-db` UUID is configured in `wrangler.jsonc`; use `pnpm db:info` to verify it against the active Cloudflare account.
+- Build the local database with `pnpm db:migrate:local` or apply the schema to the existing remote database with `pnpm db:migrate:remote`.
+- The initial migration stores money as integer cents and scopes every business record to a workspace.
+- Enforce `workspace_members` membership in every D1 API query before inviting staff from multiple organizations.
 - Add immutable audit events for invoice lifecycle actions and payment-provider webhooks.
 - Configure transactional email and PDF rendering as server-side jobs.
