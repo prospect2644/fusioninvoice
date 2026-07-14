@@ -126,4 +126,19 @@ async function api(request, env) {
   return json({ error: 'API route not found.' }, 404);
 }
 
-export default { async fetch(request, env) { try { if (new URL(request.url).pathname.startsWith('/api/')) return await api(request, env); return env.ASSETS.fetch(request); } catch (error) { if (error instanceof Response) return error; console.error(error); return json({ error: 'The invoice service could not complete this request.' }, 500); } } };
+export async function handleApi(request, env) {
+  try {
+    return await api(request, env);
+  } catch (error) {
+    if (error instanceof Response) return error;
+    console.error(error);
+    return json({ error: 'The invoice service could not complete this request.' }, 500);
+  }
+}
+
+export default {
+  async fetch(request, env) {
+    if (new URL(request.url).pathname.startsWith('/api/')) return handleApi(request, env);
+    return env.ASSETS.fetch(request);
+  },
+};

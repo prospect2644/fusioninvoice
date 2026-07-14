@@ -13,18 +13,21 @@ pnpm dev
 
 Open `http://127.0.0.1:4173`.
 
-## Cloudflare Zero Trust deployment
+## Cloudflare Pages + Zero Trust deployment
 
-1. Create a Cloudflare Access self-hosted application and an email/identity-provider policy for the Worker hostname.
-2. In Worker settings, set `CF_ACCESS_TEAM_DOMAIN` to `https://kindredinnovia.cloudflareaccess.com` and `CF_ACCESS_AUD` to the Access application audience tag.
-3. Apply the D1 migration with `pnpm db:migrate:remote`.
-4. Deploy the Worker, Vite assets, API, and D1 binding together with `pnpm deploy`.
+1. Configure the Pages project with build command `pnpm build` and output directory `dist`.
+2. Under **Settings > Bindings**, add the D1 database `invoice-db` with the variable name `DB` for both Production and Preview.
+3. Under **Settings > Variables and Secrets**, add `CF_ACCESS_TEAM_DOMAIN=https://kindredinnovia.cloudflareaccess.com` and the Access application audience tag as `CF_ACCESS_AUD`.
+4. Create a Cloudflare Access self-hosted application and email/identity-provider policy covering the production Pages/custom hostname.
+5. Apply the D1 migration with `pnpm db:migrate:remote`, then deploy by pushing to the Git-connected branch.
 
-The deployed Worker handles `/api/*` before the SPA assets and reads data through `env.DB`. It validates the `Cf-Access-Jwt-Assertion` signature against Cloudflare's JWKS, plus issuer, audience, algorithm, and expiry. The asserted email becomes usable only after that validation. The easily forged `Cf-Access-Authenticated-User-Email` header is intentionally ignored.
+The Pages Function in `functions/api/[[path]].js` handles `/api/*` and reads data through `env.DB`. It validates the `Cf-Access-Jwt-Assertion` signature against Cloudflare's JWKS, plus issuer, audience, algorithm, and expiry. The asserted email becomes usable only after that validation. The easily forged `Cf-Access-Authenticated-User-Email` header is intentionally ignored.
+
+Do not place `CLOUDFLARE_API_TOKEN` in Pages runtime variables. A Git-connected Pages deployment does not need it, and application code must never receive an account deployment credential.
 
 ## Production notes
 
-- Cloudflare D1 is bound in `wrangler.jsonc` as `env.DB` and named `invoice-db`.
+- Cloudflare D1 must be bound in the Pages dashboard as `env.DB` and named `invoice-db`; `wrangler.jsonc` carries the same binding for Wrangler-based development/deployment.
 - The `invoice-db` UUID is configured in `wrangler.jsonc`; use `pnpm db:info` to verify it against the active Cloudflare account.
 - Build the local database with `pnpm db:migrate:local` or apply the schema to the existing remote database with `pnpm db:migrate:remote`.
 - The initial migration stores money as integer cents and scopes every business record to a workspace.
