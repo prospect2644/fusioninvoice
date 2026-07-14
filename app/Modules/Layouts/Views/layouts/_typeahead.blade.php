@@ -1,1 +1,0 @@
-<script src="{{ asset('assets/plugins/typeahead/typeahead.js') }}" type="text/javascript"></script>

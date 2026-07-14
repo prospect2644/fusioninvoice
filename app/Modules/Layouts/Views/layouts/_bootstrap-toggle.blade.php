@@ -1,2 +1,0 @@
-<script src='{{ asset('assets/plugins/bootstrap-toggle/bootstrap-toggle.min.js') }}'></script>
-<link href="{{ asset('assets/plugins/bootstrap-toggle/bootstrap-toggle.min.css') }}" rel="stylesheet" type="text/css"/>
