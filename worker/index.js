@@ -6,11 +6,22 @@ const dollars = value => Number(value || 0) / 100;
 const required = (body, fields) => fields.every(field => typeof body?.[field] === 'string' && body[field].trim());
 const verifiers = new Map();
 
+function accessErrorCode(error) {
+  const code = String(error?.code || '');
+  if (code === 'ERR_JWT_CLAIM_VALIDATION_FAILED') return 'ACCESS_CLAIM_MISMATCH';
+  if (code === 'ERR_JWT_EXPIRED') return 'ACCESS_TOKEN_EXPIRED';
+  if (code === 'ERR_JWS_SIGNATURE_VERIFICATION_FAILED') return 'ACCESS_SIGNATURE_INVALID';
+  if (code === 'ERR_JWKS_NO_MATCHING_KEY') return 'ACCESS_SIGNING_KEY_UNKNOWN';
+  if (code.startsWith('ERR_JWT') || code.startsWith('ERR_JWS')) return 'ACCESS_TOKEN_INVALID';
+  if (error?.message === 'missing identity') return 'ACCESS_IDENTITY_MISSING';
+  return 'ACCESS_CERTS_UNAVAILABLE';
+}
+
 async function identityFor(request, env) {
   const token = request.headers.get('Cf-Access-Jwt-Assertion');
-  if (!token) throw json({ error: 'A valid Cloudflare Access session is required.' }, 401);
+  if (!token) throw json({ error: 'A valid Cloudflare Access session is required. [ACCESS_TOKEN_MISSING]', code: 'ACCESS_TOKEN_MISSING' }, 401);
   const issuer = String(env.CF_ACCESS_TEAM_DOMAIN || '').replace(/\/$/, ''), audience = env.CF_ACCESS_AUD;
-  if (!issuer || !audience) throw json({ error: 'Cloudflare Access is not configured for this Worker.' }, 503);
+  if (!issuer || !audience) throw json({ error: 'Cloudflare Access is not configured for this service. [ACCESS_CONFIG_MISSING]', code: 'ACCESS_CONFIG_MISSING' }, 503);
   let jwks = verifiers.get(issuer);
   if (!jwks) { jwks = createRemoteJWKSet(new URL(`${issuer}/cdn-cgi/access/certs`)); verifiers.set(issuer, jwks); }
   try {
@@ -18,7 +29,11 @@ async function identityFor(request, env) {
     const email = String(payload.email || '').trim().toLowerCase();
     if (!email || !payload.sub) throw new Error('missing identity');
     return { id: String(payload.sub), email, name: email.split('@')[0].replace(/[._-]/g, ' ') };
-  } catch { throw json({ error: 'Access session could not be verified.' }, 401); }
+  } catch (error) {
+    const code = accessErrorCode(error);
+    console.error('Cloudflare Access verification failed', { code, joseCode: error?.code, name: error?.name });
+    throw json({ error: `Access session could not be verified. [${code}]`, code }, 401);
+  }
 }
 
 async function workspaceForIdentity(db, identity) {
