@@ -42,7 +42,10 @@ export function addClient(input) {
 export function addInvoice(input) {
   const data = read();
   if (!data.clients.some(c => c.id === input.clientId)) throw new Error('Client not found');
-  const invoice = { id: nextNumber(data.invoices, 'INV'), status: 'sent', ...input, customFields: customValuesFor(data, 'invoice', input), amount: Number(input.amount), createdAt: new Date().toISOString() };
+  const items = input.items.map((item, index) => ({ id: `item_${crypto.randomUUID()}`, description: String(item.description || '').trim(), quantity: Number(item.quantity), rate: Number(item.rate), position: index }));
+  if (items.some(item => !item.description || !(item.quantity > 0) || !(item.rate >= 0))) throw new Error('Add at least one complete invoice item.');
+  const amount = items.reduce((sum,item)=>sum+item.quantity*item.rate,0);
+  const invoice = { id: nextNumber(data.invoices, 'INV'), status: 'sent', ...input, items, description: items.map(item=>item.description).join('; '), customFields: customValuesFor(data, 'invoice', input), amount, createdAt: new Date().toISOString() };
   data.invoices.unshift(invoice); write(data); return invoice;
 }
 export function addEstimate(input) {
@@ -70,6 +73,16 @@ export function addPayment(input) {
   if (!(amount > 0) || amount > balance) throw new Error('Payment must be greater than zero and no more than the balance due');
   const payment = { id: nextNumber(data.payments, 'PAY', 301), ...input, amount, createdAt: new Date().toISOString() };
   data.payments.unshift(payment); write(data); return payment;
+}
+
+export function updateInvoiceStatus(id, status) {
+  const data = read();
+  const invoice = data.invoices.find(item => item.id === id);
+  if (!invoice) throw new Error('Invoice not found');
+  if (!['draft', 'sent', 'paid', 'overdue', 'void'].includes(status)) throw new Error('Choose a valid invoice status.');
+  invoice.status = status;
+  write(data);
+  return { id, status };
 }
 
 export function addCustomField(input) {

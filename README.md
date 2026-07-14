@@ -30,6 +30,7 @@ Do not place `CLOUDFLARE_API_TOKEN` in Pages runtime variables. A Git-connected 
 - Cloudflare D1 must be bound in the Pages dashboard as `env.DB` and named `invoice-db`; `wrangler.jsonc` carries the same binding for Wrangler-based development/deployment.
 - The `invoice-db` UUID is configured in `wrangler.jsonc`; use `pnpm db:info` to verify it against the active Cloudflare account.
 - Build the local database with `pnpm db:migrate:local` or apply the schema to the existing remote database with `pnpm db:migrate:remote`.
+- Migration `0002_invoice_items.sql` adds the line-item table required by the full-screen invoice editor and PDF-ready preview.
 - The initial migration stores money as integer cents and scopes every business record to a workspace.
 - Enforce `workspace_members` membership in every D1 API query before inviting staff from multiple organizations.
 - Add immutable audit events for invoice lifecycle actions and payment-provider webhooks.

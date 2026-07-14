@@ -48,9 +48,10 @@ async function workspaceForIdentity(db, identity) {
 
 const all = async statement => (await statement.all()).results || [];
 async function readWorkspace(db, workspaceId, identity) {
-  const [clients, invoices, estimates, payments, fields, values] = await Promise.all([
+  const [clients, invoices, invoiceItems, estimates, payments, fields, values] = await Promise.all([
     all(db.prepare('SELECT id, name, city, state, zip, hourly_rate_cents, status FROM clients WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, estimate_id, issued, due, description, amount_cents, status, created_at FROM invoices WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
+    all(db.prepare('SELECT id, invoice_id, description, quantity, rate_cents, position FROM invoice_items WHERE workspace_id = ? ORDER BY invoice_id, position').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, quote, valid_until, amount_cents, status, converted_invoice_id, created_at FROM estimates WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, invoice_id, payment_date, method, amount_cents, created_at FROM payments WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, label, entity_type, position FROM custom_fields WHERE workspace_id = ? ORDER BY entity_type, position, created_at').bind(workspaceId)),
@@ -60,7 +61,7 @@ async function readWorkspace(db, workspaceId, identity) {
   const paidFor = id => payments.filter(payment => payment.invoice_id === id).reduce((sum, payment) => sum + payment.amount_cents, 0);
   return {
     clients: clients.map(row => ({ id: row.id, name: row.name, city: row.city, state: row.state, zip: row.zip, hourlyRate: dollars(row.hourly_rate_cents), status: row.status, customFields: customFor(row.id) })),
-    invoices: invoices.map(row => { const paid = paidFor(row.id), balance = Math.max(0, row.amount_cents - paid); return { id: row.id, clientId: row.client_id, estimateId: row.estimate_id, issued: row.issued, due: row.due, description: row.description, amount: dollars(row.amount_cents), paid: dollars(paid), balance: dollars(balance), status: balance === 0 && row.amount_cents > 0 ? 'paid' : row.status, createdAt: row.created_at, customFields: customFor(row.id) }; }),
+    invoices: invoices.map(row => { const paid = paidFor(row.id), balance = Math.max(0, row.amount_cents - paid); const items = invoiceItems.filter(item => item.invoice_id === row.id).map(item => ({ id: item.id, description: item.description, quantity: Number(item.quantity), rate: dollars(item.rate_cents) })); return { id: row.id, clientId: row.client_id, estimateId: row.estimate_id, issued: row.issued, due: row.due, description: row.description, items: items.length ? items : [{ id: `${row.id}_legacy`, description: row.description, quantity: 1, rate: dollars(row.amount_cents) }], amount: dollars(row.amount_cents), paid: dollars(paid), balance: dollars(balance), status: balance === 0 && row.amount_cents > 0 ? 'paid' : row.status, createdAt: row.created_at, customFields: customFor(row.id) }; }),
     estimates: estimates.map(row => ({ id: row.id, clientId: row.client_id, quote: row.quote, validUntil: row.valid_until, amount: dollars(row.amount_cents), status: row.status, invoiceId: row.converted_invoice_id, createdAt: row.created_at, customFields: customFor(row.id) })),
     payments: payments.map(row => ({ id: row.id, invoiceId: row.invoice_id, date: row.payment_date, method: row.method, amount: dollars(row.amount_cents), createdAt: row.created_at })),
     settings: { customFields: fields.map(row => ({ id: row.id, label: row.label, appliesTo: row.entity_type, position: row.position })) },
@@ -87,17 +88,27 @@ async function api(request, env) {
   if (method === 'GET' && path === '/api/logout') return json({ logoutUrl: '/cdn-cgi/access/logout' });
   const body = ['POST', 'PUT', 'PATCH'].includes(method) ? await request.json() : {};
   if (method === 'POST' && path === '/api/clients') {
-    if (!required(body, ['name', 'city', 'state', 'zip', 'hourlyRate']) || !Number.isFinite(cents(body.hourlyRate))) return json({ error: 'Name, city, state, ZIP, and hourly rate are required.' }, 400);
+    if (!required(body, ['name', 'city', 'state', 'zip']) || !Number.isFinite(cents(body.hourlyRate || 0))) return json({ error: 'Name, city, state, and ZIP are required.' }, 400);
     const id = `cl_${crypto.randomUUID()}`, values = await customValueStatements(env.DB, workspaceId, 'client', id, body.customFields);
-    await env.DB.batch([env.DB.prepare('INSERT INTO clients (id, workspace_id, name, city, state, zip, hourly_rate_cents) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, body.name.trim(), body.city.trim(), body.state.trim().toUpperCase(), body.zip.trim(), cents(body.hourlyRate)), ...values]);
+    await env.DB.batch([env.DB.prepare('INSERT INTO clients (id, workspace_id, name, city, state, zip, hourly_rate_cents) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, body.name.trim(), body.city.trim(), body.state.trim().toUpperCase(), body.zip.trim(), cents(body.hourlyRate || 0)), ...values]);
     return json({ id }, 201);
   }
   if (method === 'POST' && path === '/api/invoices') {
-    if (!required(body, ['clientId', 'issued', 'due', 'description', 'amount']) || !(cents(body.amount) > 0)) return json({ error: 'Complete all invoice fields.' }, 400);
+    const items = Array.isArray(body.items) ? body.items.map(item => ({ description: String(item.description || '').trim(), quantity: Number(item.quantity), rateCents: cents(item.rate) })) : [];
+    if (!required(body, ['clientId', 'issued', 'due']) || !items.length || items.some(item => !item.description || !(item.quantity > 0) || !(item.rateCents >= 0))) return json({ error: 'Add at least one complete invoice item.' }, 400);
     if (!await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(body.clientId, workspaceId).first()) return json({ error: 'Client not found.' }, 404);
-    const id = await nextId(env.DB, workspaceId, 'invoices', 'INV', 1001), values = await customValueStatements(env.DB, workspaceId, 'invoice', id, body.customFields);
-    await env.DB.batch([env.DB.prepare("INSERT INTO invoices (id, workspace_id, client_id, issued, due, description, amount_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'sent')").bind(id, workspaceId, body.clientId, body.issued, body.due, body.description.trim(), cents(body.amount)), ...values]);
+    const id = await nextId(env.DB, workspaceId, 'invoices', 'INV', 1001), amount = items.reduce((sum, item) => sum + Math.round(item.quantity * item.rateCents), 0), values = await customValueStatements(env.DB, workspaceId, 'invoice', id, body.customFields);
+    const itemStatements = items.map((item, position) => env.DB.prepare('INSERT INTO invoice_items (id, workspace_id, invoice_id, description, quantity, rate_cents, position) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(`item_${crypto.randomUUID()}`, workspaceId, id, item.description, item.quantity, item.rateCents, position));
+    await env.DB.batch([env.DB.prepare("INSERT INTO invoices (id, workspace_id, client_id, issued, due, description, amount_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, 'sent')").bind(id, workspaceId, body.clientId, body.issued, body.due, items.map(item => item.description).join('; '), amount), ...itemStatements, ...values]);
     return json({ id }, 201);
+  }
+  const invoiceStatus = path.match(/^\/api\/invoices\/([^/]+)\/status$/);
+  if (method === 'PATCH' && invoiceStatus) {
+    const status = String(body.status || '');
+    if (!['draft', 'sent', 'paid', 'overdue', 'void'].includes(status)) return json({ error: 'Choose a valid invoice status.' }, 400);
+    const id = decodeURIComponent(invoiceStatus[1]), result = await env.DB.prepare('UPDATE invoices SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND workspace_id = ?').bind(status, id, workspaceId).run();
+    if (!result.meta.changes) return json({ error: 'Invoice not found.' }, 404);
+    return json({ id, status });
   }
   if (method === 'POST' && path === '/api/estimates') {
     if (!required(body, ['clientId', 'validUntil', 'quote', 'amount']) || !(cents(body.amount) > 0)) return json({ error: 'Complete all estimate fields.' }, 400);

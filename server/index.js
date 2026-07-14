@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addEstimate, addInvoice, addPayment, convertEstimate, removeCustomField, workspaceFor } from './store.js';
+import { addClient, addCustomField, addEstimate, addInvoice, addPayment, convertEstimate, removeCustomField, updateInvoiceStatus, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -20,13 +20,14 @@ app.get('/api/workspace', (req, res) => res.json(workspaceFor(req.identity.email
 const required = (body, fields) => fields.every(field => typeof body?.[field] === 'string' && body[field].trim());
 const action = fn => (req, res) => { try { res.status(201).json(fn(req.body || {}, req.params)); } catch (error) { res.status(400).json({ error: error.message }); } };
 app.post('/api/clients', action(body => {
-  if (!required(body, ['name','city','state','zip','hourlyRate']) || !Number.isFinite(Number(body.hourlyRate))) throw new Error('Name, city, state, ZIP, and hourly rate are required.');
-  return addClient({ name: body.name.trim(), city: body.city.trim(), state: body.state.trim().toUpperCase(), zip: body.zip.trim(), hourlyRate: body.hourlyRate });
+  if (!required(body, ['name','city','state','zip']) || !Number.isFinite(Number(body.hourlyRate || 0))) throw new Error('Name, city, state, and ZIP are required.');
+  return addClient({ name: body.name.trim(), city: body.city.trim(), state: body.state.trim().toUpperCase(), zip: body.zip.trim(), hourlyRate: body.hourlyRate || 0 });
 }));
 app.post('/api/invoices', action(body => {
-  if (!required(body, ['clientId','issued','due','description','amount']) || !Number.isFinite(Number(body.amount))) throw new Error('Complete all invoice fields.');
+  if (!required(body, ['clientId','issued','due']) || !Array.isArray(body.items) || !body.items.length) throw new Error('Add at least one complete invoice item.');
   return addInvoice(body);
 }));
+app.patch('/api/invoices/:id/status', action((body, params) => updateInvoiceStatus(params.id, body.status)));
 app.post('/api/estimates', action(body => {
   if (!required(body, ['clientId','validUntil','quote','amount']) || !Number.isFinite(Number(body.amount))) throw new Error('Complete all estimate fields.');
   return addEstimate(body);
