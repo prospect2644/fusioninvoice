@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addEstimate, addInvoice, addPayment, convertEstimate, workspaceFor } from './store.js';
+import { addClient, addCustomField, addEstimate, addInvoice, addPayment, convertEstimate, removeCustomField, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -36,6 +36,8 @@ app.post('/api/payments', action(body => {
   if (!required(body, ['invoiceId','date','method','amount']) || !['cash','check','credit_card'].includes(body.method)) throw new Error('Complete all payment fields.');
   return addPayment(body);
 }));
+app.post('/api/settings/custom-fields', action(body => addCustomField(body)));
+app.delete('/api/settings/custom-fields/:id', action((body, params) => removeCustomField(params.id)));
 app.get('/api/logout', (req, res) => res.json({ logoutUrl: req.identity.source === 'local-development' ? null : '/cdn-cgi/access/logout' }));
 
 const dist = path.resolve('dist');
