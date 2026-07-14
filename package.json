@@ -10,7 +10,8 @@
     "test": "node --test",
     "db:info": "pnpm dlx wrangler@latest d1 info invoice-db --json",
     "db:migrate:local": "pnpm dlx wrangler@latest d1 migrations apply invoice-db --local",
-    "db:migrate:remote": "pnpm dlx wrangler@latest d1 migrations apply invoice-db --remote"
+    "db:migrate:remote": "pnpm dlx wrangler@latest d1 migrations apply invoice-db --remote",
+    "deploy": "pnpm build && pnpm dlx wrangler@latest deploy"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

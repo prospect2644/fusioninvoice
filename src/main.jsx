@@ -17,7 +17,7 @@ function App() {
   const [collapsed,setCollapsed]=useState(()=>localStorage.getItem('nav-collapsed')==='true');
   const [theme,setTheme]=useState(()=>localStorage.getItem('theme')||'light');
   const load=()=>apiJson('/api/workspace').then(setData);
-  useEffect(()=>{load().catch(e=>setData({error:e.message}))},[]);
+  useEffect(()=>{let stopped=false,timer;const connect=remaining=>load().catch(error=>{if(stopped)return;if(remaining>0)timer=setTimeout(()=>connect(remaining-1),1000);else setData({error:error.message})});connect(4);return()=>{stopped=true;clearTimeout(timer)}},[]);
   useEffect(()=>{document.documentElement.dataset.theme=theme;localStorage.setItem('theme',theme)},[theme]);
   const toggleNav=()=>setCollapsed(v=>{localStorage.setItem('nav-collapsed',String(!v));return !v});
   const createForPage=()=>setModal(page==='Clients'?'client':page==='Estimates'?'estimate':page==='Payments'?'payment':'invoice');
@@ -84,4 +84,5 @@ function Modal({config,data,close,saved}) {
 }
 const ClientSelect=({clients})=><label>Client<select name="clientId" required><option value="">Select a client</option>{clients.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label>;
 const CustomInputs=({data,type})=>{const fields=fieldsFor(data,type);return fields.length?<fieldset className="custom-inputs"><legend>Custom fields</legend>{fields.map(field=><label key={field.id}>{field.label}<input name={`custom__${field.id}`} autoComplete="off"/></label>)}</fieldset>:null};
-createRoot(document.getElementById('root')).render(<App/>);
+const root=globalThis.__kindredInvoiceRoot||(globalThis.__kindredInvoiceRoot=createRoot(document.getElementById('root')));
+root.render(<App/>);
