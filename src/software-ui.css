@@ -227,6 +227,13 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 .detail-tab-row { display: flex; gap: 28px; padding: 0 16px; border-bottom: 1px solid #d8dde3; }
 .detail-tab-row>* { padding: 12px 0; color: #0878ed; font-size: 11px; }
 .detail-tab-row strong { border-bottom: 2px solid #0878ed; }
+.detail-tab-row button { border: 0; border-bottom: 2px solid transparent; background: transparent; color: #547080; cursor: pointer; }
+.detail-tab-row button:hover { color: #0785b6; }
+.detail-tab-row button.active { border-bottom-color: #35a9d5; background: transparent!important; color: #0785b6!important; font-weight: 800; }
+.detail-tab-row button span { display: inline-grid; min-width: 18px; height: 18px; margin-left: 5px; place-items: center; border-radius: 999px; background: #d8eff8; color: #087fae; font-size: 9px; }
+.invoice-tab-content { min-height: 105px; padding: 18px 16px; }
+.invoice-tab-content .custom-inputs,.invoice-tab-content .custom-values,.invoice-tab-content .invoice-payments { margin: 0; padding: 0; }
+.invoice-notes-empty p { margin: 7px 0 0; color: #718496; font-size: 11px; }
 .invoice-detail-tabs>.custom-inputs,.invoice-detail-tabs>.custom-values,.invoice-detail-tabs>.invoice-payments { margin: 0; padding: 18px 16px; }
 .invoice-side-totals { padding: 22px 24px; }
 .invoice-side-totals>div { display: flex; justify-content: space-between; gap: 28px; padding: 6px 0; font-size: 12px; }
