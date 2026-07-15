@@ -2,6 +2,18 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.12.1] - 2026-07-15
+
+### Added
+
+- Payment records can be edited through an in-app modal.
+- Payment records can be permanently deleted after an in-app confirmation.
+
+### Security
+
+- Payment updates and deletions are workspace scoped.
+- Edited payment amounts cannot exceed the invoice total after accounting for other payments.
+
 ## [0.12.0] - 2026-07-15
 
 ### Added
