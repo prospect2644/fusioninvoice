@@ -42,7 +42,7 @@ function App() {
   if(!data)return <div className="loading"><span>Kindred</span><p>Preparing your workspace…</p></div>;
   if(data.error)return <div className="auth-error"><p>Protected workspace</p><h1>We could not open your workspace.</h1><span>{data.error}</span><button className="retry" onClick={()=>{setData(null);load().catch(e=>setData({error:e.message}))}}>Retry connection</button></div>;
   return <div className={`shell ${collapsed?'collapsed':''}`}>
-    <aside><div className="brand"><div className="mark">ki</div><div className="brand-copy"><strong>Kindred</strong><span>Invoice care</span><small>v{__APP_VERSION__}</small></div><button className="collapse" onClick={toggleNav} aria-label={collapsed?'Expand menu':'Collapse menu'} title={collapsed?'Expand menu':'Collapse menu'}>{collapsed?'›':'‹'}</button></div>
+    <aside><div className="brand"><img className="brand-logo" src="/kindred-innovia-logo.svg" alt="Kindred Innovia"/><div className="brand-copy"><strong>Kindred Innovia</strong><span>Careful technology</span><small>Invoice CRM · v{__APP_VERSION__}</small></div><button className="collapse" onClick={toggleNav} aria-label={collapsed?'Expand menu':'Collapse menu'} title={collapsed?'Expand menu':'Collapse menu'}>{collapsed?'›':'‹'}</button></div>
       <nav>{menuItems.map(item=><button key={item} title={item} aria-label={item} className={page===item?'active':''} onClick={()=>navigate(item)}><i><MenuIcon name={item}/></i><span>{item}</span></button>)}</nav>
       <div className="aside-note"><small>Careful systems</small><p>Your financial work, held clearly and securely.</p><span>Protected by Zero Trust</span></div>
     </aside>
