@@ -11,6 +11,7 @@ import './ticket-contact.css';
 import './contacts-page.css';
 import './contacts-icon.css';
 import './payment-manage.css';
+import './loading-screen.css';
 
 const money = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(n || 0));
 const localDate = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
@@ -43,7 +44,7 @@ function App() {
   const toggleNav=()=>setCollapsed(v=>{localStorage.setItem('nav-collapsed',String(!v));return !v});
   const navigate=item=>{setPage(item);setInvoiceScreen(null);setClientScreen(null);setTicketScreen(null);setModal(null)};
   const createForPage=()=>setModal(page==='Clients'?'client':page==='Estimates'?'estimate':page==='Items'?'item':page==='Subscriptions'?'subscription':page==='Payments'?'payment':page==='Expenses'?'expense':page==='Tickets'?'ticket':page==='Tasks'?'task':'invoice');
-  if(!data)return <div className="loading"><span>Kindred</span><p>Preparing your workspace…</p></div>;
+  if(!data)return <div className="loading"><div className="loading-brand"><img src="/kindred-innovia-logo.svg" alt="Kindred Innovia"/><span>Kindred Innovia</span><small>Careful technology</small></div><div className="loading-progress" aria-hidden="true"><i/></div><p>Preparing your workspace…</p></div>;
   if(data.error)return <div className="auth-error"><p>Protected workspace</p><h1>We could not open your workspace.</h1><span>{data.error}</span><button className="retry" onClick={()=>{setData(null);load().catch(e=>setData({error:e.message}))}}>Retry connection</button></div>;
   return <div className={`shell ${collapsed?'collapsed':''}`}>
     <aside><div className="brand"><img className="brand-logo" src="/kindred-innovia-logo.svg" alt="Kindred Innovia"/><div className="brand-copy"><strong>Kindred Innovia</strong><span>Careful technology</span><small>Invoice CRM · v{__APP_VERSION__}</small></div><button className="collapse" onClick={toggleNav} aria-label={collapsed?'Expand menu':'Collapse menu'} title={collapsed?'Expand menu':'Collapse menu'}>{collapsed?'›':'‹'}</button></div>

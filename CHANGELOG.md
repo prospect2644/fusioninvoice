@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.13.1] - 2026-07-15
+
+### Changed
+
+- Rebuilt the loading screen with the CRM's dark navy and cyan-blue palette.
+- Added the official Kindred Innovia logo, wordmark, tagline, and branded loading indicator.
+- Updated the protected-workspace error background to match the new UI.
+
 ## [0.13.0] - 2026-07-15
 
 ### Added
