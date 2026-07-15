@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.11.1] - 2026-07-15
+
+### Changed
+
+- Item company fields now use a dropdown of existing client companies instead of free-text entry.
+- The invoice inline catalog-item creator uses the same company dropdown.
+
 ## [0.11.0] - 2026-07-15
 
 ### Added
