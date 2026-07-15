@@ -439,3 +439,7 @@ button.software-ticket-row:hover { background: #e2f2f8; }
 /* Global application density */
 html { zoom: 80%; }
 @media print { html { zoom: 100%; } }
+
+/* Client record section navigation */
+.client-record-tabs { flex-wrap: wrap; }
+.client-accounts-panel { margin-top: 18px; }

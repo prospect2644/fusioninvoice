@@ -2,6 +2,18 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.14.0] - 2026-07-15
+
+### Added
+
+- Client records now have dedicated Client, Billing, Assets & Accounts, Tickets, Invoices, and Quotes tabs.
+- Client ticket history includes contact, status, billing method, and tracked time.
+
+### Changed
+
+- Assets and secure accounts are grouped into one client documentation area.
+- Invoices and quotes have focused client views with direct creation actions.
+
 ## [0.13.3] - 2026-07-15
 
 ### Fixed
