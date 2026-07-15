@@ -50,7 +50,7 @@ const all = async statement => (await statement.all()).results || [];
 const optionalAll = async statement => {
   try { return await all(statement); }
   catch (error) {
-    if (/no such table/i.test(String(error?.message || error))) return [];
+    if (/no such (table|column)/i.test(String(error?.message || error))) return [];
     throw error;
   }
 };
@@ -63,7 +63,7 @@ async function readWorkspace(db, workspaceId, identity) {
     all(db.prepare('SELECT id, invoice_id, payment_date, method, amount_cents, created_at FROM payments WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, name, company, category, description, stock_quantity, price_cents, tax_1, tax_2, status, created_at FROM items WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, client_id, summary, next_date, stop_date, interval_count, interval_unit, amount_cents, status, created_at FROM subscriptions WHERE workspace_id = ? ORDER BY next_date, created_at DESC').bind(workspaceId)),
-    optionalAll(db.prepare('SELECT id, client_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status, created_at FROM expenses WHERE workspace_id = ? ORDER BY expense_date DESC, created_at DESC').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, client_id, ticket_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status, created_at FROM expenses WHERE workspace_id = ? ORDER BY expense_date DESC, created_at DESC').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, client_id, title, description, due_date, assignee_email, completed_at, status, created_at FROM tasks WHERE workspace_id = ? ORDER BY due_date, created_at DESC').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, client_id, contact_name, contact_email, title, status, billing_type, subscription_id, hourly_rate_cents, closed_at, created_at, updated_at FROM tickets WHERE workspace_id = ? ORDER BY updated_at DESC').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, ticket_id, author_email, visibility, body, created_at FROM ticket_notes WHERE workspace_id = ? ORDER BY created_at').bind(workspaceId)),
@@ -80,7 +80,7 @@ async function readWorkspace(db, workspaceId, identity) {
     payments: payments.map(row => ({ id: row.id, invoiceId: row.invoice_id, date: row.payment_date, method: row.method, amount: dollars(row.amount_cents), createdAt: row.created_at })),
     items: items.map(row => ({ id: row.id, name: row.name, company: row.company, category: row.category, description: row.description, stock: Number(row.stock_quantity), price: dollars(row.price_cents), tax1: Number(row.tax_1), tax2: Number(row.tax_2), status: row.status, createdAt: row.created_at })),
     subscriptions: subscriptions.map(row => ({ id: row.id, clientId: row.client_id, summary: row.summary, nextDate: row.next_date, stopDate: row.stop_date, intervalCount: Number(row.interval_count), intervalUnit: row.interval_unit, amount: dollars(row.amount_cents), status: row.status, createdAt: row.created_at })),
-    expenses: expenses.map(row => ({ id: row.id, clientId: row.client_id, vendor: row.vendor, date: row.expense_date, company: row.company, category: row.category, description: row.description, amount: dollars(row.amount_cents), tax: dollars(row.tax_cents), status: row.status, createdAt: row.created_at })),
+    expenses: expenses.map(row => ({ id: row.id, clientId: row.client_id, ticketId: row.ticket_id, vendor: row.vendor, date: row.expense_date, company: row.company, category: row.category, description: row.description, amount: dollars(row.amount_cents), tax: dollars(row.tax_cents), status: row.status, createdAt: row.created_at })),
     tasks: tasks.map(row => ({ id: row.id, clientId: row.client_id, title: row.title, description: row.description, dueDate: row.due_date, assigneeEmail: row.assignee_email, completedAt: row.completed_at, status: row.status, createdAt: row.created_at })),
     tickets: tickets.map(row => ({ id: row.id, clientId: row.client_id, contactName: row.contact_name, contactEmail: row.contact_email, title: row.title, status: row.status, billingType: row.billing_type, subscriptionId: row.subscription_id, hourlyRate: dollars(row.hourly_rate_cents), closedAt: row.closed_at, createdAt: row.created_at, updatedAt: row.updated_at, notes: ticketNotes.filter(note=>note.ticket_id===row.id).map(note=>({ id:note.id,authorEmail:note.author_email,visibility:note.visibility,body:note.body,createdAt:note.created_at })), timeEntries: ticketTime.filter(entry=>entry.ticket_id===row.id).map(entry=>({ id:entry.id,technicianEmail:entry.technician_email,minutes:Number(entry.minutes),description:entry.description,createdAt:entry.created_at })) })),
     settings: { customFields: fields.map(row => ({ id: row.id, label: row.label, appliesTo: row.entity_type, position: row.position })) },
@@ -130,12 +130,13 @@ async function api(request, env) {
     return json({ id }, 201);
   }
   if (method === 'POST' && path === '/api/expenses') {
-    const clientId = String(body.clientId || '') || null, vendor = String(body.vendor || '').trim(), date = String(body.date || ''), company = String(body.company || '').trim(), category = String(body.category || '').trim(), description = String(body.description || '').trim();
+    const clientId = String(body.clientId || '') || null, ticketId = String(body.ticketId || '') || null, vendor = String(body.vendor || '').trim(), date = String(body.date || ''), company = String(body.company || '').trim(), category = String(body.category || '').trim(), description = String(body.description || '').trim();
     const amount = cents(body.amount), tax = cents(body.tax || 0), status = String(body.status || 'unbilled');
     if (!vendor || !date || !description || !(amount > 0) || !(tax >= 0) || !['unbilled','billed','reimbursed'].includes(status)) return json({ error: 'Complete the expense details with a valid amount and status.' }, 400);
     if (clientId && !await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(clientId, workspaceId).first()) return json({ error: 'Client not found.' }, 404);
+    if (ticketId) { const ticket = await env.DB.prepare('SELECT client_id FROM tickets WHERE id = ? AND workspace_id = ?').bind(ticketId, workspaceId).first(); if (!ticket) return json({ error: 'Ticket not found.' }, 404); if (!clientId || ticket.client_id !== clientId) return json({ error: 'Expense client must match the selected ticket company.' }, 400); }
     const id = await nextId(env.DB, workspaceId, 'expenses', 'EXP', 1);
-    await env.DB.prepare('INSERT INTO expenses (id, workspace_id, client_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, clientId, vendor, date, company, category, description, amount, tax, status).run();
+    await env.DB.prepare('INSERT INTO expenses (id, workspace_id, client_id, ticket_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, clientId, ticketId, vendor, date, company, category, description, amount, tax, status).run();
     return json({ id }, 201);
   }
   if (method === 'POST' && path === '/api/tasks') {

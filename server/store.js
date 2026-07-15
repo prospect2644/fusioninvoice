@@ -103,7 +103,8 @@ export function addSubscription(input) {
 export function addExpense(input) {
   const data = read();
   if (input.clientId && !data.clients.some(client => client.id === input.clientId)) throw new Error('Client not found');
-  const expense = { id: nextNumber(data.expenses, 'EXP', 1), clientId: input.clientId || null, vendor: String(input.vendor || '').trim(), date: input.date, company: String(input.company || '').trim(), category: String(input.category || '').trim(), description: String(input.description || '').trim(), amount: Number(input.amount), tax: Number(input.tax || 0), status: input.status || 'unbilled', createdAt: new Date().toISOString() };
+  const ticket=input.ticketId?data.tickets.find(item=>item.id===input.ticketId):null;if(input.ticketId&&!ticket)throw new Error('Ticket not found');if(ticket&&ticket.clientId!==input.clientId)throw new Error('Expense client must match the selected ticket company.');
+  const expense = { id: nextNumber(data.expenses, 'EXP', 1), clientId: input.clientId || null, ticketId: input.ticketId || null, vendor: String(input.vendor || '').trim(), date: input.date, company: String(input.company || '').trim(), category: String(input.category || '').trim(), description: String(input.description || '').trim(), amount: Number(input.amount), tax: Number(input.tax || 0), status: input.status || 'unbilled', createdAt: new Date().toISOString() };
   if (!expense.vendor || !expense.date || !expense.description || !(expense.amount > 0) || expense.tax < 0 || !['unbilled','billed','reimbursed'].includes(expense.status)) throw new Error('Complete the expense details with a valid amount and status.');
   data.expenses.unshift(expense); write(data); return expense;
 }

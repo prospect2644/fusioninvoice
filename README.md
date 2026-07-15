@@ -36,6 +36,7 @@ Do not place `CLOUDFLARE_API_TOKEN` in Pages runtime variables. A Git-connected 
 - Migration `0005_expenses.sql` adds vendor expenses, client assignment, tax, and billing status for the Expenses tab.
 - Migration `0006_tasks.sql` adds client-linked work tasks, due dates, assignees, completion, and workflow status.
 - Migration `0007_helpdesk_tickets.sql` adds client helpdesk tickets, public/private notes, technician time tracking, and billing configuration.
+- Migration `0008_ticket_expenses.sql` links billable expenses to a specific helpdesk ticket.
 - The initial migration stores money as integer cents and scopes every business record to a workspace.
 - Enforce `workspace_members` membership in every D1 API query before inviting staff from multiple organizations.
 - Add immutable audit events for invoice lifecycle actions and payment-provider webhooks.
