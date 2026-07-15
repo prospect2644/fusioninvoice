@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, convertEstimate, removeCustomField, updateInvoiceItems, updateInvoiceStatus, workspaceFor } from './store.js';
+import { addClient, addCustomField, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketNote, addTicketTime, convertEstimate, removeCustomField, updateInvoiceItems, updateInvoiceStatus, updateTicketStatus, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -31,6 +31,10 @@ app.post('/api/items', action(body => addItem(body)));
 app.post('/api/subscriptions', action(body => addSubscription(body)));
 app.post('/api/expenses', action(body => addExpense(body)));
 app.post('/api/tasks', (req, res) => { try { res.status(201).json(addTask(req.body || {}, req.identity.email)); } catch (error) { res.status(400).json({ error: error.message }); } });
+app.post('/api/tickets', action(body => addTicket(body)));
+app.patch('/api/tickets/:id/status', action((body,params)=>updateTicketStatus(params.id,body.status)));
+app.post('/api/tickets/:id/notes', (req,res)=>{try{res.status(201).json(addTicketNote(req.params.id,req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
+app.post('/api/tickets/:id/time', (req,res)=>{try{res.status(201).json(addTicketTime(req.params.id,req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
 app.patch('/api/invoices/:id/status', action((body, params) => updateInvoiceStatus(params.id, body.status)));
 app.patch('/api/invoices/:id/items', action((body, params) => updateInvoiceItems(params.id, body)));
 app.post('/api/estimates', action(body => {

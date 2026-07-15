@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 const dataFile = path.resolve('server/data.json');
-const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], items: [], subscriptions: [], expenses: [], tasks: [], settings: { customFields: [] } };
+const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], items: [], subscriptions: [], expenses: [], tasks: [], tickets: [], settings: { customFields: [] } };
 
 function read() {
   if (!fs.existsSync(dataFile)) fs.writeFileSync(dataFile, JSON.stringify(emptyStore, null, 2));
@@ -116,6 +116,15 @@ export function addTask(input, assigneeEmail) {
   if (task.status === 'completed') task.completedAt = new Date().toISOString();
   data.tasks.unshift(task); write(data); return task;
 }
+
+export function addTicket(input) {
+  const data=read(),client=data.clients.find(item=>item.id===input.clientId);if(!client)throw new Error('Company not found');
+  const ticket={id:nextNumber(data.tickets,'TKT',1001),clientId:input.clientId,contactName:String(input.contactName||'').trim(),contactEmail:String(input.contactEmail||'').trim(),title:String(input.title||'').trim(),status:input.status||'open',billingType:input.billingType||'hourly',subscriptionId:input.subscriptionId||null,hourlyRate:Number(input.hourlyRate||client.hourlyRate||0),closedAt:null,notes:[],timeEntries:[],createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
+  if(!ticket.contactName||!ticket.title||!['open','in_progress','waiting_customer','waiting_vendor','closed'].includes(ticket.status)||!['hourly','subscription'].includes(ticket.billingType))throw new Error('Company, contact, title, billing method, and valid status are required.');if(ticket.billingType==='subscription'&&!data.subscriptions.some(item=>item.id===ticket.subscriptionId&&item.clientId===ticket.clientId))throw new Error('Choose a subscription belonging to this company.');if(ticket.status==='closed')ticket.closedAt=new Date().toISOString();data.tickets.unshift(ticket);write(data);return ticket;
+}
+export function updateTicketStatus(id,status){const data=read(),ticket=data.tickets.find(item=>item.id===id);if(!ticket)throw new Error('Ticket not found');if(!['open','in_progress','waiting_customer','waiting_vendor','closed'].includes(status))throw new Error('Choose a valid ticket status.');ticket.status=status;ticket.closedAt=status==='closed'?new Date().toISOString():null;ticket.updatedAt=new Date().toISOString();write(data);return ticket;}
+export function addTicketNote(id,input,email){const data=read(),ticket=data.tickets.find(item=>item.id===id),body=String(input.body||'').trim(),visibility=input.visibility||'public';if(!ticket)throw new Error('Ticket not found');if(!body||!['public','private'].includes(visibility))throw new Error('Enter a note and choose its visibility.');const note={id:`tn_${crypto.randomUUID()}`,authorEmail:email,visibility,body,createdAt:new Date().toISOString()};ticket.notes.push(note);ticket.updatedAt=note.createdAt;write(data);return note;}
+export function addTicketTime(id,input,email){const data=read(),ticket=data.tickets.find(item=>item.id===id),minutes=Number(input.minutes);if(!ticket)throw new Error('Ticket not found');if(!Number.isInteger(minutes)||minutes<=0)throw new Error('Enter time in whole minutes greater than zero.');const entry={id:`tt_${crypto.randomUUID()}`,technicianEmail:email,minutes,description:String(input.description||'').trim(),createdAt:new Date().toISOString()};ticket.timeEntries.push(entry);ticket.updatedAt=entry.createdAt;write(data);return entry;}
 
 export function updateInvoiceStatus(id, status) {
   const data = read();
