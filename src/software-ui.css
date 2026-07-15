@@ -224,6 +224,8 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 .inline-catalog-form .primary { white-space: nowrap; }
 .invoice-product-editor { display: grid; gap: 7px; }
 .invoice-product-editor select { width: 100%; padding: 8px 9px; border: 1px solid #bcd1db; border-radius: 8px; background: #fff; color: #173746; }
+.invoice-item.subscription-reference { background: #edf8fc; }
+.reference-badge { display: inline-block; margin-left: 8px; padding: 3px 7px; border-radius: 999px; background: #d8eff8; color: #087fae; font-size: 8px; font-style: normal; text-transform: uppercase; }
 .software-line-panel .invoice-items { margin: 0; padding: 10px 16px 20px; }
 .software-line-panel .invoice-item { grid-template-columns: minmax(260px,1fr) 100px 130px 130px 32px; background: #eee; }
 .software-line-panel .invoice-item-head { background: #fff; color: #172b3d; }

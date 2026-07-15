@@ -12,4 +12,3 @@ CREATE TABLE IF NOT EXISTS invoice_items (
 );
 
 CREATE INDEX IF NOT EXISTS idx_invoice_items_invoice ON invoice_items(workspace_id, invoice_id, position);
-d1

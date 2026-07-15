@@ -2,6 +2,26 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.13.0] - 2026-07-15
+
+### Added
+
+- Active subscriptions can be selected as linked invoice line items.
+- Subscription invoice references default to quantity 1 and `$0.00` and remain non-billable.
+- Invoice line items persist their catalog-item or subscription source reference.
+
+### Changed
+
+- Subscription-backed ticket billing is explicitly presented as a zero-dollar covered service.
+
+### Security
+
+- The API verifies referenced subscriptions belong to the invoice client and prevents changing their rate above zero.
+
+### Fixed
+
+- Removed a stray non-SQL token from the historical invoice-items migration so clean database setup succeeds.
+
 ## [0.12.1] - 2026-07-15
 
 ### Added
