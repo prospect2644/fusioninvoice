@@ -187,7 +187,7 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 .invoice-breadcrumb { display: flex; justify-content: flex-end; gap: 10px; padding: 8px 28px 0; color: #6d7b88; font-size: 12px; }
 .invoice-breadcrumb span { color: #0878ed; }
 .invoice-breadcrumb i { font-style: normal; }
-.invoice-software-form { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 14px; padding: 18px 28px 46px; }
+.invoice-software-form { display: grid; grid-template-columns: minmax(0,1fr) 350px; gap: 18px; padding: 18px 28px 46px; }
 .invoice-work-main { display: grid; gap: 12px; min-width: 0; }
 .invoice-work-sidebar { position: static; inset: auto; grid-column: 2; display: grid; align-content: start; gap: 12px; width: auto; padding: 0; background: transparent; color: #172b3d; }
 .invoice-work-sidebar h3,.invoice-work-sidebar label,.invoice-work-sidebar span,.invoice-work-sidebar strong { color: #172b3d; opacity: 1; }
@@ -214,12 +214,12 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 .detail-tab-row>* { padding: 12px 0; color: #0878ed; font-size: 11px; }
 .detail-tab-row strong { border-bottom: 2px solid #0878ed; }
 .invoice-detail-tabs>.custom-inputs,.invoice-detail-tabs>.custom-values,.invoice-detail-tabs>.invoice-payments { margin: 0; padding: 18px 16px; }
-.invoice-side-totals { padding: 16px; }
-.invoice-side-totals>div { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; }
+.invoice-side-totals { padding: 22px 24px; }
+.invoice-side-totals>div { display: flex; justify-content: space-between; gap: 28px; padding: 6px 0; font-size: 12px; }
 .invoice-side-totals>div:nth-child(3),.invoice-side-totals>div:last-child { font-weight: 800; }
 .invoice-options { padding-bottom: 16px; }
 .invoice-options h3 { margin-bottom: 14px; }
-.invoice-options label { padding: 0 16px 12px; }
+.invoice-options label { padding: 0 24px 16px; }
 :root[data-theme="dark"] .software-invoice-screen { background: #152332; color: #dce8f2; }
 :root[data-theme="dark"] .software-invoice-screen .invoice-screen-bar,:root[data-theme="dark"] .software-edit-panel { background: #1e3041; color: #dce8f2; }
 :root[data-theme="dark"] .invoice-work-sidebar,:root[data-theme="dark"] .invoice-work-sidebar h3,:root[data-theme="dark"] .invoice-work-sidebar label,:root[data-theme="dark"] .invoice-work-sidebar span,:root[data-theme="dark"] .invoice-work-sidebar strong { color: #dce8f2; }
