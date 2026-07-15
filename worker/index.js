@@ -47,6 +47,13 @@ async function workspaceForIdentity(db, identity) {
 }
 
 const all = async statement => (await statement.all()).results || [];
+const optionalAll = async statement => {
+  try { return await all(statement); }
+  catch (error) {
+    if (/no such table/i.test(String(error?.message || error))) return [];
+    throw error;
+  }
+};
 async function readWorkspace(db, workspaceId, identity) {
   const [clients, invoices, invoiceItems, estimates, payments, items, subscriptions, expenses, tasks, fields, values] = await Promise.all([
     all(db.prepare('SELECT id, name, city, state, zip, hourly_rate_cents, status FROM clients WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
@@ -54,10 +61,10 @@ async function readWorkspace(db, workspaceId, identity) {
     all(db.prepare('SELECT id, invoice_id, description, quantity, rate_cents, position FROM invoice_items WHERE workspace_id = ? ORDER BY invoice_id, position').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, quote, valid_until, amount_cents, status, converted_invoice_id, created_at FROM estimates WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, invoice_id, payment_date, method, amount_cents, created_at FROM payments WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
-    all(db.prepare('SELECT id, name, company, category, description, stock_quantity, price_cents, tax_1, tax_2, status, created_at FROM items WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
-    all(db.prepare('SELECT id, client_id, summary, next_date, stop_date, interval_count, interval_unit, amount_cents, status, created_at FROM subscriptions WHERE workspace_id = ? ORDER BY next_date, created_at DESC').bind(workspaceId)),
-    all(db.prepare('SELECT id, client_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status, created_at FROM expenses WHERE workspace_id = ? ORDER BY expense_date DESC, created_at DESC').bind(workspaceId)),
-    all(db.prepare('SELECT id, client_id, title, description, due_date, assignee_email, completed_at, status, created_at FROM tasks WHERE workspace_id = ? ORDER BY due_date, created_at DESC').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, name, company, category, description, stock_quantity, price_cents, tax_1, tax_2, status, created_at FROM items WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, client_id, summary, next_date, stop_date, interval_count, interval_unit, amount_cents, status, created_at FROM subscriptions WHERE workspace_id = ? ORDER BY next_date, created_at DESC').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, client_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status, created_at FROM expenses WHERE workspace_id = ? ORDER BY expense_date DESC, created_at DESC').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, client_id, title, description, due_date, assignee_email, completed_at, status, created_at FROM tasks WHERE workspace_id = ? ORDER BY due_date, created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, label, entity_type, position FROM custom_fields WHERE workspace_id = ? ORDER BY entity_type, position, created_at').bind(workspaceId)),
     all(db.prepare('SELECT v.custom_field_id, v.record_id, v.value FROM custom_field_values v JOIN custom_fields f ON f.id = v.custom_field_id WHERE f.workspace_id = ?').bind(workspaceId)),
   ]);
