@@ -242,7 +242,7 @@ button.software-invoice-row:hover { background: #eaf5ff; }
   --kindred-cyan: #35a9d5;
 }
 body { background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); color: var(--kindred-ink); }
-.shell { grid-template-columns: 270px 1fr; }
+.shell { grid-template-columns: 270px minmax(0,1fr); align-items: start; align-content: start; }
 aside { width: 270px; padding: 0 14px 20px; background: #37474c; }
 .brand { min-height: 72px; margin: 0 -14px 18px; padding: 0 22px; border-bottom-color: #ffffff1f; }
 .brand .mark { width: 36px; height: 36px; border: 1px solid #35a9d5; border-radius: 50%; background: #ffffff08; color: #49bce8; font: 700 14px Arial,sans-serif; }
@@ -256,7 +256,7 @@ nav button { min-height: 46px; border-radius: 12px; padding: 10px 14px; color: #
 nav button:hover { background: #ffffff0d; color: #fff; }
 nav button.active { background: #35a9d5!important; color: #082332!important; box-shadow: 0 9px 22px #18384442; }
 nav button.active i,nav button.active i:before { color: #082332!important; }
-main { align-self: start; min-height: 100vh; margin: 0; padding: 0 34px 55px; }
+.shell>main,.shell.collapsed>main { grid-column: 2; grid-row: 1; align-self: start!important; justify-self: stretch; min-height: 100vh; width: 100%; margin: 0!important; padding: 0 34px 55px; }
 main>header { height: 72px; margin: 0 -34px; padding: 0 34px; background: #37474c; border-bottom: 0; }
 main>header h1 { color: #eef7fa; font-weight: 650; }
 .header-actions { align-items: center; }
