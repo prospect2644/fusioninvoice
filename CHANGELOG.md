@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.11.3] - 2026-07-15
+
+### Changed
+
+- Replaced the remaining gray-green application bars with a consistent dark navy blue.
+- Active navigation and highlighted controls use the lighter Kindred cyan-blue.
+
 ## [0.11.2] - 2026-07-15
 
 ### Changed

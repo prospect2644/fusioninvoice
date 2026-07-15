@@ -256,7 +256,7 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 
 /* Kindred Innovia visual system */
 :root {
-  --admin-navy: #37474c;
+  --admin-navy: #082f4f;
   --admin-blue: #35a9d5;
   --admin-bg: #dcebf2;
   --admin-line: #c7d9e2;
@@ -267,7 +267,7 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 }
 body { background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); color: var(--kindred-ink); }
 .shell { grid-template-columns: 270px minmax(0,1fr); align-items: start; align-content: start; }
-aside { width: 270px; padding: 0 14px 20px; background: #37474c; }
+aside { width: 270px; padding: 0 14px 20px; background: var(--admin-navy); }
 .brand { min-height: 72px; margin: 0 -14px 18px; padding: 0 22px; border-bottom-color: #ffffff1f; }
 .brand .mark { width: 36px; height: 36px; border: 1px solid #35a9d5; border-radius: 50%; background: #ffffff08; color: #49bce8; font: 700 14px Arial,sans-serif; }
 .brand strong { color: #eef7fa; font-size: 18px; letter-spacing: -.02em; }
@@ -281,7 +281,7 @@ nav button:hover { background: #ffffff0d; color: #fff; }
 nav button.active { background: #35a9d5!important; color: #082332!important; box-shadow: 0 9px 22px #18384442; }
 nav button.active i,nav button.active i:before { color: #082332!important; }
 .shell>main,.shell.collapsed>main { grid-column: 2; grid-row: 1; align-self: start!important; justify-self: stretch; min-height: 100vh; width: 100%; margin: 0!important; padding: 0 34px 55px; }
-main>header { height: 72px; margin: 0 -34px; padding: 0 34px; background: #37474c; border-bottom: 0; }
+main>header { height: 72px; margin: 0 -34px; padding: 0 34px; background: var(--admin-navy); border-bottom: 0; }
 main>header h1 { color: #eef7fa; font-weight: 650; }
 .header-actions { align-items: center; }
 .primary { border-radius: 999px; padding: 10px 19px; background: #35a9d5; color: #082332; font-weight: 700; letter-spacing: .02em; box-shadow: none; }
@@ -311,7 +311,7 @@ button.software-invoice-row:nth-child(even),.software-items-table .software-item
 .modal { border: 1px solid #c8dbe4; border-radius: 26px; background: #f4f9fc; box-shadow: 0 28px 90px #102a3766; }
 .modal input,.modal select,.modal textarea { border-color: #bcd1db; border-radius: 11px; background: #fff; color: #173746; }
 .software-invoice-screen { background: linear-gradient(145deg,#e6f1f6,#d5e7ef); }
-.software-invoice-screen .invoice-screen-bar { background: #37474c; color: #eef7fa; }
+.software-invoice-screen .invoice-screen-bar { background: var(--admin-navy); color: #eef7fa; }
 .software-invoice-title,.software-invoice-title>span { color: #eef7fa; }
 .software-invoice-title b { background: #35a9d5; color: #082332; border-radius: 999px; }
 .software-invoice-screen .invoice-screen-actions .quiet { background: transparent; border-color: #8fa8b2; color: #eef7fa; }
@@ -319,7 +319,7 @@ button.software-invoice-row:nth-child(even),.software-items-table .software-item
 .invoice-work-sidebar { color: var(--kindred-ink); }
 .invoice-work-sidebar h3,.invoice-work-sidebar label,.invoice-work-sidebar span,.invoice-work-sidebar strong { color: var(--kindred-ink); }
 :root[data-theme="dark"] body { background: linear-gradient(145deg,#152830,#102129); }
-:root[data-theme="dark"] main>header,:root[data-theme="dark"] .software-invoice-screen .invoice-screen-bar { background: #26383e; }
+:root[data-theme="dark"] main>header,:root[data-theme="dark"] .software-invoice-screen .invoice-screen-bar { background: #061f35; }
 :root[data-theme="dark"] .panel,:root[data-theme="dark"] .setting,:root[data-theme="dark"] .client-list,:root[data-theme="dark"] .software-edit-panel { background: #1c3039; border-color: #39515c; }
 :root[data-theme="dark"] .dashboard-stats .stat { background: #203640!important; border-color: #3b5662; color: #e8f4f8!important; }
 :root[data-theme="dark"] .dashboard-stats .stat strong,:root[data-theme="dark"] .dashboard-heading h2,:root[data-theme="dark"] .index-heading h2 { color: #e8f4f8; }
@@ -330,7 +330,7 @@ button.software-invoice-row:nth-child(even),.software-items-table .software-item
 
 /* Full-screen client record */
 .client-screen { left: 270px; background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); color: var(--kindred-ink); }
-.client-screen-bar { min-height: 72px; padding: 10px 34px; background: #37474c; color: #eef7fa; box-shadow: 0 8px 24px #1c364126; }
+.client-screen-bar { min-height: 72px; padding: 10px 34px; background: var(--admin-navy); color: #eef7fa; box-shadow: 0 8px 24px #1c364126; }
 .client-screen-bar small { color: #60c2e6; }
 .client-screen-bar strong { color: #eef7fa; font-family: 'DM Sans',Arial,sans-serif; font-size: 17px; }
 .client-screen-bar .quiet { border: 1px solid #93adb8; border-radius: 999px; background: #f4f9fc; color: #173746; }
@@ -356,7 +356,7 @@ button.software-invoice-row:nth-child(even),.software-items-table .software-item
 .detail-head { background: #e5f2f7; color: #167fa7; }
 .client-record-feed>div { border-top-color: #d3e2e9; }
 :root[data-theme="dark"] .client-screen { background: linear-gradient(145deg,#152830,#102129); color: #deedf3; }
-:root[data-theme="dark"] .client-screen-bar { background: #26383e; }
+:root[data-theme="dark"] .client-screen-bar { background: #061f35; }
 :root[data-theme="dark"] .client-record-hero,:root[data-theme="dark"] .client-record-stats>div,:root[data-theme="dark"] .client-record-panel { background: #1c3039; border-color: #39515c; }
 :root[data-theme="dark"] .client-record-hero h1,:root[data-theme="dark"] .client-record-stats strong,:root[data-theme="dark"] .client-record-heading h2,:root[data-theme="dark"] .client-detail-row { color: #e8f4f8; }
 :root[data-theme="dark"] .detail-head { background: #243b45; color: #56bde2; }
@@ -377,7 +377,7 @@ button.software-ticket-row:hover { background: #e2f2f8; }
 .software-ticket-row .status.waiting_vendor { background: #8a64b0; }
 .software-ticket-row .status.closed { background: #38a170; }
 .ticket-screen { position: fixed; inset: 0 0 0 270px; z-index: 20; overflow: auto; background: linear-gradient(145deg,#e6f1f6,#d5e7ef); color: var(--kindred-ink); }
-.ticket-screen-bar { position: sticky; top: 0; z-index: 2; min-height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 10px 34px; background: #37474c; color: #eef7fa; }
+.ticket-screen-bar { position: sticky; top: 0; z-index: 2; min-height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 10px 34px; background: var(--admin-navy); color: #eef7fa; }
 .ticket-screen-bar small,.ticket-screen-bar strong { display: block; }
 .ticket-screen-bar small { color: #60c2e6; font-size: 8px; letter-spacing: .16em; text-transform: uppercase; }
 .ticket-screen-bar>div:last-child { display: flex; gap: 9px; align-items: center; }
@@ -415,7 +415,7 @@ button.software-ticket-row:hover { background: #e2f2f8; }
 :root[data-theme="dark"] .software-ticket-row { background: #1c3039; color: #deedf3; }
 :root[data-theme="dark"] button.software-ticket-row:nth-child(even) { background: #243b45; }
 :root[data-theme="dark"] .ticket-screen { background: linear-gradient(145deg,#152830,#102129); color: #deedf3; }
-:root[data-theme="dark"] .ticket-screen-bar { background: #26383e; }
+:root[data-theme="dark"] .ticket-screen-bar { background: #061f35; }
 :root[data-theme="dark"] .ticket-hero,:root[data-theme="dark"] .ticket-panel,:root[data-theme="dark"] .ticket-metrics>div,:root[data-theme="dark"] .ticket-note { background: #1c3039; border-color: #39515c; }
 :root[data-theme="dark"] .ticket-note.private { background: #30283b; }
 :root[data-theme="dark"] .ticket-hero h1,:root[data-theme="dark"] .ticket-panel-head h2 { color: #e8f4f8; }
