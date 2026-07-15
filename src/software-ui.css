@@ -229,3 +229,77 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 :root[data-theme="dark"] .software-line-panel .invoice-item-head { background: #1e3041; color: #dce8f2; }
 @media(max-width:1050px){.invoice-software-form{grid-template-columns:1fr}.invoice-work-sidebar{grid-column:1;grid-template-columns:1fr 1fr}.invoice-address-grid{grid-template-columns:1fr}}
 @media print{.software-invoice-screen{position:static;background:#fff}.invoice-software-form{display:block;padding:0}.invoice-work-sidebar{display:block}.software-edit-panel{break-inside:avoid;box-shadow:none}.invoice-options{display:none}.invoice-breadcrumb{display:none}.invoice-work-main{display:block}.invoice-work-main>*{margin-bottom:12px}}
+
+/* Kindred Innovia visual system */
+:root {
+  --admin-navy: #37474c;
+  --admin-blue: #35a9d5;
+  --admin-bg: #dcebf2;
+  --admin-line: #c7d9e2;
+  --kindred-ink: #0b2635;
+  --kindred-muted: #547080;
+  --kindred-card: #f4f9fc;
+  --kindred-cyan: #35a9d5;
+}
+body { background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); color: var(--kindred-ink); }
+.shell { grid-template-columns: 270px 1fr; }
+aside { width: 270px; padding: 0 14px 20px; background: #37474c; }
+.brand { min-height: 72px; margin: 0 -14px 18px; padding: 0 22px; border-bottom-color: #ffffff1f; }
+.brand .mark { width: 36px; height: 36px; border: 1px solid #35a9d5; border-radius: 50%; background: #ffffff08; color: #49bce8; font: 700 14px Arial,sans-serif; }
+.brand strong { color: #eef7fa; font-size: 18px; letter-spacing: -.02em; }
+.brand span { display: block; color: #9aadb5; font: 700 7px Arial,sans-serif; letter-spacing: .28em; text-transform: uppercase; }
+.user { margin-bottom: 16px; border-bottom-color: #ffffff1f; }
+.user>div { background: #35a9d5; }
+.user small { color: #a9bdc5; }
+nav { gap: 5px; }
+nav button { min-height: 46px; border-radius: 12px; padding: 10px 14px; color: #c5d3d9; font-weight: 600; }
+nav button:hover { background: #ffffff0d; color: #fff; }
+nav button.active { background: #35a9d5!important; color: #082332!important; box-shadow: 0 9px 22px #18384442; }
+nav button.active i,nav button.active i:before { color: #082332!important; }
+main { padding: 0 34px 55px; }
+main>header { height: 72px; margin: 0 -34px; padding: 0 34px; background: #37474c; border-bottom: 0; }
+main>header h1 { color: #eef7fa; font-weight: 650; }
+.header-actions { align-items: center; }
+.primary { border-radius: 999px; padding: 10px 19px; background: #35a9d5; color: #082332; font-weight: 700; letter-spacing: .02em; box-shadow: none; }
+.primary:hover { background: #58bce1; }
+.quiet { border-color: #b8ced8; border-radius: 999px; background: #f4f9fc; color: #173746; }
+.dashboard-heading { padding: 38px 8px 20px; }
+.dashboard-heading h2,.index-heading h2 { color: var(--kindred-ink); font-family: 'DM Sans',Arial,sans-serif; font-weight: 650; }
+.dashboard-heading p,.dashboard-heading span,.index-heading nav { color: var(--kindred-muted); }
+.panel,.client-list,.setting,.report-controls,.report-table,.software-edit-panel { border: 1px solid #c9dbe4; border-top: 1px solid #c9dbe4; border-radius: 22px; background: #f5fafc; box-shadow: 0 14px 35px #466d8012; }
+.kpi-panel { padding-bottom: 28px; }
+.kpi-panel>.panel-head { border-bottom-color: #d4e2e8; }
+.dashboard-stats { gap: 16px; }
+.dashboard-stats .stat { min-height: 170px; border: 1px solid #d0e1e8; border-radius: 30px; background: #f5fafc!important; color: var(--kindred-ink)!important; box-shadow: 0 14px 30px #476e8012; }
+.dashboard-stats .stat small { color: #56717f; }
+.dashboard-stats .stat strong { color: var(--kindred-ink); }
+.dashboard-stats .stat span { background: transparent; color: #1186b2; font-weight: 700; }
+.invoice-index-panel,.items-index-panel,.subscriptions-index-panel,.payments-index-panel,.expenses-index-panel,.tasks-index-panel { border-radius: 22px; }
+.invoice-toolbar { border-bottom-color: #d0dfe6; }
+.invoice-search>span { border-color: #b9d0db; color: #158db9; background: #edf7fb; }
+.invoice-search input,.invoice-filters input,.invoice-filters select { border-color: #b9d0db; border-radius: 10px; background: #fff; color: #173746; }
+.software-invoice-row,.software-item-row,.software-subscription-row,.software-payment-row,.software-expense-row,.software-task-row { border-top-color: #d4e1e7; background: #f8fbfd; }
+button.software-invoice-row:nth-child(even),.software-items-table .software-item-row:nth-child(odd):not(.software-invoice-head),.software-subscription-table .software-subscription-row:nth-child(odd):not(.software-invoice-head),.software-payment-table .software-payment-row:nth-child(odd):not(.software-invoice-head),.software-expense-table .software-expense-row:nth-child(odd):not(.software-invoice-head),.software-task-table .software-task-row:nth-child(odd):not(.software-invoice-head) { background: #edf5f8; }
+.software-invoice-head { color: #087fae; }
+.software-invoice-row>strong:first-child,.software-item-row>strong:first-child,.software-subscription-row>strong:first-child,.software-payment-row>strong:first-child,.software-expense-row>strong:first-child,.software-task-row>strong:first-child,.client-link,.task-title { color: #0785b6; }
+.status { border-radius: 999px; }
+.modal-bg { background: #142a33b8; backdrop-filter: blur(5px); }
+.modal { border: 1px solid #c8dbe4; border-radius: 26px; background: #f4f9fc; box-shadow: 0 28px 90px #102a3766; }
+.modal input,.modal select,.modal textarea { border-color: #bcd1db; border-radius: 11px; background: #fff; color: #173746; }
+.software-invoice-screen { background: linear-gradient(145deg,#e6f1f6,#d5e7ef); }
+.software-invoice-screen .invoice-screen-bar { background: #37474c; color: #eef7fa; }
+.software-invoice-title,.software-invoice-title>span { color: #eef7fa; }
+.software-invoice-title b { background: #35a9d5; color: #082332; border-radius: 999px; }
+.software-invoice-screen .invoice-screen-actions .quiet { background: transparent; border-color: #8fa8b2; color: #eef7fa; }
+.invoice-summary-panel input,.invoice-options input,.invoice-options select,.invoice-address-grid select { border-color: #bcd1db; border-radius: 10px; }
+.invoice-work-sidebar { color: var(--kindred-ink); }
+.invoice-work-sidebar h3,.invoice-work-sidebar label,.invoice-work-sidebar span,.invoice-work-sidebar strong { color: var(--kindred-ink); }
+:root[data-theme="dark"] body { background: linear-gradient(145deg,#152830,#102129); }
+:root[data-theme="dark"] main>header,:root[data-theme="dark"] .software-invoice-screen .invoice-screen-bar { background: #26383e; }
+:root[data-theme="dark"] .panel,:root[data-theme="dark"] .setting,:root[data-theme="dark"] .client-list,:root[data-theme="dark"] .software-edit-panel { background: #1c3039; border-color: #39515c; }
+:root[data-theme="dark"] .dashboard-stats .stat { background: #203640!important; border-color: #3b5662; color: #e8f4f8!important; }
+:root[data-theme="dark"] .dashboard-stats .stat strong,:root[data-theme="dark"] .dashboard-heading h2,:root[data-theme="dark"] .index-heading h2 { color: #e8f4f8; }
+:root[data-theme="dark"] .software-invoice-row,:root[data-theme="dark"] .software-item-row,:root[data-theme="dark"] .software-subscription-row,:root[data-theme="dark"] .software-payment-row,:root[data-theme="dark"] .software-expense-row,:root[data-theme="dark"] .software-task-row { background: #1c3039; color: #deedf3; }
+:root[data-theme="dark"] button.software-invoice-row:nth-child(even),:root[data-theme="dark"] .software-items-table .software-item-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-subscription-table .software-subscription-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-payment-table .software-payment-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-expense-table .software-expense-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-task-table .software-task-row:nth-child(odd):not(.software-invoice-head) { background: #243b45; }
+.shell.collapsed { grid-template-columns: 82px 1fr; }
+.shell.collapsed aside { width: 82px; }
