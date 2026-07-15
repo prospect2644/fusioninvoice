@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, convertEstimate, removeCustomField, updateInvoiceStatus, workspaceFor } from './store.js';
+import { addClient, addCustomField, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, convertEstimate, removeCustomField, updateInvoiceItems, updateInvoiceStatus, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -32,6 +32,7 @@ app.post('/api/subscriptions', action(body => addSubscription(body)));
 app.post('/api/expenses', action(body => addExpense(body)));
 app.post('/api/tasks', (req, res) => { try { res.status(201).json(addTask(req.body || {}, req.identity.email)); } catch (error) { res.status(400).json({ error: error.message }); } });
 app.patch('/api/invoices/:id/status', action((body, params) => updateInvoiceStatus(params.id, body.status)));
+app.patch('/api/invoices/:id/items', action((body, params) => updateInvoiceItems(params.id, body)));
 app.post('/api/estimates', action(body => {
   if (!required(body, ['clientId','validUntil','quote','amount']) || !Number.isFinite(Number(body.amount))) throw new Error('Complete all estimate fields.');
   return addEstimate(body);

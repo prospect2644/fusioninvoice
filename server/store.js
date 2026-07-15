@@ -74,6 +74,16 @@ export function addPayment(input) {
   const payment = { id: nextNumber(data.payments, 'PAY', 301), ...input, amount, createdAt: new Date().toISOString() };
   data.payments.unshift(payment); write(data); return payment;
 }
+export function updateInvoiceItems(id, input) {
+  const data = read(), invoice = data.invoices.find(item => item.id === id);
+  if (!invoice) throw new Error('Invoice not found');
+  const items = (input.items || []).map((item, index) => ({ id: item.id || `item_${crypto.randomUUID()}`, description: String(item.description || '').trim(), quantity: Number(item.quantity), rate: Number(item.rate), position: index }));
+  if (!items.length || items.some(item => !item.description || !(item.quantity > 0) || !(item.rate >= 0))) throw new Error('Add at least one complete invoice item.');
+  const amount = items.reduce((sum,item)=>sum+item.quantity*item.rate,0), paid = paymentsFor(data, id);
+  if (amount < paid) throw new Error('Invoice total cannot be less than payments already received.');
+  invoice.items = items; invoice.description = items.map(item=>item.description).join('; '); invoice.amount = amount; invoice.updatedAt = new Date().toISOString();
+  write(data); return invoice;
+}
 
 export function addItem(input) {
   const data = read();

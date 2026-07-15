@@ -159,6 +159,18 @@ async function api(request, env) {
     if (!result.meta.changes) return json({ error: 'Invoice not found.' }, 404);
     return json({ id, status });
   }
+  const invoiceItemsUpdate = path.match(/^\/api\/invoices\/([^/]+)\/items$/);
+  if (method === 'PATCH' && invoiceItemsUpdate) {
+    const id = decodeURIComponent(invoiceItemsUpdate[1]), invoice = await env.DB.prepare('SELECT amount_cents FROM invoices WHERE id = ? AND workspace_id = ?').bind(id, workspaceId).first();
+    if (!invoice) return json({ error: 'Invoice not found.' }, 404);
+    const items = Array.isArray(body.items) ? body.items.map(item => ({ description: String(item.description || '').trim(), quantity: Number(item.quantity), rateCents: cents(item.rate) })) : [];
+    if (!items.length || items.some(item => !item.description || !(item.quantity > 0) || !(item.rateCents >= 0))) return json({ error: 'Add at least one complete invoice item.' }, 400);
+    const amount = items.reduce((sum,item)=>sum+Math.round(item.quantity*item.rateCents),0), paid = await env.DB.prepare('SELECT COALESCE(SUM(amount_cents), 0) AS value FROM payments WHERE invoice_id = ? AND workspace_id = ?').bind(id, workspaceId).first();
+    if (amount < Number(paid.value || 0)) return json({ error: 'Invoice total cannot be less than payments already received.' }, 400);
+    const statements = [env.DB.prepare('DELETE FROM invoice_items WHERE invoice_id = ? AND workspace_id = ?').bind(id, workspaceId), ...items.map((item,position)=>env.DB.prepare('INSERT INTO invoice_items (id, workspace_id, invoice_id, description, quantity, rate_cents, position) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(`item_${crypto.randomUUID()}`,workspaceId,id,item.description,item.quantity,item.rateCents,position)), env.DB.prepare('UPDATE invoices SET description = ?, amount_cents = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND workspace_id = ?').bind(items.map(item=>item.description).join('; '),amount,id,workspaceId)];
+    await env.DB.batch(statements);
+    return json({ id, amount: dollars(amount) });
+  }
   if (method === 'POST' && path === '/api/estimates') {
     if (!required(body, ['clientId', 'validUntil', 'quote', 'amount']) || !(cents(body.amount) > 0)) return json({ error: 'Complete all estimate fields.' }, 400);
     if (!await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(body.clientId, workspaceId).first()) return json({ error: 'Client not found.' }, 404);

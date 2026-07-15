@@ -206,6 +206,13 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 .software-panel-title { display: flex; align-items: center; justify-content: space-between; padding-right: 10px; border-bottom: 1px solid #d8dde3; }
 .software-panel-title h3 { border: 0; }
 .software-panel-title .primary { padding: 7px 10px; font-size: 11px; }
+.line-panel-actions { display: flex; align-items: center; gap: 8px; }
+.line-panel-actions .quiet { padding: 7px 11px; font-size: 11px; }
+.inline-catalog-form { display: grid; grid-template-columns: 1fr 1.4fr .8fr .65fr auto; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #d8dde3; background: #edf6fa; }
+.inline-catalog-form input { min-width: 0; padding: 9px 10px; border: 1px solid #bcd1db; border-radius: 9px; background: #fff; color: #173746; }
+.inline-catalog-form .primary { white-space: nowrap; }
+.invoice-product-editor { display: grid; gap: 7px; }
+.invoice-product-editor select { width: 100%; padding: 8px 9px; border: 1px solid #bcd1db; border-radius: 8px; background: #fff; color: #173746; }
 .software-line-panel .invoice-items { margin: 0; padding: 10px 16px 20px; }
 .software-line-panel .invoice-item { grid-template-columns: minmax(260px,1fr) 100px 130px 130px 32px; background: #eee; }
 .software-line-panel .invoice-item-head { background: #fff; color: #172b3d; }
@@ -227,6 +234,8 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 :root[data-theme="dark"] .invoice-summary-panel input,:root[data-theme="dark"] .invoice-options input,:root[data-theme="dark"] .invoice-options select,:root[data-theme="dark"] .invoice-address-grid select { background: #24394c; color: #dce8f2; }
 :root[data-theme="dark"] .software-line-panel .invoice-item { background: #24394c; }
 :root[data-theme="dark"] .software-line-panel .invoice-item-head { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .inline-catalog-form,:root[data-theme="dark"] .invoice-product-editor select { background: #24394c; color: #eef6fc; }
+@media(max-width:1250px){.inline-catalog-form{grid-template-columns:1fr 1fr}.inline-catalog-form .primary{width:fit-content}}
 @media(max-width:1050px){.invoice-software-form{grid-template-columns:1fr}.invoice-work-sidebar{grid-column:1;grid-template-columns:1fr 1fr}.invoice-address-grid{grid-template-columns:1fr}}
 @media print{.software-invoice-screen{position:static;background:#fff}.invoice-software-form{display:block;padding:0}.invoice-work-sidebar{display:block}.software-edit-panel{break-inside:avoid;box-shadow:none}.invoice-options{display:none}.invoice-breadcrumb{display:none}.invoice-work-main{display:block}.invoice-work-main>*{margin-bottom:12px}}
 
