@@ -422,3 +422,7 @@ button.software-ticket-row:hover { background: #e2f2f8; }
 .ticket-expense-list span>* { display: block; }
 .ticket-expense-list small { max-width: 210px; margin-top: 3px; overflow: hidden; color: var(--kindred-muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
 :root[data-theme="dark"] .ticket-expense-dock { border-color: #39515c; background: #1c3039; color: #e8f4f8; }
+
+/* Global application density */
+html { zoom: 80%; }
+@media print { html { zoom: 100%; } }
