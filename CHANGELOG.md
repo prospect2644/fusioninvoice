@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.11.5] - 2026-07-15
+
+### Changed
+
+- New tickets now require a saved contact belonging to the selected client company.
+- Removed one-time contact name and email fields from ticket creation.
+- Ticket API validation rejects missing or cross-company contact references.
+
 ## [0.11.4] - 2026-07-15
 
 ### Changed
