@@ -18,9 +18,9 @@
     "concurrently": "latest",
     "express": "latest",
     "jose": "latest",
-    "vite": "latest",
+    "jspdf": "^4.2.1",
     "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {}
+    "react-dom": "latest",
+    "vite": "latest"
+  }
 }
