@@ -13,6 +13,7 @@ aside { width: 302px; padding: 0 10px 18px; background: var(--admin-navy); }
 .brand .mark { width: 40px; height: 40px; border: 0; border-radius: 7px; background: var(--admin-blue); color: #fff; font: 700 17px Arial,sans-serif; }
 .brand strong { font: 600 20px Arial,sans-serif; }
 .brand span { display: none; }
+.brand-copy small { display: block; margin-top: 2px; color: #77b9d2; font-size: 8px; letter-spacing: .08em; }
 .collapse { border: 0; color: #7fc4ff; }
 nav { gap: 3px; }
 nav button { min-height: 50px; border-radius: 5px; padding: 10px 15px; color: #d5e3f0; font-size: 15px; }

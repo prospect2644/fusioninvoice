@@ -1,13 +1,14 @@
 {
   "name": "kindred-invoice",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.11.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently -k \"vite\" \"node --watch server/index.js\"",
     "build": "vite build",
     "start": "node server/index.js",
     "test": "node --test",
+    "release:check": "node scripts/verify-release.mjs",
     "db:info": "pnpm dlx wrangler@latest d1 info invoice-db --json",
     "db:migrate:local": "pnpm dlx wrangler@latest d1 migrations apply invoice-db --local",
     "db:migrate:remote": "pnpm dlx wrangler@latest d1 migrations apply invoice-db --remote",
