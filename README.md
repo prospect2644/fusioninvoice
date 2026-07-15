@@ -15,6 +15,17 @@ Open `http://127.0.0.1:4173`.
 
 ## Cloudflare Pages + Zero Trust deployment
 
+Client account passwords and MFA seeds use a separate 32-byte encryption key. Generate it once and save it only as a Worker secret; changing it makes existing stored credentials unreadable.
+
+```powershell
+$bytes = New-Object byte[] 32
+[Security.Cryptography.RandomNumberGenerator]::Fill($bytes)
+[Convert]::ToBase64String($bytes) | pnpm dlx wrangler secret put CREDENTIAL_ENCRYPTION_KEY
+pnpm dlx wrangler d1 execute invoice-db --remote --file migrations/0009_client_assets_accounts.sql
+```
+
+Never put `CREDENTIAL_ENCRYPTION_KEY` in frontend code or in a Vite-exposed variable.
+
 1. Configure the Pages project with build command `pnpm build` and output directory `dist`.
 2. Under **Settings > Bindings**, add the D1 database `invoice-db` with the variable name `DB` for both Production and Preview.
 3. Under **Settings > Variables and Secrets**, add `CF_ACCESS_TEAM_DOMAIN=https://kindredinnovia.cloudflareaccess.com` and the Access application audience tag as `CF_ACCESS_AUD`.

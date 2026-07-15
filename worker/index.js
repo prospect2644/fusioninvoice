@@ -5,6 +5,43 @@ const cents = value => Math.round(Number(value) * 100);
 const dollars = value => Number(value || 0) / 100;
 const required = (body, fields) => fields.every(field => typeof body?.[field] === 'string' && body[field].trim());
 const verifiers = new Map();
+const encoder = new TextEncoder(), decoder = new TextDecoder();
+const toBase64 = bytes => btoa(String.fromCharCode(...bytes));
+const fromBase64 = value => Uint8Array.from(atob(value), character => character.charCodeAt(0));
+
+async function credentialKey(env) {
+  const raw = String(env.CREDENTIAL_ENCRYPTION_KEY || '');
+  let bytes;
+  try { bytes = fromBase64(raw); } catch { throw json({ error: 'Credential encryption is not configured.' }, 503); }
+  if (bytes.length !== 32) throw json({ error: 'Credential encryption is not configured.' }, 503);
+  return crypto.subtle.importKey('raw', bytes, 'AES-GCM', false, ['encrypt', 'decrypt']);
+}
+async function encryptSecret(value, env) {
+  if (!value) return '';
+  const iv = crypto.getRandomValues(new Uint8Array(12)), key = await credentialKey(env);
+  const encrypted = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoder.encode(String(value))));
+  const packed = new Uint8Array(iv.length + encrypted.length); packed.set(iv); packed.set(encrypted, iv.length);
+  return toBase64(packed);
+}
+async function decryptSecret(value, env) {
+  if (!value) return '';
+  const packed = fromBase64(value), key = await credentialKey(env);
+  if (packed.length < 29) throw json({ error: 'Stored credential is invalid.' }, 500);
+  return decoder.decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: packed.slice(0, 12) }, key, packed.slice(12)));
+}
+function base32Bytes(value) {
+  const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', clean=String(value||'').toUpperCase().replace(/[^A-Z2-7]/g,''), output=[]; let bits=0, buffer=0;
+  for (const character of clean) { const index=alphabet.indexOf(character); if(index<0) continue; buffer=(buffer<<5)|index; bits+=5; if(bits>=8){bits-=8;output.push((buffer>>bits)&255);} }
+  return new Uint8Array(output);
+}
+async function totpCode(secret) {
+  const keyBytes=base32Bytes(secret); if(!keyBytes.length) throw json({error:'This account does not have a valid MFA secret.'},400);
+  const period=30,counter=Math.floor(Date.now()/1000/period),message=new Uint8Array(8); let value=counter;
+  for(let index=7;index>=0;index--){message[index]=value&255;value=Math.floor(value/256);}
+  const key=await crypto.subtle.importKey('raw',keyBytes,{name:'HMAC',hash:'SHA-1'},false,['sign']),digest=new Uint8Array(await crypto.subtle.sign('HMAC',key,message)),offset=digest[digest.length-1]&15;
+  const number=((digest[offset]&127)<<24)|(digest[offset+1]<<16)|(digest[offset+2]<<8)|digest[offset+3];
+  return {code:String(number%1000000).padStart(6,'0'),expiresIn:period-(Math.floor(Date.now()/1000)%period)};
+}
 
 function accessErrorCode(error) {
   const code = String(error?.code || '');
@@ -55,7 +92,7 @@ const optionalAll = async statement => {
   }
 };
 async function readWorkspace(db, workspaceId, identity) {
-  const [clients, invoices, invoiceItems, estimates, payments, items, subscriptions, expenses, tasks, tickets, ticketNotes, ticketTime, fields, values] = await Promise.all([
+  const [clients, invoices, invoiceItems, estimates, payments, items, subscriptions, expenses, tasks, tickets, ticketNotes, ticketTime, assets, accounts, fields, values] = await Promise.all([
     all(db.prepare('SELECT id, name, city, state, zip, hourly_rate_cents, status FROM clients WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, estimate_id, issued, due, description, amount_cents, status, created_at FROM invoices WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, invoice_id, description, quantity, rate_cents, position FROM invoice_items WHERE workspace_id = ? ORDER BY invoice_id, position').bind(workspaceId)),
@@ -68,6 +105,8 @@ async function readWorkspace(db, workspaceId, identity) {
     optionalAll(db.prepare('SELECT id, client_id, contact_name, contact_email, title, status, billing_type, subscription_id, hourly_rate_cents, closed_at, created_at, updated_at FROM tickets WHERE workspace_id = ? ORDER BY updated_at DESC').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, ticket_id, author_email, visibility, body, created_at FROM ticket_notes WHERE workspace_id = ? ORDER BY created_at').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, ticket_id, technician_email, minutes, description, created_at FROM ticket_time_entries WHERE workspace_id = ? ORDER BY created_at').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, client_id, asset_type, name, serial_number, hostname, operating_system, manufacturer, model, ip_address, notes, created_at FROM client_assets WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, client_id, name, notes, created_at, CASE WHEN username_encrypted != \'\' THEN 1 ELSE 0 END AS has_username, CASE WHEN password_encrypted != \'\' THEN 1 ELSE 0 END AS has_password, CASE WHEN website_encrypted != \'\' THEN 1 ELSE 0 END AS has_website, CASE WHEN totp_secret_encrypted != \'\' THEN 1 ELSE 0 END AS has_totp FROM client_accounts WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
     all(db.prepare('SELECT id, label, entity_type, position FROM custom_fields WHERE workspace_id = ? ORDER BY entity_type, position, created_at').bind(workspaceId)),
     all(db.prepare('SELECT v.custom_field_id, v.record_id, v.value FROM custom_field_values v JOIN custom_fields f ON f.id = v.custom_field_id WHERE f.workspace_id = ?').bind(workspaceId)),
   ]);
@@ -83,6 +122,8 @@ async function readWorkspace(db, workspaceId, identity) {
     expenses: expenses.map(row => ({ id: row.id, clientId: row.client_id, ticketId: row.ticket_id, vendor: row.vendor, date: row.expense_date, company: row.company, category: row.category, description: row.description, amount: dollars(row.amount_cents), tax: dollars(row.tax_cents), status: row.status, createdAt: row.created_at })),
     tasks: tasks.map(row => ({ id: row.id, clientId: row.client_id, title: row.title, description: row.description, dueDate: row.due_date, assigneeEmail: row.assignee_email, completedAt: row.completed_at, status: row.status, createdAt: row.created_at })),
     tickets: tickets.map(row => ({ id: row.id, clientId: row.client_id, contactName: row.contact_name, contactEmail: row.contact_email, title: row.title, status: row.status, billingType: row.billing_type, subscriptionId: row.subscription_id, hourlyRate: dollars(row.hourly_rate_cents), closedAt: row.closed_at, createdAt: row.created_at, updatedAt: row.updated_at, notes: ticketNotes.filter(note=>note.ticket_id===row.id).map(note=>({ id:note.id,authorEmail:note.author_email,visibility:note.visibility,body:note.body,createdAt:note.created_at })), timeEntries: ticketTime.filter(entry=>entry.ticket_id===row.id).map(entry=>({ id:entry.id,technicianEmail:entry.technician_email,minutes:Number(entry.minutes),description:entry.description,createdAt:entry.created_at })) })),
+    assets: assets.map(row=>({id:row.id,clientId:row.client_id,type:row.asset_type,name:row.name,serialNumber:row.serial_number,hostname:row.hostname,operatingSystem:row.operating_system,manufacturer:row.manufacturer,model:row.model,ipAddress:row.ip_address,notes:row.notes,createdAt:row.created_at})),
+    accounts: accounts.map(row=>({id:row.id,clientId:row.client_id,name:row.name,notes:row.notes,hasUsername:!!row.has_username,hasPassword:!!row.has_password,hasWebsite:!!row.has_website,hasTotp:!!row.has_totp,createdAt:row.created_at})),
     settings: { customFields: fields.map(row => ({ id: row.id, label: row.label, appliesTo: row.entity_type, position: row.position })) },
     user: identity,
   };
@@ -112,6 +153,14 @@ async function api(request, env) {
     await env.DB.batch([env.DB.prepare('INSERT INTO clients (id, workspace_id, name, city, state, zip, hourly_rate_cents) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, body.name.trim(), body.city.trim(), body.state.trim().toUpperCase(), body.zip.trim(), cents(body.hourlyRate || 0)), ...values]);
     return json({ id }, 201);
   }
+  const clientAsset = path.match(/^\/api\/clients\/([^/]+)\/assets$/);
+  if(method==='POST'&&clientAsset){const clientId=decodeURIComponent(clientAsset[1]),type=String(body.type||'other'),name=String(body.name||'').trim();if(!name||name.length>120||!['computer','server','network','printer','mobile','other'].includes(type))return json({error:'Enter an asset name and valid type.'},400);if(!await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(clientId,workspaceId).first())return json({error:'Client not found.'},404);const id=`asset_${crypto.randomUUID()}`;await env.DB.prepare('INSERT INTO client_assets (id, workspace_id, client_id, asset_type, name, serial_number, hostname, operating_system, manufacturer, model, ip_address, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id,workspaceId,clientId,type,name,String(body.serialNumber||'').trim(),String(body.hostname||'').trim(),String(body.operatingSystem||'').trim(),String(body.manufacturer||'').trim(),String(body.model||'').trim(),String(body.ipAddress||'').trim(),String(body.notes||'').trim()).run();return json({id},201);}
+  const clientAccount = path.match(/^\/api\/clients\/([^/]+)\/accounts$/);
+  if(method==='POST'&&clientAccount){const clientId=decodeURIComponent(clientAccount[1]),name=String(body.name||'').trim();if(!name||name.length>120)return json({error:'Enter an account name.'},400);if(!await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(clientId,workspaceId).first())return json({error:'Client not found.'},404);let totp=String(body.totpSecret||'').trim();if(totp.startsWith('otpauth://')){try{totp=new URL(totp).searchParams.get('secret')||''}catch{return json({error:'The MFA setup URI is invalid.'},400)}}const encrypted=await Promise.all([encryptSecret(String(body.username||'').trim(),env),encryptSecret(String(body.password||''),env),encryptSecret(String(body.website||'').trim(),env),encryptSecret(totp,env)]),id=`account_${crypto.randomUUID()}`;await env.DB.prepare('INSERT INTO client_accounts (id, workspace_id, client_id, name, username_encrypted, password_encrypted, website_encrypted, totp_secret_encrypted, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id,workspaceId,clientId,name,...encrypted,String(body.notes||'').trim()).run();return json({id},201);}
+  const accountReveal=path.match(/^\/api\/client-accounts\/([^/]+)\/reveal$/);
+  if(method==='GET'&&accountReveal){const id=decodeURIComponent(accountReveal[1]),row=await env.DB.prepare('SELECT username_encrypted,password_encrypted,website_encrypted FROM client_accounts WHERE id = ? AND workspace_id = ?').bind(id,workspaceId).first();if(!row)return json({error:'Account not found.'},404);const [username,password,website]=await Promise.all([decryptSecret(row.username_encrypted,env),decryptSecret(row.password_encrypted,env),decryptSecret(row.website_encrypted,env)]);await env.DB.prepare("INSERT INTO credential_audit (id,workspace_id,account_id,actor_email,action) VALUES (?, ?, ?, ?, 'reveal')").bind(`audit_${crypto.randomUUID()}`,workspaceId,id,identity.email).run();return json({username,password,website});}
+  const accountTotp=path.match(/^\/api\/client-accounts\/([^/]+)\/totp$/);
+  if(method==='GET'&&accountTotp){const id=decodeURIComponent(accountTotp[1]),row=await env.DB.prepare('SELECT totp_secret_encrypted FROM client_accounts WHERE id = ? AND workspace_id = ?').bind(id,workspaceId).first();if(!row)return json({error:'Account not found.'},404);const result=await totpCode(await decryptSecret(row.totp_secret_encrypted,env));await env.DB.prepare("INSERT INTO credential_audit (id,workspace_id,account_id,actor_email,action) VALUES (?, ?, ?, ?, 'totp')").bind(`audit_${crypto.randomUUID()}`,workspaceId,id,identity.email).run();return json(result);}
   if (method === 'POST' && path === '/api/items') {
     const name = String(body.name || '').trim(), company = String(body.company || '').trim(), category = String(body.category || '').trim(), description = String(body.description || '').trim();
     const stock = Number(body.stock || 0), price = cents(body.price || 0), tax1 = Number(body.tax1 || 0), tax2 = Number(body.tax2 || 0), status = String(body.status || 'active');
