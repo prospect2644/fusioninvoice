@@ -1,0 +1,75 @@
+/* Compact admin-software shell inspired by the supplied reference. */
+:root {
+  --admin-navy: #062847;
+  --admin-blue: #0d7ff2;
+  --admin-bg: #f1f4f8;
+  --admin-line: #d8dde3;
+}
+
+body { background: var(--admin-bg); }
+.shell { grid-template-columns: 302px 1fr; }
+aside { width: 302px; padding: 0 10px 18px; background: var(--admin-navy); }
+.brand { min-height: 66px; margin: 0 -10px 16px; padding: 0 18px; border-bottom: 1px solid #ffffff26; }
+.brand .mark { width: 40px; height: 40px; border: 0; border-radius: 7px; background: var(--admin-blue); color: #fff; font: 700 17px Arial,sans-serif; }
+.brand strong { font: 600 20px Arial,sans-serif; }
+.brand span { display: none; }
+.collapse { border: 0; color: #7fc4ff; }
+nav { gap: 3px; }
+nav button { min-height: 50px; border-radius: 5px; padding: 10px 15px; color: #d5e3f0; font-size: 15px; }
+nav button i { color: #b4d5ef; }
+nav button.active { background: var(--admin-blue)!important; color: #fff!important; box-shadow: none; }
+nav button.active i { color: #fff; }
+.aside-note { display: none; }
+.user { order: -1; min-height: 74px; margin: 0 0 18px; padding: 0 8px 16px; border-bottom: 1px solid #ffffff26; }
+.user>div { width: 46px; height: 46px; background: #e76500; color: #fff; }
+.user strong { font-size: 13px; }
+.user small { color: #9fb8cd; }
+main { padding: 0 28px 48px; max-width: none; }
+main>header { height: 66px; margin: 0 -28px 0; padding: 0 28px; background: #fff; border-bottom: 1px solid var(--admin-line); }
+main>header small { display: none; }
+main>header h1 { margin: 0; font: 500 20px Arial,sans-serif; color: #263747; }
+.primary { background: var(--admin-blue); color: #fff; border-radius: 4px; }
+.primary:hover { background: #056dd4; }
+.quiet { border: 1px solid #cfd6dd; border-radius: 4px; background: #fff; color: #33485b; }
+.panel,.client-list,.setting,.report-controls,.report-table { border: 1px solid var(--admin-line); border-top: 3px solid var(--admin-blue); border-radius: 5px; background: #fff; box-shadow: 0 1px 2px #20304010; }
+.panel { padding: 18px 24px; }
+.panel-head h3 { font: 500 19px Arial,sans-serif; }
+.panel-head small { color: #6b7c8c; }
+.dashboard-heading { display: flex; align-items: end; justify-content: space-between; padding: 28px 8px 14px; }
+.dashboard-heading h2 { font: 500 26px Arial,sans-serif; color: #263747; }
+.dashboard-heading p,.dashboard-heading span { margin: 5px 0 0; color: #6c7b89; font-size: 12px; }
+.kpi-panel { padding: 0 24px 24px; }
+.kpi-panel>.panel-head { margin: 0 -24px 24px; padding: 16px 24px; border-bottom: 1px solid var(--admin-line); }
+.dashboard-stats { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
+.dashboard-stats .stat { min-height: 168px; padding: 20px 15px 0; border-radius: 4px; box-shadow: 0 2px 3px #20304020; }
+.dashboard-stats .stat strong { font: 400 31px Arial,sans-serif; letter-spacing: -.04em; }
+.dashboard-stats .stat small { font-size: 13px; letter-spacing: 0; text-transform: none; }
+.dashboard-stats .stat span { margin: 0 -15px; padding: 12px 15px; background: #00000012; text-align: right; font-size: 11px; }
+.stat.slate { background: #b8cbd2; color: #19313d; }
+.stat.gold { background: #ffdb72; color: #3f3414; }
+.stat.red { background: #ff6475; color: #3b2025; }
+.stat.green { background: #26c281; color: #103c2d; }
+.stat.pink { background: #f5bedb; color: #49263a; }
+.stat.cyan { background: #16c3dd; color: #123b42; }
+.stat.coral { background: #ff8478; color: #4a2825; }
+.stat.olive { background: #b8c28f; color: #343a24; }
+.recent { margin-top: 18px; }
+.tr { font-size: 12px; }
+.tr.th { background: #f0f1f2; color: #273746; font-weight: 700; }
+.invoice-link:hover,.client-list button.client-list-row:hover { background: #eef6ff; }
+.client-list { padding: 0; }
+.client-list-row { border-color: var(--admin-line); }
+.settings-grid,.reports-page,.page-panel { margin-top: 24px; }
+.modal { border-radius: 5px; }
+
+:root[data-theme="dark"] body { background: #152332; }
+:root[data-theme="dark"] main>header,:root[data-theme="dark"] .panel,:root[data-theme="dark"] .setting,:root[data-theme="dark"] .client-list { background: #1e3041; }
+:root[data-theme="dark"] .dashboard-heading h2,:root[data-theme="dark"] main>header h1 { color: #e9f2fa; }
+
+.shell.collapsed { grid-template-columns: 82px 1fr; }
+.shell.collapsed aside { width: 82px; padding-left: 10px; padding-right: 10px; }
+.shell.collapsed .brand { padding: 0; }
+.shell.collapsed nav button { width: 62px; }
+.shell.collapsed .user { padding-left: 0; padding-right: 0; }
+
+@media(max-width:1350px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
