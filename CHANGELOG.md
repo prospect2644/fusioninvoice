@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.13.3] - 2026-07-15
+
+### Fixed
+
+- Workspace loading now remains backward compatible while invoice-reference migration `0011` is pending.
+- Missing new invoice-item columns no longer prevent the entire workspace from opening.
+
 ## [0.13.2] - 2026-07-15
 
 ### Added

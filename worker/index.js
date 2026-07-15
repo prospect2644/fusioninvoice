@@ -95,7 +95,7 @@ async function readWorkspace(db, workspaceId, identity) {
   const [clients, invoices, invoiceItems, estimates, payments, items, subscriptions, expenses, tasks, tickets, ticketNotes, ticketTime, assets, accounts, contacts, fields, values] = await Promise.all([
     all(db.prepare('SELECT id, name, city, state, zip, hourly_rate_cents, status FROM clients WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, estimate_id, issued, due, description, amount_cents, status, created_at FROM invoices WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
-    all(db.prepare('SELECT id, invoice_id, description, quantity, rate_cents, position, source_type, source_id FROM invoice_items WHERE workspace_id = ? ORDER BY invoice_id, position').bind(workspaceId)),
+    optionalAll(db.prepare('SELECT id, invoice_id, description, quantity, rate_cents, position, source_type, source_id FROM invoice_items WHERE workspace_id = ? ORDER BY invoice_id, position').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, quote, valid_until, amount_cents, status, converted_invoice_id, created_at FROM estimates WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, invoice_id, payment_date, method, amount_cents, created_at FROM payments WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     optionalAll(db.prepare('SELECT id, name, company, category, description, stock_quantity, price_cents, tax_1, tax_2, status, created_at FROM items WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
