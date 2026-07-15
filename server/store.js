@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 const dataFile = path.resolve('server/data.json');
-const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], settings: { customFields: [] } };
+const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], items: [], subscriptions: [], expenses: [], tasks: [], settings: { customFields: [] } };
 
 function read() {
   if (!fs.existsSync(dataFile)) fs.writeFileSync(dataFile, JSON.stringify(emptyStore, null, 2));
@@ -73,6 +73,38 @@ export function addPayment(input) {
   if (!(amount > 0) || amount > balance) throw new Error('Payment must be greater than zero and no more than the balance due');
   const payment = { id: nextNumber(data.payments, 'PAY', 301), ...input, amount, createdAt: new Date().toISOString() };
   data.payments.unshift(payment); write(data); return payment;
+}
+
+export function addItem(input) {
+  const data = read();
+  const item = { id: `itm_${crypto.randomUUID()}`, name: String(input.name || '').trim(), company: String(input.company || '').trim(), category: String(input.category || '').trim(), description: String(input.description || '').trim(), stock: Number(input.stock || 0), price: Number(input.price || 0), tax1: Number(input.tax1 || 0), tax2: Number(input.tax2 || 0), status: input.status || 'active', createdAt: new Date().toISOString() };
+  if (!item.name || item.stock < 0 || item.price < 0 || item.tax1 < 0 || item.tax2 < 0 || !['active','inactive'].includes(item.status)) throw new Error('Enter a valid item name, stock, price, taxes, and status.');
+  data.items.unshift(item); write(data); return item;
+}
+
+export function addSubscription(input) {
+  const data = read();
+  if (!data.clients.some(client => client.id === input.clientId)) throw new Error('Client not found');
+  const subscription = { id: `sub_${crypto.randomUUID()}`, clientId: input.clientId, summary: String(input.summary || '').trim(), nextDate: input.nextDate, stopDate: input.stopDate || null, intervalCount: Number(input.intervalCount || 1), intervalUnit: input.intervalUnit || 'months', amount: Number(input.amount || 0), status: input.status || 'active', createdAt: new Date().toISOString() };
+  if (!subscription.summary || !subscription.nextDate || !(subscription.intervalCount > 0) || !Number.isInteger(subscription.intervalCount) || !['days','weeks','months','years'].includes(subscription.intervalUnit) || subscription.amount < 0 || !['active','paused','ended'].includes(subscription.status)) throw new Error('Complete the subscription details with a valid recurrence and amount.');
+  data.subscriptions.unshift(subscription); write(data); return subscription;
+}
+
+export function addExpense(input) {
+  const data = read();
+  if (input.clientId && !data.clients.some(client => client.id === input.clientId)) throw new Error('Client not found');
+  const expense = { id: nextNumber(data.expenses, 'EXP', 1), clientId: input.clientId || null, vendor: String(input.vendor || '').trim(), date: input.date, company: String(input.company || '').trim(), category: String(input.category || '').trim(), description: String(input.description || '').trim(), amount: Number(input.amount), tax: Number(input.tax || 0), status: input.status || 'unbilled', createdAt: new Date().toISOString() };
+  if (!expense.vendor || !expense.date || !expense.description || !(expense.amount > 0) || expense.tax < 0 || !['unbilled','billed','reimbursed'].includes(expense.status)) throw new Error('Complete the expense details with a valid amount and status.');
+  data.expenses.unshift(expense); write(data); return expense;
+}
+
+export function addTask(input, assigneeEmail) {
+  const data = read();
+  if (input.clientId && !data.clients.some(client => client.id === input.clientId)) throw new Error('Client not found');
+  const task = { id: nextNumber(data.tasks, 'TSK', 1), clientId: input.clientId || null, title: String(input.title || '').trim(), description: String(input.description || '').trim(), dueDate: input.dueDate, assigneeEmail, completedAt: null, status: input.status || 'open', createdAt: new Date().toISOString() };
+  if (!task.title || !task.dueDate || !['open','in_progress','completed','cancelled'].includes(task.status)) throw new Error('Complete the task title, due date, and status.');
+  if (task.status === 'completed') task.completedAt = new Date().toISOString();
+  data.tasks.unshift(task); write(data); return task;
 }
 
 export function updateInvoiceStatus(id, status) {

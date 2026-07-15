@@ -48,12 +48,16 @@ async function workspaceForIdentity(db, identity) {
 
 const all = async statement => (await statement.all()).results || [];
 async function readWorkspace(db, workspaceId, identity) {
-  const [clients, invoices, invoiceItems, estimates, payments, fields, values] = await Promise.all([
+  const [clients, invoices, invoiceItems, estimates, payments, items, subscriptions, expenses, tasks, fields, values] = await Promise.all([
     all(db.prepare('SELECT id, name, city, state, zip, hourly_rate_cents, status FROM clients WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, estimate_id, issued, due, description, amount_cents, status, created_at FROM invoices WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, invoice_id, description, quantity, rate_cents, position FROM invoice_items WHERE workspace_id = ? ORDER BY invoice_id, position').bind(workspaceId)),
     all(db.prepare('SELECT id, client_id, quote, valid_until, amount_cents, status, converted_invoice_id, created_at FROM estimates WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, invoice_id, payment_date, method, amount_cents, created_at FROM payments WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
+    all(db.prepare('SELECT id, name, company, category, description, stock_quantity, price_cents, tax_1, tax_2, status, created_at FROM items WHERE workspace_id = ? ORDER BY name').bind(workspaceId)),
+    all(db.prepare('SELECT id, client_id, summary, next_date, stop_date, interval_count, interval_unit, amount_cents, status, created_at FROM subscriptions WHERE workspace_id = ? ORDER BY next_date, created_at DESC').bind(workspaceId)),
+    all(db.prepare('SELECT id, client_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status, created_at FROM expenses WHERE workspace_id = ? ORDER BY expense_date DESC, created_at DESC').bind(workspaceId)),
+    all(db.prepare('SELECT id, client_id, title, description, due_date, assignee_email, completed_at, status, created_at FROM tasks WHERE workspace_id = ? ORDER BY due_date, created_at DESC').bind(workspaceId)),
     all(db.prepare('SELECT id, label, entity_type, position FROM custom_fields WHERE workspace_id = ? ORDER BY entity_type, position, created_at').bind(workspaceId)),
     all(db.prepare('SELECT v.custom_field_id, v.record_id, v.value FROM custom_field_values v JOIN custom_fields f ON f.id = v.custom_field_id WHERE f.workspace_id = ?').bind(workspaceId)),
   ]);
@@ -64,6 +68,10 @@ async function readWorkspace(db, workspaceId, identity) {
     invoices: invoices.map(row => { const paid = paidFor(row.id), balance = Math.max(0, row.amount_cents - paid); const items = invoiceItems.filter(item => item.invoice_id === row.id).map(item => ({ id: item.id, description: item.description, quantity: Number(item.quantity), rate: dollars(item.rate_cents) })); return { id: row.id, clientId: row.client_id, estimateId: row.estimate_id, issued: row.issued, due: row.due, description: row.description, items: items.length ? items : [{ id: `${row.id}_legacy`, description: row.description, quantity: 1, rate: dollars(row.amount_cents) }], amount: dollars(row.amount_cents), paid: dollars(paid), balance: dollars(balance), status: balance === 0 && row.amount_cents > 0 ? 'paid' : row.status, createdAt: row.created_at, customFields: customFor(row.id) }; }),
     estimates: estimates.map(row => ({ id: row.id, clientId: row.client_id, quote: row.quote, validUntil: row.valid_until, amount: dollars(row.amount_cents), status: row.status, invoiceId: row.converted_invoice_id, createdAt: row.created_at, customFields: customFor(row.id) })),
     payments: payments.map(row => ({ id: row.id, invoiceId: row.invoice_id, date: row.payment_date, method: row.method, amount: dollars(row.amount_cents), createdAt: row.created_at })),
+    items: items.map(row => ({ id: row.id, name: row.name, company: row.company, category: row.category, description: row.description, stock: Number(row.stock_quantity), price: dollars(row.price_cents), tax1: Number(row.tax_1), tax2: Number(row.tax_2), status: row.status, createdAt: row.created_at })),
+    subscriptions: subscriptions.map(row => ({ id: row.id, clientId: row.client_id, summary: row.summary, nextDate: row.next_date, stopDate: row.stop_date, intervalCount: Number(row.interval_count), intervalUnit: row.interval_unit, amount: dollars(row.amount_cents), status: row.status, createdAt: row.created_at })),
+    expenses: expenses.map(row => ({ id: row.id, clientId: row.client_id, vendor: row.vendor, date: row.expense_date, company: row.company, category: row.category, description: row.description, amount: dollars(row.amount_cents), tax: dollars(row.tax_cents), status: row.status, createdAt: row.created_at })),
+    tasks: tasks.map(row => ({ id: row.id, clientId: row.client_id, title: row.title, description: row.description, dueDate: row.due_date, assigneeEmail: row.assignee_email, completedAt: row.completed_at, status: row.status, createdAt: row.created_at })),
     settings: { customFields: fields.map(row => ({ id: row.id, label: row.label, appliesTo: row.entity_type, position: row.position })) },
     user: identity,
   };
@@ -91,6 +99,40 @@ async function api(request, env) {
     if (!required(body, ['name', 'city', 'state', 'zip']) || !Number.isFinite(cents(body.hourlyRate || 0))) return json({ error: 'Name, city, state, and ZIP are required.' }, 400);
     const id = `cl_${crypto.randomUUID()}`, values = await customValueStatements(env.DB, workspaceId, 'client', id, body.customFields);
     await env.DB.batch([env.DB.prepare('INSERT INTO clients (id, workspace_id, name, city, state, zip, hourly_rate_cents) VALUES (?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, body.name.trim(), body.city.trim(), body.state.trim().toUpperCase(), body.zip.trim(), cents(body.hourlyRate || 0)), ...values]);
+    return json({ id }, 201);
+  }
+  if (method === 'POST' && path === '/api/items') {
+    const name = String(body.name || '').trim(), company = String(body.company || '').trim(), category = String(body.category || '').trim(), description = String(body.description || '').trim();
+    const stock = Number(body.stock || 0), price = cents(body.price || 0), tax1 = Number(body.tax1 || 0), tax2 = Number(body.tax2 || 0), status = String(body.status || 'active');
+    if (!name || name.length > 120 || !Number.isFinite(stock) || stock < 0 || !Number.isFinite(price) || price < 0 || !Number.isFinite(tax1) || tax1 < 0 || !Number.isFinite(tax2) || tax2 < 0 || !['active', 'inactive'].includes(status)) return json({ error: 'Enter a valid item name, stock, price, taxes, and status.' }, 400);
+    const id = `itm_${crypto.randomUUID()}`;
+    await env.DB.prepare('INSERT INTO items (id, workspace_id, name, company, category, description, stock_quantity, price_cents, tax_1, tax_2, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, name, company, category, description, stock, price, tax1, tax2, status).run();
+    return json({ id }, 201);
+  }
+  if (method === 'POST' && path === '/api/subscriptions') {
+    const clientId = String(body.clientId || ''), summary = String(body.summary || '').trim(), nextDate = String(body.nextDate || ''), stopDate = String(body.stopDate || '') || null;
+    const intervalCount = Number(body.intervalCount || 1), intervalUnit = String(body.intervalUnit || 'months'), amount = cents(body.amount || 0), status = String(body.status || 'active');
+    if (!clientId || !summary || !nextDate || !(intervalCount > 0) || !Number.isInteger(intervalCount) || !['days','weeks','months','years'].includes(intervalUnit) || !(amount >= 0) || !['active','paused','ended'].includes(status)) return json({ error: 'Complete the subscription details with a valid recurrence and amount.' }, 400);
+    if (!await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(clientId, workspaceId).first()) return json({ error: 'Client not found.' }, 404);
+    const id = `sub_${crypto.randomUUID()}`;
+    await env.DB.prepare('INSERT INTO subscriptions (id, workspace_id, client_id, summary, next_date, stop_date, interval_count, interval_unit, amount_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, clientId, summary, nextDate, stopDate, intervalCount, intervalUnit, amount, status).run();
+    return json({ id }, 201);
+  }
+  if (method === 'POST' && path === '/api/expenses') {
+    const clientId = String(body.clientId || '') || null, vendor = String(body.vendor || '').trim(), date = String(body.date || ''), company = String(body.company || '').trim(), category = String(body.category || '').trim(), description = String(body.description || '').trim();
+    const amount = cents(body.amount), tax = cents(body.tax || 0), status = String(body.status || 'unbilled');
+    if (!vendor || !date || !description || !(amount > 0) || !(tax >= 0) || !['unbilled','billed','reimbursed'].includes(status)) return json({ error: 'Complete the expense details with a valid amount and status.' }, 400);
+    if (clientId && !await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(clientId, workspaceId).first()) return json({ error: 'Client not found.' }, 404);
+    const id = await nextId(env.DB, workspaceId, 'expenses', 'EXP', 1);
+    await env.DB.prepare('INSERT INTO expenses (id, workspace_id, client_id, vendor, expense_date, company, category, description, amount_cents, tax_cents, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, clientId, vendor, date, company, category, description, amount, tax, status).run();
+    return json({ id }, 201);
+  }
+  if (method === 'POST' && path === '/api/tasks') {
+    const clientId = String(body.clientId || '') || null, title = String(body.title || '').trim(), description = String(body.description || '').trim(), dueDate = String(body.dueDate || ''), status = String(body.status || 'open');
+    if (!title || !dueDate || !['open','in_progress','completed','cancelled'].includes(status)) return json({ error: 'Complete the task title, due date, and status.' }, 400);
+    if (clientId && !await env.DB.prepare('SELECT id FROM clients WHERE id = ? AND workspace_id = ?').bind(clientId, workspaceId).first()) return json({ error: 'Client not found.' }, 404);
+    const id = await nextId(env.DB, workspaceId, 'tasks', 'TSK', 1), completedAt = status === 'completed' ? new Date().toISOString() : null;
+    await env.DB.prepare('INSERT INTO tasks (id, workspace_id, client_id, title, description, due_date, assignee_email, completed_at, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)').bind(id, workspaceId, clientId, title, description, dueDate, identity.email, completedAt, status).run();
     return json({ id }, 201);
   }
   if (method === 'POST' && path === '/api/invoices') {

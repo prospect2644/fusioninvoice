@@ -75,7 +75,15 @@ main>header h1 { margin: 0; font: 500 20px Arial,sans-serif; color: #263747; }
 @media(max-width:1350px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 .invoice-index { padding-top: 22px; }
-.page-invoices>header h1 { visibility: hidden; }
+.page-invoices>header h1,.page-items>header h1,.page-subscriptions>header h1,.page-payments>header h1,.page-expenses>header h1,.page-tasks>header h1 { visibility: hidden; }
+nav button[aria-label="Items"] i:before { content: "▣"; color: #b4d5ef; font-size: 23px; }
+nav button[aria-label="Items"].active i:before { color: #fff; }
+nav button[aria-label="Subscriptions"] i:before { content: "⟳"; color: #b4d5ef; font-size: 24px; }
+nav button[aria-label="Subscriptions"].active i:before { color: #fff; }
+nav button[aria-label="Expenses"] i:before { content: "$"; display: grid; place-items: center; width: 23px; height: 25px; border-radius: 3px; background: #b4d5ef; color: #092a46; font-size: 17px; font-weight: 800; }
+nav button[aria-label="Expenses"].active i:before { background: #fff; color: #0878ed; }
+nav button[aria-label="Tasks"] i:before { content: "✓≡"; color: #b4d5ef; font-size: 20px; font-weight: 800; letter-spacing: -5px; }
+nav button[aria-label="Tasks"].active i:before { color: #fff; }
 .index-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
 .index-heading>div { display: flex; align-items: center; gap: 9px; }
 .index-heading h2 { font: 500 29px Arial,sans-serif; color: #14283a; }
@@ -109,3 +117,110 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 :root[data-theme="dark"] .software-invoice-row,:root[data-theme="dark"] .invoice-search input,:root[data-theme="dark"] .invoice-filters input,:root[data-theme="dark"] .invoice-filters select { background: #1e3041; color: #dce8f2; }
 :root[data-theme="dark"] button.software-invoice-row:nth-child(even) { background: #24394c; }
 @media(max-width:1300px){.invoice-toolbar{align-items:stretch;flex-direction:column}.invoice-filters{flex-wrap:wrap}.software-invoice-row{grid-template-columns:1fr .7fr .7fr 1.2fr .7fr 1.3fr .8fr}}
+.items-index { padding-top: 22px; }
+.items-index-panel { margin-top: 0; padding: 0; overflow: hidden; }
+.software-item-row { display: grid; grid-template-columns: 1.1fr 1fr .8fr 1.8fr .6fr .75fr .55fr .55fr .65fr; gap: 13px; align-items: center; min-height: 52px; padding: 9px 20px; border-top: 1px solid #d6dce2; background: #fff; color: #172b3d; font-size: 12px; }
+.software-items-table .software-item-row:nth-child(odd):not(.software-invoice-head) { background: #f2f2f2; }
+.software-item-row>strong:first-child { color: #0079ea; }
+.software-item-row .status { display: inline-block; width: fit-content; background: #24a46d; color: #fff; }
+.software-item-row .status.inactive { background: #93979c; }
+:root[data-theme="dark"] .software-item-row { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .software-items-table .software-item-row:nth-child(odd):not(.software-invoice-head) { background: #24394c; }
+@media(max-width:1350px){.software-item-row{grid-template-columns:1.1fr .9fr .8fr 1.4fr .55fr .7fr .5fr .5fr .6fr}}
+.subscriptions-index { padding-top: 22px; }
+.subscriptions-index-panel { margin-top: 0; padding: 0; overflow: hidden; }
+.software-subscription-row { display: grid; grid-template-columns: .65fr 1.15fr 1.7fr .8fr .8fr .75fr .65fr .8fr; gap: 13px; align-items: center; min-height: 52px; padding: 9px 24px; border-top: 1px solid #d6dce2; background: #fff; color: #172b3d; font-size: 12px; }
+.software-subscription-table .software-subscription-row:nth-child(odd):not(.software-invoice-head) { background: #f2f2f2; }
+.software-subscription-row>strong:first-child { color: #0079ea; }
+.software-subscription-row>strong:last-child { text-align: right; }
+.software-subscription-row .status { display: inline-block; width: fit-content; background: #24a46d; color: #fff; }
+.software-subscription-row .status.paused { background: #d49a28; }
+.software-subscription-row .status.ended { background: #93979c; }
+.subscription-total { display: flex; justify-content: flex-end; gap: 28px; padding: 14px 24px; border-top: 1px solid #cfd6dd; background: #fafbfc; font-size: 13px; }
+:root[data-theme="dark"] .software-subscription-row,:root[data-theme="dark"] .subscription-total { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .software-subscription-table .software-subscription-row:nth-child(odd):not(.software-invoice-head) { background: #24394c; }
+.payments-index { padding-top: 22px; }
+.payments-index-panel { margin-top: 0; padding: 0; overflow: hidden; }
+.software-payment-row { display: grid; grid-template-columns: .85fr .85fr 1.6fr 1.15fr .75fr .75fr .9fr; gap: 13px; align-items: center; min-height: 52px; padding: 9px 24px; border-top: 1px solid #d6dce2; background: #fff; color: #172b3d; font-size: 12px; }
+.software-payment-table .software-payment-row:nth-child(odd):not(.software-invoice-head) { background: #f2f2f2; }
+.software-payment-row>strong:first-child { color: #0079ea; }
+.software-payment-row>strong:nth-of-type(2) { text-align: right; }
+.software-payment-row>button { border: 0; padding: 0; background: transparent; color: #0093bd; text-align: left; cursor: pointer; font: inherit; }
+.software-payment-row>button:hover { color: #0079ea; text-decoration: underline; }
+:root[data-theme="dark"] .software-payment-row { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .software-payment-table .software-payment-row:nth-child(odd):not(.software-invoice-head) { background: #24394c; }
+@media(max-width:1300px){.software-payment-row{grid-template-columns:.8fr .8fr 1.35fr 1fr .75fr .75fr .85fr}}
+.expenses-index { padding-top: 22px; }
+.expenses-index-panel { margin-top: 0; padding: 0; overflow: hidden; }
+.expense-toolbar { gap: 14px; }
+.expense-toolbar .invoice-search input { width: 210px; }
+.expense-toolbar .invoice-filters { flex: 1; justify-content: flex-end; }
+.expense-toolbar .invoice-filters input,.expense-toolbar .invoice-filters select { min-width: 125px; }
+.software-expense-row { display: grid; grid-template-columns: .45fr 1fr 1fr .75fr .85fr 1fr 2fr .65fr .9fr; gap: 12px; align-items: center; min-height: 58px; padding: 9px 20px; border-top: 1px solid #d6dce2; background: #fff; color: #172b3d; font-size: 12px; }
+.software-expense-table .software-expense-row:nth-child(odd):not(.software-invoice-head) { background: #f2f2f2; }
+.software-expense-row>strong:first-child { color: #0079ea; }
+.expense-amount { display: grid; justify-items: end; gap: 5px; }
+.expense-amount .status { width: fit-content; background: #df3348; color: #fff; font-weight: 700; }
+.expense-amount .status.billed { background: #288dc7; }
+.expense-amount .status.reimbursed { background: #24a46d; }
+:root[data-theme="dark"] .software-expense-row { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .software-expense-table .software-expense-row:nth-child(odd):not(.software-invoice-head) { background: #24394c; }
+@media(max-width:1450px){.expense-toolbar{align-items:stretch;flex-direction:column}.expense-toolbar .invoice-filters{justify-content:flex-start;flex-wrap:wrap}.software-expense-row{grid-template-columns:.45fr .9fr .9fr .7fr .75fr .85fr 1.5fr .6fr .8fr}}
+.tasks-index { padding-top: 22px; }
+.tasks-index-panel { margin-top: 0; padding: 0; overflow: hidden; }
+.software-task-row { display: grid; grid-template-columns: .42fr 1.35fr 1fr 2fr .8fr .85fr .75fr .75fr; gap: 13px; align-items: center; min-height: 52px; padding: 9px 24px; border-top: 1px solid #d6dce2; background: #fff; color: #172b3d; font-size: 12px; }
+.software-task-table .software-task-row:nth-child(odd):not(.software-invoice-head) { background: #f2f2f2; }
+.software-task-row>strong:first-child,.task-title { color: #0079ea; }
+.task-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.software-task-row .status { display: inline-block; width: fit-content; background: #93979c; color: #fff; }
+.software-task-row .status.in_progress { background: #288dc7; }
+.software-task-row .status.completed { background: #24a46d; }
+.software-task-row .status.cancelled { background: #df3348; }
+:root[data-theme="dark"] .software-task-row { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .software-task-table .software-task-row:nth-child(odd):not(.software-invoice-head) { background: #24394c; }
+@media(max-width:1350px){.software-task-row{grid-template-columns:.4fr 1.15fr .9fr 1.5fr .75fr .8fr .7fr .7fr}}
+.software-invoice-screen { background: #f1f4f8; color: #172b3d; }
+.software-invoice-screen .invoice-screen-bar { position: sticky; min-height: 66px; padding: 10px 28px; background: #fff; color: #172b3d; border-bottom: 1px solid #d8dde3; box-shadow: none; }
+.software-invoice-title { display: flex; align-items: center; gap: 9px; font-size: 23px; }
+.software-invoice-title>span { color: #687785; }
+.software-invoice-title b { display: inline-block; padding: 5px 8px; border-radius: 3px; background: #dce2e8; font-size: 14px; }
+.invoice-breadcrumb { display: flex; justify-content: flex-end; gap: 10px; padding: 8px 28px 0; color: #6d7b88; font-size: 12px; }
+.invoice-breadcrumb span { color: #0878ed; }
+.invoice-breadcrumb i { font-style: normal; }
+.invoice-software-form { display: grid; grid-template-columns: minmax(0,1fr) 270px; gap: 14px; padding: 18px 28px 46px; }
+.invoice-work-main { display: grid; gap: 12px; min-width: 0; }
+.invoice-work-sidebar { display: grid; align-content: start; gap: 12px; }
+.software-edit-panel { border: 1px solid #d8dde3; border-top: 3px solid #0d7ff2; border-radius: 4px; background: #fff; box-shadow: 0 1px 2px #20304010; }
+.software-edit-panel h3 { margin: 0; padding: 13px 16px; border-bottom: 1px solid #d8dde3; font-size: 12px; font-weight: 500; }
+.invoice-summary-panel { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; padding: 22px 16px; }
+.invoice-summary-panel label,.invoice-options label { display: grid; gap: 8px; font-size: 11px; font-weight: 600; }
+.invoice-summary-panel input,.invoice-options input,.invoice-options select { width: 100%; border: 1px solid #c9d1d9; border-radius: 3px; padding: 9px 10px; background: #fff; color: #263847; }
+.invoice-address-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.invoice-address { display: grid; gap: 7px; min-height: 112px; padding: 18px 16px; font-size: 11px; }
+.invoice-address strong { font-size: 12px; }
+.invoice-address-grid label { display: grid; gap: 8px; padding: 16px; font-size: 11px; }
+.invoice-address-grid select { width: 100%; padding: 9px; border: 1px solid #c9d1d9; background: #fff; }
+.software-panel-title { display: flex; align-items: center; justify-content: space-between; padding-right: 10px; border-bottom: 1px solid #d8dde3; }
+.software-panel-title h3 { border: 0; }
+.software-panel-title .primary { padding: 7px 10px; font-size: 11px; }
+.software-line-panel .invoice-items { margin: 0; padding: 10px 16px 20px; }
+.software-line-panel .invoice-item { grid-template-columns: minmax(260px,1fr) 100px 130px 130px 32px; background: #eee; }
+.software-line-panel .invoice-item-head { background: #fff; color: #172b3d; }
+.invoice-terms p { margin: 0; padding: 13px 16px; font-size: 11px; }
+.detail-tab-row { display: flex; gap: 28px; padding: 0 16px; border-bottom: 1px solid #d8dde3; }
+.detail-tab-row>* { padding: 12px 0; color: #0878ed; font-size: 11px; }
+.detail-tab-row strong { border-bottom: 2px solid #0878ed; }
+.invoice-detail-tabs>.custom-inputs,.invoice-detail-tabs>.custom-values,.invoice-detail-tabs>.invoice-payments { margin: 0; padding: 18px 16px; }
+.invoice-side-totals { padding: 16px; }
+.invoice-side-totals>div { display: flex; justify-content: space-between; padding: 4px 0; font-size: 11px; }
+.invoice-side-totals>div:nth-child(3),.invoice-side-totals>div:last-child { font-weight: 800; }
+.invoice-options { padding-bottom: 16px; }
+.invoice-options h3 { margin-bottom: 14px; }
+.invoice-options label { padding: 0 16px 12px; }
+:root[data-theme="dark"] .software-invoice-screen { background: #152332; color: #dce8f2; }
+:root[data-theme="dark"] .software-invoice-screen .invoice-screen-bar,:root[data-theme="dark"] .software-edit-panel { background: #1e3041; color: #dce8f2; }
+:root[data-theme="dark"] .invoice-summary-panel input,:root[data-theme="dark"] .invoice-options input,:root[data-theme="dark"] .invoice-options select,:root[data-theme="dark"] .invoice-address-grid select { background: #24394c; color: #dce8f2; }
+:root[data-theme="dark"] .software-line-panel .invoice-item { background: #24394c; }
+:root[data-theme="dark"] .software-line-panel .invoice-item-head { background: #1e3041; color: #dce8f2; }
+@media(max-width:1050px){.invoice-software-form{grid-template-columns:1fr}.invoice-work-sidebar{grid-template-columns:1fr 1fr}.invoice-address-grid{grid-template-columns:1fr}}
+@media print{.software-invoice-screen{position:static;background:#fff}.invoice-software-form{display:block;padding:0}.invoice-work-sidebar{display:block}.software-edit-panel{break-inside:avoid;box-shadow:none}.invoice-options{display:none}.invoice-breadcrumb{display:none}.invoice-work-main{display:block}.invoice-work-main>*{margin-bottom:12px}}

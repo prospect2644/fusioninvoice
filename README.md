@@ -31,6 +31,10 @@ Do not place `CLOUDFLARE_API_TOKEN` in Pages runtime variables. A Git-connected 
 - The `invoice-db` UUID is configured in `wrangler.jsonc`; use `pnpm db:info` to verify it against the active Cloudflare account.
 - Build the local database with `pnpm db:migrate:local` or apply the schema to the existing remote database with `pnpm db:migrate:remote`.
 - Migration `0002_invoice_items.sql` adds the line-item table required by the full-screen invoice editor and PDF-ready preview.
+- Migration `0003_items_catalog.sql` adds the reusable products and services catalog shown in the Items tab.
+- Migration `0004_subscriptions.sql` adds recurring client billing schedules for the Subscriptions tab.
+- Migration `0005_expenses.sql` adds vendor expenses, client assignment, tax, and billing status for the Expenses tab.
+- Migration `0006_tasks.sql` adds client-linked work tasks, due dates, assignees, completion, and workflow status.
 - The initial migration stores money as integer cents and scopes every business record to a workspace.
 - Enforce `workspace_members` membership in every D1 API query before inviting staff from multiple organizations.
 - Add immutable audit events for invoice lifecycle actions and payment-provider webhooks.
