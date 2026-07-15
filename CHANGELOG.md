@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.11.2] - 2026-07-15
+
+### Changed
+
+- Removed the redundant identity bar from the application shell.
+- Verified identity details and logout remain available under Settings.
+
 ## [0.11.1] - 2026-07-15
 
 ### Changed
