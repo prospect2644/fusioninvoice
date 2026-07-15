@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.13.2] - 2026-07-15
+
+### Added
+
+- Contacts can be created directly from the global Contacts directory.
+- Contact creation requires selecting an existing client from a dropdown.
+
 ## [0.13.1] - 2026-07-15
 
 ### Changed
