@@ -2,6 +2,15 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.12.0] - 2026-07-15
+
+### Added
+
+- Global Contacts menu and directory.
+- Contact search and client-company filtering.
+- Contact preview columns for client, name, email, phone, title, and authorization status.
+- Client names in the directory open the associated full client record.
+
 ## [0.11.6] - 2026-07-15
 
 ### Added
