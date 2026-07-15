@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.11.6] - 2026-07-15
+
+### Added
+
+- Ticket creation can create a new contact for the selected client without leaving the ticket modal.
+- Newly created contacts are automatically selected for the ticket.
+
 ## [0.11.5] - 2026-07-15
 
 ### Changed
