@@ -30,20 +30,20 @@ function App() {
       <div className="user"><div>{data.user.email[0].toUpperCase()}</div><span><strong>{data.user.name}</strong><small>{data.user.email}</small></span></div>
     </aside>
     <main><header><div><small>Financial workspace</small><h1>{page}</h1></div><div className="header-actions">{!['Overview','Reports','Settings'].includes(page)&&<button className="primary" onClick={createForPage}>＋ New {page.slice(0,-1).toLowerCase()}</button>}</div></header>
-      {page==='Overview'?<Dashboard data={data} go={setPage}/>:page==='Clients'?<Clients data={data}/>:page==='Invoices'?<Invoices data={data} open={invoice=>setInvoiceScreen({mode:'preview',invoice})}/>:page==='Estimates'?<Estimates data={data} reload={load}/>:page==='Payments'?<Payments data={data}/>:page==='Reports'?<Reports data={data}/>:<Settings theme={theme} setTheme={setTheme} data={data} reload={load}/>} </main>
+      {page==='Overview'?<Dashboard data={data} go={setPage} openInvoice={invoice=>setInvoiceScreen({mode:'preview',invoice})}/>:page==='Clients'?<Clients data={data}/>:page==='Invoices'?<Invoices data={data} open={invoice=>setInvoiceScreen({mode:'preview',invoice})}/>:page==='Estimates'?<Estimates data={data} reload={load}/>:page==='Payments'?<Payments data={data}/>:page==='Reports'?<Reports data={data}/>:<Settings theme={theme} setTheme={setTheme} data={data} reload={load}/>} </main>
     {modal&&modal!=='invoice'&&<Modal config={typeof modal==='string'?{type:modal}:modal} data={data} close={()=>setModal(null)} saved={()=>{setModal(null);load()}}/>}
     {(invoiceScreen||modal==='invoice')&&<InvoiceScreen mode={invoiceScreen?.mode||'create'} invoice={invoiceScreen?.invoice} data={data} close={()=>{setInvoiceScreen(null);setModal(null)}} reload={async()=>{await load();setInvoiceScreen(null);setModal(null)}} recordPayment={invoiceId=>setModal({type:'payment',invoiceId})}/>}
   </div>;
 }
 
 const Empty=({title,text,action})=><div className="empty"><span>◇</span><small>Ready when you are</small><h2>{title}</h2><p>{text}</p>{action}</div>;
-function Dashboard({data,go}) {
+function Dashboard({data,go,openInvoice}) {
   const total=data.invoices.reduce((s,i)=>s+i.amount,0), collected=data.payments.reduce((s,p)=>s+p.amount,0), due=data.invoices.reduce((s,i)=>s+i.balance,0);
   const percent=total?Math.round(collected/total*100):0;
   return <>{!data.clients.length&&<div className="welcome"><small>Start here</small><h2>Build a clear financial rhythm.</h2><p>Add your first client, then create an estimate or invoice. Nothing here is sample data—this workspace is entirely yours.</p><button className="primary" onClick={()=>go('Clients')}>Add your first client</button></div>}
     <section className="intro"><div><p>{new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</p><h2>A clear view of what’s moving.</h2><span>Your invoices, estimates, and payments in one calm place.</span></div><div className="orb"><span>{percent}%</span><small>collected</small></div></section>
     <section className="stats"><Stat label="Payments due" value={money(due)} note={`${data.invoices.filter(i=>i.balance>0).length} open invoices`} tone="sage"/><Stat label="Payments made" value={money(collected)} note={`${data.payments.length} recorded payments`} tone="ink"/><Stat label="Estimates open" value={data.estimates.filter(e=>e.status!=='converted').length} note={`${money(data.estimates.filter(e=>e.status!=='converted').reduce((s,e)=>s+e.amount,0))} quoted`} tone="clay"/></section>
-    <section className="panel recent"><div className="panel-head"><div><small>Recent work</small><h3>Latest invoices</h3></div><button className="text-btn" onClick={()=>go('Invoices')}>View all →</button></div>{data.invoices.length?<InvoiceTable data={data}/>:<p className="nothing">No invoices yet.</p>}</section></>;
+    <section className="panel recent"><div className="panel-head"><div><small>Recent work</small><h3>Latest invoices</h3></div><button className="text-btn" onClick={()=>go('Invoices')}>View all →</button></div>{data.invoices.length?<InvoiceTable data={data} open={openInvoice}/>:<p className="nothing">No invoices yet.</p>}</section></>;
 }
 const Stat=({label,value,note,tone})=><div className={`stat ${tone}`}><small>{label}</small><strong>{value}</strong><span>{note}</span></div>;
 const fieldsFor=(data,type)=>data.settings?.customFields?.filter(field=>field.appliesTo===type)||[];
