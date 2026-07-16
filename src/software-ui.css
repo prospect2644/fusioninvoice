@@ -449,3 +449,44 @@ html { zoom: 80%; }
 .ticket-delete-host { display: inline-flex; }
 .ticket-delete-button { width: auto; padding: 10px 15px; border: 1px solid #d8a8a1; border-radius: 999px; background: #fff1ee; color: #a84233; font-weight: 800; cursor: pointer; }
 :root[data-theme="dark"] .ticket-delete-button { border-color: #83544d; background: #3b2927; color: #ffaaa0; }
+
+/* ConnectWise-inspired service ticket workspace, retained in the Kindred palette */
+.ticket-screen { background: #e9eef2; }
+.ticket-screen-bar { min-height: 58px; padding: 7px 22px; border-bottom: 1px solid #082d4c; box-shadow: 0 2px 7px #06233a2b; }
+.ticket-screen-bar>div:first-child { min-width: 0; }
+.ticket-screen-bar>div:first-child strong { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.ticket-screen-bar select,.ticket-screen-bar .quiet,.ticket-delete-button { min-height: 32px; padding: 6px 11px; border-radius: 3px; font-size: 10px; }
+.ticket-record { max-width: none; padding: 0 14px 36px; }
+.ticket-record:before { content: "Ticket    Tasks    Configurations    Products    Activities    Time    Expenses    Documents    Audit trail"; display: block; margin: 0 -14px 10px; padding: 9px 18px; overflow: hidden; border-bottom: 1px solid #bccbd3; background: #f8fafb; color: #42657a; font-size: 9px; font-weight: 800; letter-spacing: .025em; white-space: pre; word-spacing: 17px; }
+.ticket-hero,.ticket-panel,.ticket-metrics>div { border-color: #b9cad3; border-radius: 2px; background: #fff; box-shadow: 0 1px 2px #17384b14; }
+.ticket-hero { position: relative; display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 18px; padding: 27px 18px 16px; border-top: 3px solid #1687bd; }
+.ticket-hero:before { content: "SERVICE TICKET SUMMARY"; position: absolute; inset: 0 0 auto; padding: 5px 9px; background: #edf4f8; color: #176d9d; font-size: 8px; font-weight: 900; letter-spacing: .09em; }
+.ticket-hero h1 { margin: 3px 0 9px; color: #133d5b; font-size: 24px; }
+.ticket-company { color: #1687bd; font-size: 11px; }
+.ticket-hero p { margin: 6px 0 0; font-size: 10px; }
+.ticket-hero>div:last-child { display: flex; align-items: flex-start; flex-direction: column; justify-items: start; min-width: 190px; padding-left: 18px; border-left: 1px solid #d2dde3; }
+.ticket-hero>div:last-child>span { font-size: 10px; }
+.ticket-metrics { grid-template-columns: repeat(4,minmax(150px,1fr)); gap: 8px; margin: 8px 0; }
+.ticket-metrics>div { position: relative; min-height: 68px; padding: 17px 14px 10px; border-top: 2px solid #2ba5d4; }
+.ticket-metrics small { letter-spacing: .09em; }
+.ticket-metrics strong { margin-top: 4px; color: #133d5b; font-size: 18px; }
+.ticket-work-grid { grid-template-columns: minmax(0,1.12fr) minmax(330px,.88fr); gap: 8px; }
+.ticket-panel { padding: 0 12px 14px; overflow: hidden; border-radius: 2px; }
+.ticket-panel-head { margin: 0 -12px 10px; padding: 7px 10px; border-bottom: 1px solid #b9cad3; background: #edf4f8; }
+.ticket-panel-head small { display: none; }
+.ticket-panel-head h2 { margin: 0; color: #176d9d; font-size: 11px; font-weight: 800; }
+.ticket-note { margin-top: 7px; padding: 10px 11px; border-color: #b9ce9f; border-radius: 1px; background: #e4efd5; }
+.ticket-note.private { border-color: #c9b7dd; background: #eee6f5; }
+.ticket-note header { color: #526b78; font-size: 8px; }
+.ticket-note header em { border-radius: 2px; }
+.ticket-note p { margin-top: 7px; font-size: 10px; line-height: 1.45; }
+.ticket-entry-form { gap: 6px; margin-top: 10px; padding-top: 10px; }
+.ticket-entry-form textarea,.ticket-entry-form input,.ticket-entry-form select { padding: 7px 8px; border-radius: 2px; font-size: 10px; }
+.ticket-entry-form textarea { min-height: 62px; }
+.ticket-time-list>div { padding: 9px 2px; font-size: 10px; }
+.ticket-time-list b { color: #176d9d; }
+:root[data-theme="dark"] .ticket-record:before,:root[data-theme="dark"] .ticket-hero:before,:root[data-theme="dark"] .ticket-panel-head { border-color: #39515c; background: #203943; color: #67c8ea; }
+:root[data-theme="dark"] .ticket-metrics strong { color: #e8f4f8; }
+:root[data-theme="dark"] .ticket-note { border-color: #536a47; background: #30422c; }
+:root[data-theme="dark"] .ticket-note.private { border-color: #684f7d; background: #382e42; }
+@media(max-width:1100px){.ticket-record:before{word-spacing:8px}.ticket-hero{grid-template-columns:1fr}.ticket-hero>div:last-child{padding:10px 0 0;border-top:1px solid #d2dde3;border-left:0}.ticket-metrics{grid-template-columns:1fr 1fr}}

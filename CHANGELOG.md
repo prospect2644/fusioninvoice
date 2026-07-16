@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.14.2] - 2026-07-15
+
+### Changed
+
+- The ticket workspace now uses a denser ConnectWise-inspired service-desk layout in the Kindred blue theme.
+- Ticket summary, metrics, activity notes, time tracking, forms, and controls use compact operational panels.
+- The ticket title remains prominent with tracked time and billable value cards directly beneath it.
+
 ## [0.14.1] - 2026-07-15
 
 ### Added
