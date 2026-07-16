@@ -551,3 +551,6 @@ html { zoom: 80%; }
 :root[data-theme="dark"] .chart:before { opacity: .32; filter: invert(1); }
 :root[data-theme="dark"] .invoice-paper { background: #fff; color: #203448; }
 :root[data-theme="dark"] .invoice-paper h1,:root[data-theme="dark"] .invoice-paper h2,:root[data-theme="dark"] .invoice-paper h3,:root[data-theme="dark"] .invoice-paper strong,:root[data-theme="dark"] .invoice-paper label { color: #203448; }
+.client-location small,.client-location b { display: block; }
+.client-location small { overflow: hidden; color: var(--kindred-muted); font-size: 9px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.client-location b { margin-top: 3px; font-size: 10px; font-weight: 700; }

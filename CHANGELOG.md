@@ -2,6 +2,17 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.3] - 2026-07-15
+
+### Added
+
+- Client records now include an optional street address field.
+- Street addresses appear in client creation, editing, save confirmation, list location, record details, invoice Bill To, and exported PDFs.
+
+### Database
+
+- Added migration `0013_client_address.sql` for client street addresses.
+
 ## [0.15.2] - 2026-07-15
 
 ### Fixed
