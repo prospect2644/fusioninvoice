@@ -2,6 +2,15 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.14.4] - 2026-07-15
+
+### Changed
+
+- Dark mode now uses one consistent midnight, slate, and cyan palette across the workspace.
+- Panels, tables, forms, tabs, statuses, modals, client records, and ticket screens have coordinated dark contrast.
+- Hover, alternating-row, placeholder, and muted-text colors were refined to avoid clashes.
+- Printable invoice paper remains white for accurate PDF and print output.
+
 ## [0.14.3] - 2026-07-15
 
 ### Fixed

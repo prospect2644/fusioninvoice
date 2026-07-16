@@ -496,3 +496,50 @@ html { zoom: 80%; }
 .client-record-tabs button.active:hover { background: #35a9d5!important; color: #082332!important; }
 .client-record-tabs button:hover span { background: #c9eaf6; color: #087fae; }
 :root[data-theme="dark"] .client-record-tabs button:hover:not(.active) { background: #294b59; color: #79d2ef; }
+
+/* Unified dark workspace palette. Keep this final so legacy light rules cannot leak through. */
+:root[data-theme="dark"] {
+  --dark-canvas: #0b1820;
+  --dark-surface: #132832;
+  --dark-raised: #1a3440;
+  --dark-hover: #234653;
+  --dark-border: #31505d;
+  --dark-text: #e7f2f6;
+  --dark-muted: #9eb5bf;
+  --dark-accent: #5bc4e8;
+}
+:root[data-theme="dark"] body,:root[data-theme="dark"] main { background: var(--dark-canvas); color: var(--dark-text); }
+:root[data-theme="dark"] main>header { border-color: var(--dark-border); background: #0c2230; }
+:root[data-theme="dark"] main>header h1,:root[data-theme="dark"] h1,:root[data-theme="dark"] h2,:root[data-theme="dark"] h3,:root[data-theme="dark"] strong { color: var(--dark-text); }
+:root[data-theme="dark"] p,:root[data-theme="dark"] small,:root[data-theme="dark"] label { color: var(--dark-muted); }
+:root[data-theme="dark"] .index-heading,:root[data-theme="dark"] .invoice-breadcrumb,:root[data-theme="dark"] .report-period { color: var(--dark-muted); }
+:root[data-theme="dark"] .panel,:root[data-theme="dark"] .client-list,:root[data-theme="dark"] .setting,:root[data-theme="dark"] .report-controls,:root[data-theme="dark"] .report-table,:root[data-theme="dark"] .software-edit-panel,:root[data-theme="dark"] .empty { border-color: var(--dark-border); background: var(--dark-surface); color: var(--dark-text); box-shadow: 0 12px 30px #0004; }
+:root[data-theme="dark"] .invoice-toolbar,:root[data-theme="dark"] .detail-tab-row,:root[data-theme="dark"] .software-invoice-head,:root[data-theme="dark"] .detail-head,:root[data-theme="dark"] .report-head { border-color: var(--dark-border); background: #10252f; color: var(--dark-accent); }
+:root[data-theme="dark"] .software-invoice-row,:root[data-theme="dark"] .software-item-row,:root[data-theme="dark"] .software-subscription-row,:root[data-theme="dark"] .software-payment-row,:root[data-theme="dark"] .software-expense-row,:root[data-theme="dark"] .software-task-row,:root[data-theme="dark"] .software-ticket-row,:root[data-theme="dark"] .client-list-row,:root[data-theme="dark"] .contact-row,:root[data-theme="dark"] .report-row { border-color: var(--dark-border); background: var(--dark-surface); color: var(--dark-text); }
+:root[data-theme="dark"] button.software-invoice-row:nth-child(even),:root[data-theme="dark"] .software-item-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-subscription-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-payment-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-expense-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] .software-task-row:nth-child(odd):not(.software-invoice-head),:root[data-theme="dark"] button.software-ticket-row:nth-child(even) { background: var(--dark-raised); }
+:root[data-theme="dark"] button.software-invoice-row:hover,:root[data-theme="dark"] button.software-ticket-row:hover,:root[data-theme="dark"] button.client-list-row:hover,:root[data-theme="dark"] .client-detail-table button:hover { background: var(--dark-hover); }
+:root[data-theme="dark"] input,:root[data-theme="dark"] select,:root[data-theme="dark"] textarea,:root[data-theme="dark"] .invoice-search input,:root[data-theme="dark"] .invoice-filters input,:root[data-theme="dark"] .invoice-filters select { border-color: #41616e; background: #0f222b; color: var(--dark-text); box-shadow: none; }
+:root[data-theme="dark"] input::placeholder,:root[data-theme="dark"] textarea::placeholder { color: #78919c; }
+:root[data-theme="dark"] option { background: #10252f; color: var(--dark-text); }
+:root[data-theme="dark"] .quiet,:root[data-theme="dark"] .tabs button,:root[data-theme="dark"] .detail-tab-row button { border-color: var(--dark-border); background: var(--dark-raised); color: #bed0d7; }
+:root[data-theme="dark"] .primary { background: #42b3db; color: #071e2b; }
+:root[data-theme="dark"] .primary:hover { background: #69caea; }
+:root[data-theme="dark"] .status { border: 1px solid #ffffff12; }
+:root[data-theme="dark"] .status.open,:root[data-theme="dark"] .status.sent,:root[data-theme="dark"] .status.in_progress { background: #17465b; color: #8cddf5; }
+:root[data-theme="dark"] .status.paid,:root[data-theme="dark"] .status.approved,:root[data-theme="dark"] .status.completed { background: #244b3c; color: #9ee0bd; }
+:root[data-theme="dark"] .status.overdue,:root[data-theme="dark"] .status.rejected,:root[data-theme="dark"] .status.cancelled { background: #58342f; color: #ffb1a6; }
+:root[data-theme="dark"] .status.draft,:root[data-theme="dark"] .status.closed,:root[data-theme="dark"] .status.waiting_customer,:root[data-theme="dark"] .status.waiting_vendor { background: #34434a; color: #c3d1d6; }
+:root[data-theme="dark"] .modal,:root[data-theme="dark"] .asset-modal,:root[data-theme="dark"] .app-confirm { border-color: var(--dark-border); background: var(--dark-surface); color: var(--dark-text); box-shadow: 0 30px 90px #0009; }
+:root[data-theme="dark"] .modal-bg,:root[data-theme="dark"] .asset-modal-bg,:root[data-theme="dark"] .app-confirm-bg { background: #020a0dcc; }
+:root[data-theme="dark"] .client-screen,:root[data-theme="dark"] .ticket-screen,:root[data-theme="dark"] .software-invoice-screen { background: var(--dark-canvas); color: var(--dark-text); }
+:root[data-theme="dark"] .client-record-hero,:root[data-theme="dark"] .client-record-stats>div,:root[data-theme="dark"] .client-record-panel,:root[data-theme="dark"] .client-record-tabs,:root[data-theme="dark"] .asset-grid article,:root[data-theme="dark"] .account-list article,:root[data-theme="dark"] .ticket-hero,:root[data-theme="dark"] .ticket-panel,:root[data-theme="dark"] .ticket-metrics>div { border-color: var(--dark-border); background: var(--dark-surface); color: var(--dark-text); box-shadow: 0 12px 28px #0003; }
+:root[data-theme="dark"] .client-record-avatar { background: #173c4c; color: #75d1ef; }
+:root[data-theme="dark"] .client-record-tabs button { color: #a9c0ca; }
+:root[data-theme="dark"] .client-record-tabs button.active { background: #48b8df!important; color: #072230!important; }
+:root[data-theme="dark"] .credential-warning,:root[data-theme="dark"] .inline-contact-creator { border-color: var(--dark-border); background: #17323d; color: #b7cbd3; }
+:root[data-theme="dark"] .ticket-record:before,:root[data-theme="dark"] .ticket-hero:before,:root[data-theme="dark"] .ticket-panel-head { border-color: var(--dark-border); background: #102a36; color: var(--dark-accent); }
+:root[data-theme="dark"] .ticket-note { border-color: #466649; background: #263c2b; color: #dfebdf; }
+:root[data-theme="dark"] .ticket-note.private { border-color: #604f73; background: #342d40; color: #e6dced; }
+:root[data-theme="dark"] .chart:before { opacity: .32; filter: invert(1); }
+:root[data-theme="dark"] .invoice-paper { background: #fff; color: #203448; }
+:root[data-theme="dark"] .invoice-paper h1,:root[data-theme="dark"] .invoice-paper h2,:root[data-theme="dark"] .invoice-paper h3,:root[data-theme="dark"] .invoice-paper strong,:root[data-theme="dark"] .invoice-paper label { color: #203448; }
