@@ -2,6 +2,23 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.0] - 2026-07-15
+
+### Added
+
+- New estimates use the same full-screen line-item workspace as invoices.
+- Estimates support catalog items, one-time items, subscription references, totals, notes, and custom fields.
+- Any invoice can be converted into an estimate, including invoices created without an estimate.
+- An invoice created from an estimate can be converted back, restoring that estimate to draft status.
+
+### Changed
+
+- Estimate-to-invoice conversion now preserves individual line items and their catalog or subscription references.
+
+### Database
+
+- Added migration `0012_estimate_items.sql` for structured estimate line items.
+
 ## [0.14.4] - 2026-07-15
 
 ### Changed
