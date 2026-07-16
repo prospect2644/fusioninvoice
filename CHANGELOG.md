@@ -2,6 +2,19 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.4] - 2026-07-15
+
+### Changed
+
+- Saving invoice item changes now refreshes and keeps the saved invoice open.
+- Invoice status updates also remain on the current invoice.
+
+### Added
+
+- Invoice and estimate editors include a Cancel Changes action.
+- Unsaved document changes trigger an in-app warning before sidebar navigation.
+- Browser refresh, tab close, and window close use standard unsaved-change protection.
+
 ## [0.15.3] - 2026-07-15
 
 ### Added
