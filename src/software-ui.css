@@ -443,3 +443,9 @@ html { zoom: 80%; }
 /* Client record section navigation */
 .client-record-tabs { flex-wrap: wrap; }
 .client-accounts-panel { margin-top: 18px; }
+
+.show-closed-check { display: inline-flex; align-items: center; gap: 7px; padding: 0 8px; color: var(--kindred-muted); font-size: 10px; font-weight: 700; white-space: nowrap; }
+.show-closed-check input { width: 15px; height: 15px; accent-color: #35a9d5; }
+.ticket-delete-host { display: inline-flex; }
+.ticket-delete-button { width: auto; padding: 10px 15px; border: 1px solid #d8a8a1; border-radius: 999px; background: #fff1ee; color: #a84233; font-weight: 800; cursor: pointer; }
+:root[data-theme="dark"] .ticket-delete-button { border-color: #83544d; background: #3b2927; color: #ffaaa0; }
