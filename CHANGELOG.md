@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.6] - 2026-07-16
+
+### Added
+
+- App sections now use readable browser paths and remain selected after refresh.
+- Invoice, client, and helpdesk ticket records now have direct, refresh-safe URLs.
+- Browser Back and Forward navigation now restores the matching app screen.
+
 ## [0.15.5] - 2026-07-16
 
 ### Fixed
