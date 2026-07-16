@@ -490,3 +490,9 @@ html { zoom: 80%; }
 :root[data-theme="dark"] .ticket-note { border-color: #536a47; background: #30422c; }
 :root[data-theme="dark"] .ticket-note.private { border-color: #684f7d; background: #382e42; }
 @media(max-width:1100px){.ticket-record:before{word-spacing:8px}.ticket-hero{grid-template-columns:1fr}.ticket-hero>div:last-child{padding:10px 0 0;border-top:1px solid #d2dde3;border-left:0}.ticket-metrics{grid-template-columns:1fr 1fr}}
+
+/* Keep client record tabs readable over the global sidebar-nav hover rule. */
+.client-record-tabs button:hover:not(.active) { background: #e1f2f9; color: #087fae; }
+.client-record-tabs button.active:hover { background: #35a9d5!important; color: #082332!important; }
+.client-record-tabs button:hover span { background: #c9eaf6; color: #087fae; }
+:root[data-theme="dark"] .client-record-tabs button:hover:not(.active) { background: #294b59; color: #79d2ef; }

@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.14.3] - 2026-07-15
+
+### Fixed
+
+- Inactive client record tabs remain visible when hovered.
+- Client tab hover colors now use a readable Kindred blue treatment in light and dark modes.
+
 ## [0.14.2] - 2026-07-15
 
 ### Changed
