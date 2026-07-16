@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.1] - 2026-07-15
+
+### Changed
+
+- Helpdesk text search now searches globally across all tickets and temporarily ignores company, status, and closed-ticket filters.
+- Clearing the search restores the selected helpdesk filters.
+- Ticket search now also matches contact email addresses.
+
 ## [0.15.0] - 2026-07-15
 
 ### Added
