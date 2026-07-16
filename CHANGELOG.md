@@ -2,6 +2,17 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.2] - 2026-07-15
+
+### Fixed
+
+- Replaced the decorative ticket workspace labels with real clickable navigation buttons.
+
+### Added
+
+- Ticket tabs now open Tasks, client Configurations, Products, Activities, Time, and Expenses destinations.
+- Ticket tabs include active, hover, count, overflow, and dark-mode states.
+
 ## [0.15.1] - 2026-07-15
 
 ### Changed
