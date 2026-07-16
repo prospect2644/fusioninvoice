@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.5] - 2026-07-16
+
+### Fixed
+
+- Invoice saving now exits the busy state after refreshing the saved invoice in place.
+- Successful item saves return the invoice to preview mode instead of remaining frozen on Saving.
+- Invoice status updates now clear their busy state after refreshing.
+
 ## [0.15.4] - 2026-07-15
 
 ### Changed
