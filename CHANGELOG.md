@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.9] - 2026-07-19
+
+### Added
+
+- New tasks must be linked to exactly one existing invoice or helpdesk ticket.
+- Task client ownership is inherited from the selected parent record and validated server-side.
+- The task list now displays and searches the linked invoice or ticket reference.
+
 ## [0.15.8] - 2026-07-19
 
 ### Changed

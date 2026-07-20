@@ -111,8 +111,9 @@ export function addExpense(input) {
 
 export function addTask(input, assigneeEmail) {
   const data = read();
-  if (input.clientId && !data.clients.some(client => client.id === input.clientId)) throw new Error('Client not found');
-  const task = { id: nextNumber(data.tasks, 'TSK', 1), clientId: input.clientId || null, title: String(input.title || '').trim(), description: String(input.description || '').trim(), dueDate: input.dueDate, assigneeEmail, completedAt: null, status: input.status || 'open', createdAt: new Date().toISOString() };
+  const parentType=String(input.parentType||''),parentId=String(input.parentId||''),parent=parentType==='invoice'?data.invoices.find(item=>item.id===parentId):parentType==='ticket'?data.tickets.find(item=>item.id===parentId):null;
+  if(!parent)throw new Error('Choose an existing invoice or ticket for this task.');
+  const task = { id: nextNumber(data.tasks, 'TSK', 1), clientId: parent.clientId, invoiceId: parentType==='invoice'?parentId:null, ticketId: parentType==='ticket'?parentId:null, title: String(input.title || '').trim(), description: String(input.description || '').trim(), dueDate: input.dueDate, assigneeEmail, completedAt: null, status: input.status || 'open', createdAt: new Date().toISOString() };
   if (!task.title || !task.dueDate || !['open','in_progress','completed','cancelled'].includes(task.status)) throw new Error('Complete the task title, due date, and status.');
   if (task.status === 'completed') task.completedAt = new Date().toISOString();
   data.tasks.unshift(task); write(data); return task;
