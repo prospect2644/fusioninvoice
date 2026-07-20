@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.7] - 2026-07-19
+
+### Fixed
+
+- The Preparing your workspace screen now fills the entire viewport at the app's 80% display scale.
+- Protected-workspace loading errors no longer leave a grey strip below the blue background.
+
 ## [0.15.6] - 2026-07-16
 
 ### Added
