@@ -2,6 +2,19 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.18.0] - 2026-07-19
+
+### Added
+
+- Subscriptions can be designated as Managed IT services with a shared hourly support allotment.
+- Tickets now have a service board selector defaulting to Technical Support.
+- Technical Support tickets automatically inherit the client's active Managed IT subscription.
+- Ticket plan usage shows remaining included hours or hourly overage value after the allotment is depleted.
+
+### Security
+
+- Managed-service routing and client hourly-rate fallback are resolved and validated by the server rather than trusted from browser input.
+
 ## [0.17.0] - 2026-07-19
 
 ### Changed
