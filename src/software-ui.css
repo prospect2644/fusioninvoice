@@ -298,7 +298,13 @@ main>header h1 { color: #eef7fa; font-weight: 650; }
 .panel,.client-list,.setting,.report-controls,.report-table,.software-edit-panel { border: 1px solid #c9dbe4; border-top: 1px solid #c9dbe4; border-radius: 22px; background: #f5fafc; box-shadow: 0 14px 35px #466d8012; }
 .kpi-panel { padding-bottom: 28px; }
 .kpi-panel>.panel-head { border-bottom-color: #d4e2e8; }
-.dashboard-stats { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.dashboard-stats { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+.report-toolbar { display:flex; align-items:center; justify-content:space-between; gap:18px; margin:0 0 18px; padding:14px 18px; border-top:3px solid var(--kindred-blue); }
+.report-toolbar > div { display:flex; align-items:center; gap:10px; }
+.report-toolbar small { color:#58717d; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.report-toolbar select,.report-toolbar input { min-height:40px; border:1px solid #bdd3dd; border-radius:10px; background:var(--panel,#fff); color:var(--kindred-ink); padding:0 12px; }
+.report-custom-range { display:flex; align-items:center; gap:8px; }
+@media(max-width:1100px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.report-toolbar{align-items:stretch;flex-direction:column}.report-toolbar>div{flex-wrap:wrap}}
 .dashboard-stats .stat { min-height: 170px; border: 1px solid #d0e1e8; border-radius: 30px; background: #f5fafc!important; color: var(--kindred-ink)!important; box-shadow: 0 14px 30px #476e8012; }
 .dashboard-stats .stat small { color: #56717f; }
 .dashboard-stats .stat strong { color: var(--kindred-ink); }
@@ -764,3 +770,24 @@ body:has(.shell.collapsed) .subscription-detail-screen { left: 92px; }
 :root[data-theme="dark"] .subscription-detail-metrics .remaining { background: #173832; }
 :root[data-theme="dark"] .subscription-detail-metrics .depleted { background: #3b301d; }
 @media(max-width:1250px){.subscription-detail-metrics{grid-template-columns:repeat(2,1fr)}}
+
+/* Keep every workspace reachable at browser zoom levels where content exceeds the viewport. */
+html,body { overflow: auto; }
+body { min-width: 0; }
+.shell { min-width: 1100px; }
+.shell>main { min-width: 0; }
+aside { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.invoice-index-panel,.items-index-panel,.subscriptions-index-panel,.payments-index-panel,.expenses-index-panel,.tasks-index-panel,.tickets-index-panel,.contacts-index-panel,.report-table { overflow-x: auto; overflow-y: hidden; overscroll-behavior-inline: contain; }
+.software-invoice-table { min-width: 1020px; }
+.software-items-table { min-width: 1220px; }
+.software-subscription-table { min-width: 1080px; }
+.software-payment-table { min-width: 1120px; }
+.software-expense-table { min-width: 1320px; }
+.software-task-table { min-width: 1180px; }
+.software-ticket-table { min-width: 1080px; }
+.contacts-directory { min-width: 1000px; }
+.report-rows { min-width: 760px; }
+.invoice-screen,.client-screen,.ticket-screen,.subscription-detail-screen,.creation-screen { overflow: auto; overscroll-behavior: contain; }
+.invoice-record,.client-record,.ticket-record,.subscription-detail-screen>main,.creation-form { min-width: 900px; }
+.asset-modal-bg,.app-confirm-bg,.modal-bg { overflow: auto; }
+@media(max-width:1100px){.shell{min-width:960px}.invoice-record,.client-record,.ticket-record,.subscription-detail-screen>main,.creation-form{min-width:820px}}

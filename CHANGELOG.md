@@ -2,6 +2,25 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.22.0] - 2026-07-19
+
+### Added
+
+- Added CSV and generated PDF exports to completed financial reports.
+- Added shared Year to Date, Current Month, All Time, and Custom Range report scopes, defaulting to Year to Date.
+- Added a Total Revenue dashboard card based on payments received year to date.
+
+### Changed
+
+- Dashboard billing metrics now default to the Year to Date period and display four responsive KPI cards.
+
+## [0.21.4] - 2026-07-19
+
+### Fixed
+
+- Added horizontal scrolling to data tables and full workspaces when browser zoom makes content wider than the viewport.
+- Added independent vertical scrolling to the fixed sidebar and overflow handling to full-page screens and dialogs.
+
 ## [0.21.3] - 2026-07-19
 
 ### Added
