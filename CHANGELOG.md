@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.15.8] - 2026-07-19
+
+### Changed
+
+- Restored the original rounded Kindred ticket workspace instead of the later ConnectWise-inspired compact layout.
+- Retained functional ticket navigation, deletion, status, notes, time tracking, expenses, and record URLs.
+
 ## [0.15.7] - 2026-07-19
 
 ### Fixed
