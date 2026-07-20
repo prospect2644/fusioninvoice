@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.16.0] - 2026-07-19
+
+### Added
+
+- Invoice records now include a Tasks tab showing tasks linked to that invoice.
+- Ticket records now include an in-record Tasks section reached from the ticket workspace tab.
+- Linked task views show title, task number, due date, assignee, and status.
+
 ## [0.15.9] - 2026-07-19
 
 ### Added

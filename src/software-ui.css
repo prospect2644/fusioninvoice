@@ -457,6 +457,10 @@ html { zoom: 80%; }
 .ticket-module-tabs button:hover { background: #dff1f8; color: #087fae; }
 .ticket-module-tabs button.active { background: #35a9d5!important; color: #082332!important; }
 .ticket-module-tabs button span { margin-left: 4px; opacity: .72; font-size: 8px; }
+.ticket-linked-tasks { margin-bottom: 18px; }
+.linked-task-list>div { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 2px; border-top: 1px solid #d3e2e9; }
+.linked-task-list span>* { display: block; }
+.linked-task-list small { margin-top: 4px; color: var(--kindred-muted); font-size: 9px; }
 :root[data-theme="dark"] .ticket-module-tabs { border-color: #39515c; background: #1c3039; }
 :root[data-theme="dark"] .ticket-module-tabs button { color: #b5cbd4; }
 :root[data-theme="dark"] .ticket-module-tabs button:hover { background: #294b59; color: #79d2ef; }
