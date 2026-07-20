@@ -2,6 +2,120 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.21.1] - 2026-07-19
+
+### Changed
+
+- Simplified dashboard KPIs to Sent Invoices, Payments Collected, and Payments Due.
+- Removed draft, quote, and separate overdue KPI cards; overdue counts now appear inside Payments Due.
+- Added coordinated blue, teal, and amber visual treatments for the remaining billing cards.
+
+## [0.21.0] - 2026-07-19
+
+### Added
+
+- Added optional time logging directly from Internal and External ticket notes.
+- Added External-note client delivery intent, per-ticket recipient lists, and persistent delivery metadata for the future email integration.
+
+### Security
+
+- Client delivery controls are unavailable for Internal notes, and recipient addresses are validated before storage.
+
+## [0.20.0] - 2026-07-19
+
+### Changed
+
+- Split ticket updates and notes into External and Internal tabs with independent counts and filtered timelines.
+- Renamed public customer updates to External and private technician notes to Internal throughout the ticket UI while retaining API compatibility.
+
+## [0.19.11] - 2026-07-19
+
+### Added
+
+- Built the Commission report with user, status, date, commission-type, and invoice-payment filters.
+- Added fixed and percentage commission calculations with paid and pending totals.
+
+## [0.19.10] - 2026-07-19
+
+### Added
+
+- Built the Credits and Pre-payments report with client, date, and application-status filters.
+- Added credit, prepayment, total-value, and available-balance summaries with ledger detail.
+
+## [0.19.9] - 2026-07-19
+
+### Added
+
+- Built the Invoices by Client report with client, status, tag, and invoice-date filters.
+- Added invoice totals and optional detailed invoice-line reporting.
+
+## [0.19.8] - 2026-07-19
+
+### Added
+
+- Built the Subscription List report around subscription next-run dates.
+- Added scheduled value, active subscription, managed-IT allotment, and recurring schedule details.
+
+## [0.19.7] - 2026-07-19
+
+### Added
+
+- Built the Tax Report with invoice-sent or payment-collected revenue models and expense-type filtering.
+- Added sales-tax, expense-tax, net-tax summaries, and detailed or summarized tax activity.
+
+## [0.19.6] - 2026-07-19
+
+### Added
+
+- Built the dedicated Revenue by Client report with invoice-sent or payment-collected revenue models.
+- Added date filtering, client-name or revenue ordering, revenue shares, and client activity totals.
+
+## [0.19.5] - 2026-07-19
+
+### Added
+
+- Built the Profit and Loss report with invoice-sent or payment-collected revenue models.
+- Added date filtering, expense-tax treatment, net-profit and margin summaries, and expense-category detail.
+
+## [0.19.4] - 2026-07-19
+
+### Added
+
+- Built the Payments Collected report with payment-method, date, prepayment, other-income, tag, and detail-level options.
+- Added payment totals and detailed or payment-method summary results.
+
+## [0.19.3] - 2026-07-19
+
+### Added
+
+- Built the Item Sales report with invoice-line filters, date basis, unpaid handling, ordering, and discount allocation.
+- Added quantity, gross sales, allocated discount, and net-sales summaries with detailed item rows.
+
+## [0.19.2] - 2026-07-19
+
+### Added
+
+- Built the Expense List report with date, category, vendor, order, and grouping options.
+- Added expense totals, tax totals, and grouped report detail generated from workspace expenses.
+
+## [0.19.1] - 2026-07-19
+
+### Added
+
+- Built the Client Statement report with client, status, tag, date-range, and paid-invoice filters.
+- Added statement totals and matching invoice activity after running the report.
+
+## [0.19.0] - 2026-07-19
+
+### Added
+
+- Added twelve report submenu destinations with refresh-safe report URLs.
+- Added styled placeholder workspaces for report layouts that are still being defined.
+
+### Changed
+
+- Moved the existing financial activity report under Revenue by Client.
+
 ## [0.18.2] - 2026-07-19
 
 ### Changed
