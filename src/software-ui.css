@@ -520,3 +520,19 @@ html { zoom: 80%; }
 .client-location small,.client-location b { display: block; }
 .client-location small { overflow: hidden; color: var(--kindred-muted); font-size: 9px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
 .client-location b { margin-top: 3px; font-size: 10px; font-weight: 700; }
+
+/* Full workspace pages for creating records. */
+.creation-screen { inset: 0 0 0 270px; display: block; overflow: auto; padding: 34px 38px 70px; background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); backdrop-filter: none; }
+.creation-form { width: min(1120px,100%); min-height: calc(100vh - 104px); margin: 0 auto; padding: 38px 44px 46px; border-radius: 28px; box-shadow: 0 16px 42px #466d8018; }
+.creation-form.asset-modal { width: min(1120px,100%); max-height: none; min-height: calc(100vh - 104px); overflow: visible; }
+.creation-form.asset-modal>.client-record-heading { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #c9dbe4; }
+.creation-form .modal-head { align-items: center; margin: -38px -44px 28px; padding: 22px 30px; border-bottom: 1px solid #c9dbe4; }
+.creation-form .modal-head h2 { color: var(--kindred-ink); font-family: 'DM Sans',Arial,sans-serif; font-weight: 650; }
+.creation-form .modal-head button { width: 42px; height: 42px; border: 1px solid #b8ced8; border-radius: 50%; background: #fff; color: #173746; }
+.creation-form>label,.creation-form>.two,.creation-form>.ticket-contact-picker,.creation-form>.inline-contact-creator,.creation-form>.custom-inputs,.creation-form>.form-note,.creation-form>.form-error { max-width: 860px; margin-right: auto; margin-left: auto; }
+.creation-form>.modal-actions { max-width: 860px; margin-right: auto; margin-left: auto; padding-top: 18px; border-top: 1px solid #d3e2e9; }
+.shell.collapsed .creation-screen { left: 82px; }
+:root[data-theme="dark"] .creation-screen { background: var(--dark-canvas); }
+:root[data-theme="dark"] .creation-form .modal-head { border-color: var(--dark-border); }
+:root[data-theme="dark"] .creation-form .modal-head h2 { color: var(--dark-text); }
+:root[data-theme="dark"] .creation-form .modal-head button { border-color: var(--dark-border); background: var(--dark-raised); color: var(--dark-text); }

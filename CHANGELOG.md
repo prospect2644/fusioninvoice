@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.17.0] - 2026-07-19
+
+### Changed
+
+- Client, contact, asset, account, item, subscription, payment, expense, ticket, and task creation now opens as a full workspace page instead of a centered modal.
+- The side menu remains visible and usable while creating records.
+- Creation pages now use the same full-page Kindred styling in light and dark modes.
+
 ## [0.16.0] - 2026-07-19
 
 ### Added
