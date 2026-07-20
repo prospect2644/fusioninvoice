@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.21.2] - 2026-07-19
+
+### Changed
+
+- Ticket creation now restores the last contact used for each company or defaults to an authorized contact when no prior choice exists.
+- Technical Support now visibly defaults to an active Managed IT subscription for the selected company.
+- Moved Service Board directly below the ticket title.
+
 ## [0.21.1] - 2026-07-19
 
 ### Changed
