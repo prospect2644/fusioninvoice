@@ -315,9 +315,13 @@ export async function handleApi(request, env) {
   }
 }
 
+export function handleInboundEmailRoute(request){return request.method==='POST'?json({error:'Inbound helpdesk email is reserved but not configured.',code:'EMAIL_INGEST_NOT_CONFIGURED'},501):new Response(null,{status:405,headers:{allow:'POST','cache-control':'no-store'}})}
+
 export default {
   async fetch(request, env) {
-    if (new URL(request.url).pathname.startsWith('/api/')) return handleApi(request, env);
+    const path=new URL(request.url).pathname;
+    if(path==='/api/helpdesk/inbound-email')return handleInboundEmailRoute(request);
+    if (path.startsWith('/api/')) return handleApi(request, env);
     return env.ASSETS.fetch(request);
   },
 };

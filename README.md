@@ -38,6 +38,12 @@ Do not place `CLOUDFLARE_API_TOKEN` in Pages runtime variables. A Git-connected 
 
 ## Production notes
 
+### Reserved inbound helpdesk email route
+
+`POST /api/helpdesk/inbound-email` is reserved for a future email-provider webhook. It is intentionally disabled and currently returns `501` with code `EMAIL_INGEST_NOT_CONFIGURED`. It does not parse messages or create tickets.
+
+Before enabling it, require a provider-specific signed webhook, reject replayed or expired requests, impose strict message and attachment limits, map recipients to workspaces server-side, and configure Cloudflare Access only for the exact webhook path. Never accept sender email headers as proof of identity or workspace membership.
+
 - Cloudflare D1 must be bound in the Pages dashboard as `env.DB` and named `invoice-db`; `wrangler.jsonc` carries the same binding for Wrangler-based development/deployment.
 - The `invoice-db` UUID is configured in `wrangler.jsonc`; use `pnpm db:info` to verify it against the active Cloudflare account.
 - Build the local database with `pnpm db:migrate:local` or apply the schema to the existing remote database with `pnpm db:migrate:remote`.

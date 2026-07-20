@@ -13,6 +13,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use((req, res, next) => !['GET','HEAD','OPTIONS'].includes(req.method) && req.get('Sec-Fetch-Site') === 'cross-site' ? res.status(403).json({ error: 'Cross-site writes are not allowed.' }) : next());
+app.all('/api/helpdesk/inbound-email',(req,res)=>req.method==='POST'?res.status(501).json({error:'Inbound helpdesk email is reserved but not configured.',code:'EMAIL_INGEST_NOT_CONFIGURED'}):res.set('Allow','POST').sendStatus(405));
 app.use('/api', requireIdentity);
 app.get('/api/session', (req, res) => res.json(req.identity));
 app.get('/api/workspace', (req, res) => res.json(workspaceFor(req.identity.email)));

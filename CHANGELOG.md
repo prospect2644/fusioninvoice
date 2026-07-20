@@ -2,6 +2,17 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.18.1] - 2026-07-19
+
+### Added
+
+- Reserved `POST /api/helpdesk/inbound-email` for a future signed email-provider webhook.
+- Added a stable `EMAIL_INGEST_NOT_CONFIGURED` response for future integration testing.
+
+### Security
+
+- The reserved inbound-email route fails closed with HTTP 501 and performs no parsing, ticket creation, or database writes.
+
 ## [0.18.0] - 2026-07-19
 
 ### Added
