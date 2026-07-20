@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.18.2] - 2026-07-19
+
+### Changed
+
+- Dashboard and all menu-page headers now remain sticky at the top while content scrolls.
+- Sticky headers use consistent light and dark scroll shadows and remain above tables and cards.
+
 ## [0.18.1] - 2026-07-19
 
 ### Added

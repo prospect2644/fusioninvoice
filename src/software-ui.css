@@ -526,6 +526,10 @@ html { zoom: 80%; }
 .client-location small { overflow: hidden; color: var(--kindred-muted); font-size: 9px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
 .client-location b { margin-top: 3px; font-size: 10px; font-weight: 700; }
 
+/* Keep the active workspace title and actions visible while page content scrolls. */
+main>header { position: sticky; top: 0; z-index: 16; box-shadow: 0 7px 20px #082f4f24; }
+:root[data-theme="dark"] main>header { box-shadow: 0 7px 22px #0007; }
+
 /* Full workspace pages for creating records. */
 .creation-screen { inset: 0 0 0 270px; display: block; overflow: auto; padding: 34px 38px 70px; background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); backdrop-filter: none; }
 .creation-form { width: min(1120px,100%); min-height: calc(100vh - 104px); margin: 0 auto; padding: 38px 44px 46px; border-radius: 28px; box-shadow: 0 16px 42px #466d8018; }
