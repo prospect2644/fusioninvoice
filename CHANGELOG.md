@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.21.3] - 2026-07-19
+
+### Added
+
+- Subscription rows now open a full detail workspace.
+- Added included, used, remaining, and overage hour totals with linked-ticket activity.
+
 ## [0.21.2] - 2026-07-19
 
 ### Changed
