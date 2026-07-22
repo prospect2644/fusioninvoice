@@ -1,7 +1,7 @@
 {
   "name": "kindred-invoice",
   "private": true,
-  "version": "0.22.7",
+  "version": "0.22.9",
   "type": "module",
   "scripts": {
     "dev": "concurrently -k \"vite\" \"node --watch server/index.js\"",

@@ -2,6 +2,20 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.22.9] - 2026-07-21
+
+### Added
+
+- Ticket creation now warns when the selected active subscription has no included time remaining.
+- The warning names the subscription package and explains that tracked work will be billed at the client hourly rate.
+
+## [0.22.8] - 2026-07-21
+
+### Added
+
+- Added prorated overtime billing to subscription-backed tickets after the shared hourly allotment is depleted.
+- Ticket details now show allocated overtime hours, hourly rate, overtime charge, and remaining covered subscription time.
+
 ## [0.22.7] - 2026-07-21
 
 ### Fixed

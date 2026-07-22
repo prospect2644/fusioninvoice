@@ -496,6 +496,15 @@ button.client-subscription-row:hover { background:#eaf4f8; }
 .app-confirm-actions button:focus-visible,.modal-actions button:focus-visible,.account-summary button:focus-visible { outline:3px solid #35a9d544; outline-offset:2px; }
 .app-confirm-actions button:disabled,.modal-actions button:disabled,.account-summary button:disabled { cursor:not-allowed; opacity:.55; }
 :root[data-theme="dark"] .app-confirm-actions button:not(.primary):not(.danger-fill),:root[data-theme="dark"] .modal-actions button:not(.primary):not(.danger-fill),:root[data-theme="dark"] .account-summary button:not(.primary),:root[data-theme="dark"] .client-record-heading>button:not(.primary):not(.quiet),:root[data-theme="dark"] .modal-head>button { border-color:#49636e; background:#243b45; color:#7ed4f0; }
+.ticket-metrics>div>span { display:block; margin-top:7px; color:var(--kindred-muted); font-size:9px; line-height:1.4; }
+.ticket-metrics .ticket-overtime-metric { border-color:#e3c48b; background:#fff8e9; }
+.ticket-metrics .ticket-overtime-metric strong { color:#a56512; }
+:root[data-theme="dark"] .ticket-metrics .ticket-overtime-metric { border-color:#715d36; background:#3b301d; }
+:root[data-theme="dark"] .ticket-metrics .ticket-overtime-metric strong { color:#f1c96f; }
+.subscription-depleted-warning { display:grid; gap:6px; margin:2px 0 14px; padding:14px 16px; border:1px solid #e3c48b; border-radius:14px; background:#fff8e9; color:#714c0d; }
+.subscription-depleted-warning strong { font-size:11px; }
+.subscription-depleted-warning span { font-size:10px; line-height:1.5; }
+:root[data-theme="dark"] .subscription-depleted-warning { border-color:#715d36; background:#3b301d; color:#f1c96f; }
 .ticket-delete-host { display: inline-flex; }
 .ticket-delete-button { width: auto; padding: 10px 15px; border: 1px solid #d8a8a1; border-radius: 999px; background: #fff1ee; color: #a84233; font-weight: 800; cursor: pointer; }
 :root[data-theme="dark"] .ticket-delete-button { border-color: #83544d; background: #3b2927; color: #ffaaa0; }
