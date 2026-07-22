@@ -2,6 +2,56 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.22.7] - 2026-07-21
+
+### Fixed
+
+- Replaced generic browser buttons in confirmation dialogs, modal action rows, account controls, and modal headers with consistent Kindred secondary-button styling.
+- Added matching hover, focus, disabled, and dark-mode states for secondary application actions such as Keep editing.
+
+## [0.22.6] - 2026-07-21
+
+### Added
+
+- Added one-time custom expenses and saved expense-catalog entries to invoice and estimate item pickers.
+- Saved expenses fill their description and total cost while retaining an expense reference on the line item.
+
+## [0.22.5] - 2026-07-21
+
+### Fixed
+
+- Centered payment and balance amounts beneath their table headings and increased spacing between the financial columns.
+
+## [0.22.4] - 2026-07-21
+
+### Added
+
+- Added invoice-level payment editing and deletion controls while invoice editing is enabled.
+
+### Fixed
+
+- Replaced the incomplete detail-tab underline with a full active-tab highlight across Additional, Notes, Tasks, and Payments.
+
+## [0.22.3] - 2026-07-21
+
+### Added
+
+- Added a dedicated Contacts tab to client records with contact counts and the existing add-contact workflow.
+- Added a focused account-details overview to the Client tab.
+
+## [0.22.2] - 2026-07-21
+
+### Added
+
+- Added a client Subscriptions tab showing recurring service status, included and used hours, remaining time, overage, recurring amount, and next billing date.
+- Client subscription rows now open the complete subscription detail workspace.
+
+## [0.22.1] - 2026-07-21
+
+### Changed
+
+- Client ticket lists now show open tickets by default, optionally reveal closed tickets, and open the full ticket workspace when selected.
+
 ## [0.22.0] - 2026-07-19
 
 ### Added
