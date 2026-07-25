@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.23.0] - 2026-07-24
+
+### Changed
+
+- Updated the CRM to the current Kindred Innovia color system: midnight teal navigation, sea-glass workspace surfaces, warm orange actions, and restrained branded status colors.
+- Extended the brand palette consistently across forms, tables, dialogs, client and ticket workspaces, loading and access screens, focus states, and dark mode.
+
 ## [0.22.9] - 2026-07-21
 
 ### Added
