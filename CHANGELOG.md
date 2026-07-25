@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.23.1] - 2026-07-25
+
+### Changed
+
+- Expanded the shared full-page record creation layout so tickets, clients, items, subscriptions, payments, expenses, and tasks use a roomier invoice-style workspace.
+- Increased form label, input, select, text-area, and action sizing for better readability while retaining responsive behavior.
+
 ## [0.22.9] - 2026-07-21
 
 ### Added

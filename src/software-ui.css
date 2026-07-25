@@ -590,20 +590,32 @@ main>header { position: sticky; top: 0; z-index: 16; box-shadow: 0 7px 20px #082
 :root[data-theme="dark"] main>header { box-shadow: 0 7px 22px #0007; }
 
 /* Full workspace pages for creating records. */
-.creation-screen { inset: 0 0 0 270px; display: block; overflow: auto; padding: 34px 38px 70px; background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); backdrop-filter: none; }
-.creation-form { width: min(1120px,100%); min-height: calc(100vh - 104px); margin: 0 auto; padding: 38px 44px 46px; border-radius: 28px; box-shadow: 0 16px 42px #466d8018; }
-.creation-form.asset-modal { width: min(1120px,100%); max-height: none; min-height: calc(100vh - 104px); overflow: visible; }
+.creation-screen { inset: 0 0 0 270px; display: block; overflow: auto; padding: 28px 32px 64px; background: linear-gradient(145deg,#e6f1f6 0%,#d5e7ef 100%); backdrop-filter: none; }
+.creation-form { width: min(1320px,100%); min-height: calc(100vh - 92px); margin: 0 auto; padding: 38px 50px 48px; border-radius: 28px; box-shadow: 0 16px 42px #466d8018; }
+.creation-form.asset-modal { width: min(1320px,100%); max-height: none; min-height: calc(100vh - 92px); overflow: visible; }
 .creation-form.asset-modal>.client-record-heading { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #c9dbe4; }
-.creation-form .modal-head { align-items: center; margin: -38px -44px 28px; padding: 22px 30px; border-bottom: 1px solid #c9dbe4; }
-.creation-form .modal-head h2 { color: var(--kindred-ink); font-family: 'DM Sans',Arial,sans-serif; font-weight: 650; }
-.creation-form .modal-head button { width: 42px; height: 42px; border: 1px solid #b8ced8; border-radius: 50%; background: #fff; color: #173746; }
-.creation-form>label,.creation-form>.two,.creation-form>.ticket-contact-picker,.creation-form>.inline-contact-creator,.creation-form>.custom-inputs,.creation-form>.form-note,.creation-form>.form-error { max-width: 860px; margin-right: auto; margin-left: auto; }
-.creation-form>.modal-actions { max-width: 860px; margin-right: auto; margin-left: auto; padding-top: 18px; border-top: 1px solid #d3e2e9; }
+.creation-form .modal-head { align-items: center; margin: -38px -50px 34px; padding: 24px 36px; border-bottom: 1px solid #c9dbe4; }
+.creation-form .modal-head h2 { color: var(--kindred-ink); font-family: 'DM Sans',Arial,sans-serif; font-size: 30px; font-weight: 650; }
+.creation-form .modal-head small { font-size: 11px; }
+.creation-form .modal-head button { width: 46px; height: 46px; border: 1px solid #b8ced8; border-radius: 50%; background: #fff; color: #173746; font-size: 25px; }
+.creation-form>label,.creation-form>.two,.creation-form>.ticket-contact-picker,.creation-form>.inline-contact-creator,.creation-form>.custom-inputs,.creation-form>.form-note,.creation-form>.form-error { width: 100%; max-width: 1060px; margin-right: auto; margin-left: auto; }
+.creation-form>label,.creation-form .two>label,.creation-form .ticket-contact-picker label,.creation-form .custom-inputs label { gap: 9px; margin-top: 18px; color: #294858; font-size: 13px; font-weight: 750; letter-spacing: .025em; }
+.creation-form input,.creation-form select,.creation-form textarea { min-height: 50px; padding: 13px 15px; border-radius: 12px; font-size: 15px; line-height: 1.35; }
+.creation-form textarea { min-height: 150px; resize: vertical; }
+.creation-form .two { gap: 20px; }
+.creation-form .form-note { margin-top: 18px; font-size: 12px; line-height: 1.55; }
+.creation-form .ticket-contact-picker { grid-template-columns: minmax(0,1fr) auto; gap: 16px; align-items: end; }
+.creation-form .ticket-contact-picker>button { min-height: 50px; margin-bottom: 0; padding-right: 20px; padding-left: 20px; font-size: 12px; }
+.creation-form .inline-contact-creator { margin-top: 18px; padding: 24px; }
+.creation-form .inline-contact-creator label { font-size: 12px; }
+.creation-form>.modal-actions { width: 100%; max-width: 1060px; margin: 30px auto 0; padding-top: 24px; border-top: 1px solid #d3e2e9; }
+.creation-form>.modal-actions button { min-height: 48px; padding: 12px 22px; font-size: 13px; }
 .shell.collapsed .creation-screen { left: 82px; }
 :root[data-theme="dark"] .creation-screen { background: var(--dark-canvas); }
 :root[data-theme="dark"] .creation-form .modal-head { border-color: var(--dark-border); }
 :root[data-theme="dark"] .creation-form .modal-head h2 { color: var(--dark-text); }
 :root[data-theme="dark"] .creation-form .modal-head button { border-color: var(--dark-border); background: var(--dark-raised); color: var(--dark-text); }
+@media(max-width:1250px){.creation-screen{padding:22px 24px 56px}.creation-form{padding:34px 34px 42px}.creation-form .modal-head{margin:-34px -34px 28px;padding:21px 26px}.creation-form>label,.creation-form>.two,.creation-form>.ticket-contact-picker,.creation-form>.inline-contact-creator,.creation-form>.custom-inputs,.creation-form>.form-note,.creation-form>.form-error,.creation-form>.modal-actions{max-width:940px}}
 
 /* Reports workspace navigation. */
 .submenu-chevron { margin-left: auto; color: var(--accent); font-size: 15px; font-weight: 500; }
