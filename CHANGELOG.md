@@ -2,6 +2,18 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.23.3] - 2026-07-30
+
+### Changed
+
+- Updated invoice lists to label the remaining amount as “Balance due,” show the current outstanding balance instead of the original invoice total, and align the amount directly beneath its column title.
+
+## [0.23.2] - 2026-07-30
+
+### Fixed
+
+- Refresh the currently open invoice immediately after recording a payment so its paid amount, balance, payment history, and available actions update without a manual page reload.
+
 ## [0.23.1] - 2026-07-25
 
 ### Changed

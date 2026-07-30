@@ -110,7 +110,7 @@ button.software-invoice-row:nth-child(even) { background: #f2f2f2; }
 button.software-invoice-row:hover { background: #eaf5ff; }
 .software-invoice-head { min-height: 48px; border-top: 0; color: #0878ed; font-weight: 700; }
 .software-invoice-row>strong:first-child,.client-link { color: #0079ea; }
-.software-invoice-row>strong:last-child { text-align: right; }
+.software-invoice-row>strong:last-child { text-align: left; }
 .invoice-summary-text { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .software-invoice-row .status { display: inline-block; background: #93979c; color: #fff; font-weight: 700; }
 .software-invoice-row .status.sent { background: #288dc7; }
