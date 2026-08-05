@@ -2,6 +2,16 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.24.0] - 2026-07-30
+
+### Added
+
+- Added an iOS-optimized layout below 768px with safe-area support, a compact branded app header, five-tab bottom navigation, an app-style More sheet, touch-sized controls, stacked forms, card-style record lists, and mobile document workspaces.
+
+### Changed
+
+- Removed desktop minimum-width constraints on small screens while preserving the existing desktop interface above the mobile breakpoint.
+
 ## [0.23.3] - 2026-07-30
 
 ### Changed

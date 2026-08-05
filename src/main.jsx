@@ -12,6 +12,7 @@ import './contacts-page.css';
 import './contacts-icon.css';
 import './payment-manage.css';
 import './loading-screen.css';
+import './mobile.css';
 
 const money = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(n || 0));
 const localDate = date => `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;
@@ -39,6 +40,8 @@ async function exportInvoicePdf(invoice,client,payments=[]) {
   doc.setFontSize(8);doc.setTextColor(100,125,138);doc.text('Thank you for your business.',left,760);doc.text(`Invoice ${invoice.id}`,right,760,{align:'right'});doc.save(`${invoice.id}.pdf`);
 }
 const menuItems = ['Dashboard','Clients','Contacts','Invoices','Estimates','Items','Subscriptions','Payments','Expenses','Tickets','Tasks','Reports','Settings'];
+const mobileTabs = ['Dashboard','Clients','Invoices','Tickets'];
+const mobileMoreItems = menuItems.filter(item=>!mobileTabs.includes(item));
 const reportSections=[
   ['client-statement','Client Statement'],['expense-list','Expense List'],['item-sales','Item Sales'],['payments-collected','Payments Collected'],
   ['profit-and-loss','Profit and Loss'],['revenue-by-client','Revenue by Client'],['tax-report','Tax Report'],['subscription-list','Subscription List'],
@@ -51,7 +54,7 @@ const apiJson=async(input,options)=>{const response=await fetch(input,{...option
 
 function App() {
   const initialRoute=useRef(readRoute()).current;
-  const [data,setData]=useState(null), [page,setPage]=useState(initialRoute.page), [modal,setModal]=useState(null), [invoiceScreen,setInvoiceScreen]=useState(null), [clientScreen,setClientScreen]=useState(null), [ticketScreen,setTicketScreen]=useState(null),[routeReady,setRouteReady]=useState(false);
+  const [data,setData]=useState(null), [page,setPage]=useState(initialRoute.page), [modal,setModal]=useState(null), [invoiceScreen,setInvoiceScreen]=useState(null), [clientScreen,setClientScreen]=useState(null), [ticketScreen,setTicketScreen]=useState(null),[routeReady,setRouteReady]=useState(false),[mobileMoreOpen,setMobileMoreOpen]=useState(false);
   const [reportSection,setReportSection]=useState(()=>reportSections.some(item=>item.slug===initialRoute.id)?initialRoute.id:'revenue-by-client');
   const [unsaved,setUnsaved]=useState(false),[pendingNavigation,setPendingNavigation]=useState(null);
   const [collapsed,setCollapsed]=useState(()=>localStorage.getItem('nav-collapsed')==='true');
@@ -65,7 +68,7 @@ function App() {
   useEffect(()=>{if(!routeReady)return;const path=invoiceScreen?.invoice?`/invoices/${encodeURIComponent(invoiceScreen.invoice.id)}`:clientScreen?`/clients/${encodeURIComponent(clientScreen.id)}`:ticketScreen?`/tickets/${encodeURIComponent(ticketScreen.id)}`:page==='Reports'?`/reports/${reportSection}`:pagePath(page);if(window.location.pathname!==path)window.history.pushState({},'',path)},[routeReady,page,reportSection,invoiceScreen?.invoice?.id,clientScreen?.id,ticketScreen?.id]);
   useEffect(()=>{const back=()=>applyRoute(readRoute());window.addEventListener('popstate',back);return()=>window.removeEventListener('popstate',back)},[data]);
   const toggleNav=()=>setCollapsed(v=>{localStorage.setItem('nav-collapsed',String(!v));return !v});
-  const completeNavigation=item=>{setUnsaved(false);setPendingNavigation(null);setPage(item);setInvoiceScreen(null);setClientScreen(null);setTicketScreen(null);setModal(null)};
+  const completeNavigation=item=>{setUnsaved(false);setPendingNavigation(null);setMobileMoreOpen(false);setPage(item);setInvoiceScreen(null);setClientScreen(null);setTicketScreen(null);setModal(null)};
   const navigate=item=>{if(unsaved)return setPendingNavigation(item);completeNavigation(item)};
   const openReport=slug=>{setReportSection(slug);navigate('Reports')};
   const openInvoice=invoice=>{setPage('Invoices');setClientScreen(null);setTicketScreen(null);setInvoiceScreen({mode:'preview',documentType:'invoice',invoice})};
@@ -79,6 +82,7 @@ function App() {
       <nav>{menuItems.map(item=><React.Fragment key={item}><button title={item} aria-label={item} className={page===item?'active':''} onClick={()=>navigate(item)}><i><MenuIcon name={item}/></i><span>{item}</span>{item==='Reports'&&<b className="submenu-chevron">⌄</b>}</button>{item==='Reports'&&page==='Reports'&&<div className="report-submenu">{reportSections.map(report=><button key={report.slug} className={reportSection===report.slug?'active':''} onClick={()=>openReport(report.slug)}><i aria-hidden="true"/><span>{report.label}</span></button>)}</div>}</React.Fragment>)}</nav>
       <div className="aside-note"><small>Careful systems</small><p>Your financial work, held clearly and securely.</p><span>Protected by Zero Trust</span></div>
     </aside>
+    <header className="mobile-app-header"><img src="/kindred-innovia-logo.svg" alt=""/><div><small>Kindred Invoice</small><strong>{invoiceScreen?.invoice?.id||ticketScreen?.id||clientScreen?.name||page}</strong></div></header>
     <main className={`page-${page.toLowerCase()}`}><header><div><small>Kindred Invoice</small><h1>{page}</h1></div><div className="header-actions">{!['Dashboard','Contacts','Invoices','Items','Subscriptions','Payments','Expenses','Tickets','Tasks','Reports','Settings'].includes(page)&&<button className="primary" onClick={createForPage}>＋ New {page.slice(0,-1).toLowerCase()}</button>}</div></header>
       {page==='Dashboard'?<Dashboard data={data} go={navigate} openInvoice={openInvoice}/>:page==='Clients'?<Clients data={data} open={openClient}/>:page==='Contacts'?<Contacts data={data} reload={load} openClient={openClient}/>:page==='Invoices'?<Invoices data={data} create={()=>setModal('invoice')} open={openInvoice}/>:page==='Estimates'?<Estimates data={data} reload={load}/>:page==='Items'?<Items data={data} create={()=>setModal('item')}/>:page==='Subscriptions'?<Subscriptions data={data} create={()=>setModal('subscription')}/>:page==='Payments'?<Payments data={data} create={()=>setModal('payment')} reload={load} openInvoice={openInvoice}/>:page==='Expenses'?<Expenses data={data} create={()=>setModal('expense')}/>:page==='Tickets'?<Tickets data={data} create={()=>setModal('ticket')} open={openTicket}/>:page==='Tasks'?<Tasks data={data} create={()=>setModal('task')}/>:page==='Reports'?<Reports data={data} section={reportSection}/>:<Settings theme={theme} setTheme={setTheme} data={data} reload={load}/>} </main>
     {modal&&modal!=='invoice'&&modal!=='estimate'&&<Modal config={typeof modal==='string'?{type:modal}:modal} data={data} close={()=>setModal(null)} saved={async()=>{setModal(null);const next=await load();if(invoiceScreen?.documentType!=='estimate'&&invoiceScreen?.invoice?.id){const refreshed=next.invoices.find(item=>item.id===invoiceScreen.invoice.id);if(refreshed)setInvoiceScreen(current=>current?{...current,invoice:refreshed}:current)}}}/>}
@@ -87,6 +91,8 @@ function App() {
     {ticketScreen&&<TicketScreen ticket={ticketScreen} data={data} close={()=>setTicketScreen(null)} refresh={load} navigate={navigate} openClient={openClient} createExpense={()=>setModal({type:'expense',clientId:ticketScreen.clientId,ticketId:ticketScreen.id})}/>}
     {ticketScreen&&<TicketExpenseDock ticket={ticketScreen} data={data} create={()=>setModal({type:'expense',clientId:ticketScreen.clientId,ticketId:ticketScreen.id})}/>}
     {pendingNavigation&&<div className="app-confirm-bg"><section className="app-confirm" role="alertdialog" aria-modal="true"><div className="app-confirm-icon payment-delete-icon">!</div><small>Unsaved changes</small><h2>Leave without saving?</h2><p>Your changes to this document have not been saved. Leaving now will discard them.</p><div className="app-confirm-actions"><button type="button" onClick={()=>setPendingNavigation(null)}>Keep editing</button><button type="button" className="danger-fill" onClick={()=>completeNavigation(pendingNavigation)}>Discard and leave</button></div></section></div>}
+    <nav className="mobile-tab-bar" aria-label="Primary navigation">{mobileTabs.map(item=><button key={item} className={page===item&&!mobileMoreOpen?'active':''} onClick={()=>navigate(item)}><i><MenuIcon name={item}/></i><span>{item}</span></button>)}<button className={mobileMoreItems.includes(page)||mobileMoreOpen?'active':''} onClick={()=>setMobileMoreOpen(value=>!value)} aria-expanded={mobileMoreOpen}><i className="mobile-more-icon"><b/><b/><b/></i><span>More</span></button></nav>
+    {mobileMoreOpen&&<div className="mobile-more-backdrop" onClick={()=>setMobileMoreOpen(false)}><section className="mobile-more-sheet" role="dialog" aria-modal="true" aria-label="More navigation" onClick={event=>event.stopPropagation()}><div className="mobile-sheet-handle"/><div className="mobile-sheet-heading"><div><small>Kindred Invoice</small><h2>More</h2></div><button onClick={()=>setMobileMoreOpen(false)} aria-label="Close menu">×</button></div><div className="mobile-more-grid">{mobileMoreItems.map(item=><button key={item} className={page===item?'active':''} onClick={()=>navigate(item)}><i><MenuIcon name={item}/></i><span>{item}</span></button>)}</div><small className="mobile-version">Invoice CRM · v{__APP_VERSION__}</small></section></div>}
   </div>;
 }
 
