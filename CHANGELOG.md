@@ -2,6 +2,21 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.25.0] - 2026-08-05
+
+### Added
+
+- Added a Documentation workspace between Reports and Settings for internal pricing, policies, procedures, and business reference material.
+- Added workspace-isolated document folders, searchable document lists, formatted rich-text editing, mobile document editing, and persistent D1-backed document storage.
+- Added create, update, and delete document APIs with server-side HTML filtering and Zero Trust workspace scoping.
+- Added subscription editing and deletion from the subscription detail workspace.
+- Added an explicit active-subscription removal warning that identifies the assigned client and linked tickets before deletion.
+
+### Fixed
+
+- Extended the blue application canvas through the full viewport so the legacy tan body background cannot appear beneath short pages.
+- Subscription deletion now removes the plan from its assigned client and changes linked tickets to hourly billing instead of leaving stale subscription references.
+
 ## [0.24.0] - 2026-07-30
 
 ### Added

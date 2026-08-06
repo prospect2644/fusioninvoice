@@ -1,0 +1,29 @@
+.documentation-library {
+  position: static;
+  inset: auto;
+  width: auto;
+  height: auto;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.documentation-folder-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.documentation-folder-form input {
+  min-width: 0;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--page);
+  color: var(--ink);
+}
+
+.documentation-folder-form button {
+  min-height: 38px;
+  padding: 7px 10px;
+}

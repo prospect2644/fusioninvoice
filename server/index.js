@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketNote, addTicketTime, convertEstimate, removeCustomField, updateInvoiceItems, updateInvoiceStatus, updateTicketStatus, workspaceFor } from './store.js';
+import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeSubscription, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTicketStatus, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -30,6 +30,8 @@ app.post('/api/invoices', action(body => {
 }));
 app.post('/api/items', action(body => addItem(body)));
 app.post('/api/subscriptions', action(body => addSubscription(body)));
+app.patch('/api/subscriptions/:id', action((body,params)=>updateSubscription(params.id,body)));
+app.delete('/api/subscriptions/:id', action((body,params)=>removeSubscription(params.id)));
 app.post('/api/expenses', action(body => addExpense(body)));
 app.post('/api/tasks', (req, res) => { try { res.status(201).json(addTask(req.body || {}, req.identity.email)); } catch (error) { res.status(400).json({ error: error.message }); } });
 app.post('/api/tickets', action(body => addTicket(body)));
@@ -49,6 +51,11 @@ app.post('/api/payments', action(body => {
 }));
 app.post('/api/settings/custom-fields', action(body => addCustomField(body)));
 app.delete('/api/settings/custom-fields/:id', action((body, params) => removeCustomField(params.id)));
+app.post('/api/document-folders', action(body => addDocumentFolder(body)));
+app.delete('/api/document-folders/:id', action((body, params) => removeDocumentFolder(params.id)));
+app.post('/api/documents', (req,res)=>{try{res.status(201).json(addDocument(req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
+app.patch('/api/documents/:id', action((body,params)=>updateDocument(params.id,body)));
+app.delete('/api/documents/:id', action((body,params)=>removeDocument(params.id)));
 app.get('/api/logout', (req, res) => res.json({ logoutUrl: req.identity.source === 'local-development' ? null : '/cdn-cgi/access/logout' }));
 
 const dist = path.resolve('dist');

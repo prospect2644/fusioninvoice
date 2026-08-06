@@ -3,7 +3,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 
 const dataFile = path.resolve('server/data.json');
-const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], items: [], subscriptions: [], expenses: [], tasks: [], tickets: [], settings: { customFields: [] } };
+const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], items: [], subscriptions: [], expenses: [], tasks: [], tickets: [], documentFolders: [], documents: [], settings: { customFields: [] } };
 
 function read() {
   if (!fs.existsSync(dataFile)) fs.writeFileSync(dataFile, JSON.stringify(emptyStore, null, 2));
@@ -100,6 +100,9 @@ export function addSubscription(input) {
   data.subscriptions.unshift(subscription); write(data); return subscription;
 }
 
+export function updateSubscription(id,input){const data=read(),subscription=data.subscriptions.find(item=>item.id===id);if(!subscription)throw new Error('Subscription not found.');if(!data.clients.some(client=>client.id===input.clientId))throw new Error('Client not found.');const updated={clientId:input.clientId,summary:String(input.summary||'').trim(),nextDate:input.nextDate,stopDate:input.stopDate||null,intervalCount:Number(input.intervalCount||1),intervalUnit:input.intervalUnit||'months',amount:Number(input.amount||0),managedIt:input.managedIt==='on'||input.managedIt===true,hourlyAllotment:Number(input.hourlyAllotment||0),status:input.status||'active'};if(!updated.summary||!updated.nextDate||!(updated.intervalCount>0)||!Number.isInteger(updated.intervalCount)||!['days','weeks','months','years'].includes(updated.intervalUnit)||updated.amount<0||!Number.isFinite(updated.hourlyAllotment)||updated.hourlyAllotment<0||!['active','paused','ended'].includes(updated.status))throw new Error('Complete the subscription details with a valid recurrence, allotment, and amount.');Object.assign(subscription,updated,{updatedAt:new Date().toISOString()});write(data);return subscription;}
+export function removeSubscription(id){const data=read(),subscription=data.subscriptions.find(item=>item.id===id);if(!subscription)throw new Error('Subscription not found.');data.tickets.filter(ticket=>ticket.subscriptionId===id).forEach(ticket=>{ticket.subscriptionId=null;ticket.billingType='hourly';ticket.updatedAt=new Date().toISOString()});data.subscriptions=data.subscriptions.filter(item=>item.id!==id);write(data);return{id,deleted:true,clientId:subscription.clientId};}
+
 export function addExpense(input) {
   const data = read();
   if (input.clientId && !data.clients.some(client => client.id === input.clientId)) throw new Error('Client not found');
@@ -155,3 +158,10 @@ export function removeCustomField(id) {
   if (data.settings.customFields.length === before) throw new Error('Custom field not found.');
   write(data); return { id };
 }
+
+const cleanDocumentHtml=value=>String(value||'').replace(/<\/?(?:script|style|iframe|object|embed|form|input|button)[^>]*>/gi,'').replace(/\son\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi,'').replace(/\s(?:style|class|id)\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/gi,'').replace(/href\s*=\s*["']\s*(?:javascript|data):[^"']*["']/gi,'href="#"');
+export function addDocumentFolder(input){const data=read(),name=String(input.name||'').trim();if(!name||name.length>100)throw new Error('Enter a folder name up to 100 characters.');const folder={id:`folder_${crypto.randomUUID()}`,name,parentId:null,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};data.documentFolders.push(folder);write(data);return folder;}
+export function addDocument(input,email){const data=read(),title=String(input.title||'Untitled document').trim(),folderId=String(input.folderId||'')||null;if(!title||title.length>180)throw new Error('Enter a document title up to 180 characters.');if(folderId&&!data.documentFolders.some(folder=>folder.id===folderId))throw new Error('Folder not found.');const document={id:`doc_${crypto.randomUUID()}`,folderId,title,contentHtml:cleanDocumentHtml(input.contentHtml),createdByEmail:email,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};data.documents.unshift(document);write(data);return document;}
+export function updateDocument(id,input){const data=read(),document=data.documents.find(item=>item.id===id);if(!document)throw new Error('Document not found.');const title=String(input.title||'').trim(),folderId=String(input.folderId||'')||null;if(!title||title.length>180)throw new Error('Enter a document title up to 180 characters.');if(folderId&&!data.documentFolders.some(folder=>folder.id===folderId))throw new Error('Folder not found.');Object.assign(document,{title,folderId,contentHtml:cleanDocumentHtml(input.contentHtml),updatedAt:new Date().toISOString()});write(data);return document;}
+export function removeDocument(id){const data=read(),before=data.documents.length;data.documents=data.documents.filter(item=>item.id!==id);if(before===data.documents.length)throw new Error('Document not found.');write(data);return{id,deleted:true};}
+export function removeDocumentFolder(id){const data=read();if(data.documents.some(item=>item.folderId===id))throw new Error('Move or delete the documents in this folder first.');const before=data.documentFolders.length;data.documentFolders=data.documentFolders.filter(item=>item.id!==id);if(before===data.documentFolders.length)throw new Error('Folder not found.');write(data);return{id,deleted:true};}
