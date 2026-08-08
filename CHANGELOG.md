@@ -2,6 +2,13 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.25.1] - 2026-08-08
+
+### Fixed
+
+- Added functional icons for Contacts, Items, Subscriptions, Tickets, Expenses, and Tasks in desktop and mobile navigation.
+- Prevented the collapsed desktop-menu preference from hiding labels in the mobile tab bar and More menu.
+
 ## [0.25.0] - 2026-08-05
 
 ### Added

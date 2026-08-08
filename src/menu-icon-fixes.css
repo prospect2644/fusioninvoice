@@ -1,0 +1,13 @@
+nav button[aria-label="Contacts"] i::before { content: none; }
+
+@media (max-width: 767px) {
+  .shell.collapsed .mobile-tab-bar span,
+  .shell.collapsed .mobile-more-grid span { display: block; }
+
+  .mobile-more-grid button span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: center;
+    line-height: 1.15;
+  }
+}
