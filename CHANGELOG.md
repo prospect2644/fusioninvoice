@@ -2,6 +2,28 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.26.0] - 2026-08-09
+
+### Added
+
+- Added workspace-wide Assets and Accounts directories with client filtering and direct secure-account records.
+- Added branded ticket PDF exports with work logs, customer updates, payments, and balances.
+- Added editable service-board and named subscription billing cards to ticket records.
+- Added permanent invoice deletion with cleanup of related payments, line items, tasks, conversion links, and subscription run records.
+
+### Changed
+
+- Removed the ticket-level expense dock and its obsolete Expenses navigation tab.
+- Reworked Assets and Accounts to match the Contacts directory layout on desktop and mobile.
+- Payment deletion now reopens paid invoices as Sent or Overdue according to the due date.
+
+### Fixed
+
+- Restored saved rich-text document contents when reopening Documentation records.
+- Corrected collapsed-sidebar logo and expand-arrow centering.
+- Prevented credential action buttons from shrinking outside their borders.
+- Displayed actual subscription package names, including Standard Package, in ticket billing controls.
+
 ## [0.25.4] - 2026-08-08
 
 ### Fixed
