@@ -26,6 +26,35 @@ body::before {
   background: var(--workspace-canvas);
 }
 
+/* Keep the compact rail visually centered without sacrificing menu scrolling. */
+.shell > aside {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.shell > aside::-webkit-scrollbar { width: 0; height: 0; }
+
+.shell.collapsed > aside {
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.shell.collapsed .brand {
+  width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  padding-right: 0;
+  padding-left: 0;
+  justify-items: center;
+}
+
+.shell.collapsed .brand-logo,
+.shell.collapsed .collapse {
+  justify-self: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .shell {
   align-items: stretch;
   align-content: stretch;
