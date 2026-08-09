@@ -1,0 +1,83 @@
+/* Readable type scale for the full-size desktop canvas. */
+@media (min-width: 801px) {
+  body { font-size: 17px; }
+
+  nav button,
+  .report-submenu button { font-size: 15px; }
+
+  .shell > main { font-size: 18px; }
+  .shell > main :where(p,li,td,dd) { font-size: 16px; line-height: 1.58; }
+  .shell > main :where(label,legend) { font-size: 13px; }
+  .shell > main :where(small) { font-size: 11px; line-height: 1.45; }
+
+  .shell > main :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) {
+    font-size: 16px;
+  }
+
+  .shell > main :where(
+    .primary,
+    .quiet,
+    .mini,
+    .text-btn,
+    .modal-actions button,
+    .app-confirm-actions button,
+    .core-asset-record-actions button
+  ) { font-size: 14px; }
+
+  .shell > main :where(
+    .software-invoice-row,
+    .software-item-row,
+    .software-subscription-row,
+    .software-payment-row,
+    .software-expense-row,
+    .software-task-row,
+    .software-ticket-row,
+    .global-directory-row,
+    .subscription-ticket-row,
+    .tr
+  ) { font-size: 15px; }
+
+  .shell > main :where(
+    .software-invoice-head,
+    .directory-head,
+    .subscription-ticket-head,
+    .client-subscription-head,
+    .tr.th
+  ) { font-size: 12px; }
+
+  .shell > main :where(.status,.core-category,.inline-status-select,.reference-badge) {
+    font-size: 11px;
+  }
+
+  .shell > main .software-line-panel :where(.invoice-item,.invoice-item > span:first-child,.invoice-item strong) {
+    font-size: 16px;
+  }
+
+  .shell > main :where(.ticket-module-tabs button,.ticket-note-tabs button,.detail-tab-row > *) {
+    font-size: 12px;
+  }
+
+  .shell > main :where(
+    .core-asset-detail-grid strong,
+    .credential-vault-fields strong,
+    .credential-vault-fields p,
+    .credential-vault-fields a,
+    .wireless-asset-fields dd,
+    .wireless-asset-fields p,
+    .wireless-asset-fields li,
+    .configuration-asset-fields dd,
+    .configuration-asset-fields p,
+    .account-detail-status strong,
+    .account-detail-notes
+  ) { font-size: 14px; }
+}
+
+@media (max-width: 800px) {
+  body,
+  .shell > main { font-size: 17px; }
+  .shell > main :where(p,li,td,dd) { font-size: 16px; }
+  .shell > main :where(label,legend) { font-size: 13px; }
+  .shell > main :where(small) { font-size: 11px; }
+  .mobile-tab-bar button span,
+  .mobile-more-grid span { font-size: 11px; }
+}

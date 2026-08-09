@@ -22,6 +22,7 @@ import './kindred-workspace.css';
 import './credential-manage.css';
 import './reference-picker.css';
 import './creation-pages.css';
+import './font-scale.css';
 
 const money = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(n || 0));
 const decimalHours = minutes => `${(Number(minutes || 0) / 60).toFixed(2)} hrs`;

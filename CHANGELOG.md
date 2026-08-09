@@ -2,6 +2,14 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.27.1] - 2026-08-09
+
+### Changed
+
+- Restored the full desktop application canvas to 100% scale.
+- Increased typography across navigation, tables, forms, controls, badges, tickets, invoices, Core Assets, credentials, and Documentation.
+- Kept the responsive mobile layout proportional while improving small labels and navigation text.
+
 ## [0.27.0] - 2026-08-09
 
 ### Added

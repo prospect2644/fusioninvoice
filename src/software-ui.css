@@ -470,7 +470,7 @@ button.software-ticket-row:hover { background: #e2f2f8; }
 :root[data-theme="dark"] .ticket-expense-dock { border-color: #39515c; background: #1c3039; color: #e8f4f8; }
 
 /* Global application density */
-html { zoom: 80%; }
+html { zoom: 100%; }
 @media print { html { zoom: 100%; } }
 
 /* Client record section navigation */
