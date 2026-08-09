@@ -110,6 +110,9 @@ button.software-invoice-row:nth-child(even) { background: #f2f2f2; }
 button.software-invoice-row:hover { background: #eaf5ff; }
 .software-invoice-head { min-height: 48px; border-top: 0; color: #0878ed; font-weight: 700; }
 .software-invoice-row>strong:first-child,.client-link { color: #0079ea; }
+.record-link { color:#0785b6; font-weight:700; text-decoration:none; cursor:pointer; border-radius:4px; outline:none; }
+.record-link:hover { color:#005f8b; text-decoration:underline; }
+.record-link:focus-visible { box-shadow:0 0 0 2px rgba(53,169,213,.38); }
 .software-invoice-row>strong:last-child { text-align: left; }
 .invoice-summary-text { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .software-invoice-row .status { display: inline-block; background: #93979c; color: #fff; font-weight: 700; }
@@ -214,6 +217,11 @@ button.software-invoice-row:hover { background: #eaf5ff; }
 .print-only-client { display: none; }
 .invoice-address-grid label { display: grid; gap: 8px; padding: 16px; font-size: 11px; }
 .invoice-address-grid select { width: 100%; padding: 9px; border: 1px solid #c9d1d9; background: #fff; }
+.ticket-time-list>div { grid-template-columns: minmax(0,1fr) auto auto; }
+.ticket-time-actions { display:flex; gap:6px; align-items:center; }
+.ticket-time-actions button { min-height:30px; padding:5px 10px; border:1px solid #9fc4d6; border-radius:999px; background:#f5fbfe; color:#11344b; font:inherit; font-weight:700; cursor:pointer; }
+.ticket-time-actions button.danger { border-color:#e3a49b; color:#a33a2e; background:#fff8f6; }
+.ticket-time-edit-form textarea { min-height:130px; }
 .software-panel-title { display: flex; align-items: center; justify-content: space-between; padding-right: 10px; border-bottom: 1px solid #d8dde3; }
 .software-panel-title h3 { border: 0; }
 .software-panel-title .primary { padding: 7px 10px; font-size: 11px; }
@@ -396,7 +404,7 @@ button.software-invoice-row:nth-child(even),.software-items-table .software-item
 /* Helpdesk tickets */
 .tickets-index { padding-top: 22px; }
 .tickets-index-panel { margin-top: 0; padding: 0; overflow: hidden; }
-.software-ticket-row { width: 100%; display: grid; grid-template-columns: .7fr 1.2fr 1fr 1.8fr .9fr .7fr 1fr; gap: 13px; align-items: center; min-height: 54px; padding: 10px 24px; border: 0; border-top: 1px solid #d4e1e7; background: #f8fbfd; color: #172b3d; text-align: left; font-size: 12px; }
+.software-ticket-row { width: 100%; display: grid; grid-template-columns: .65fr 1.1fr .9fr 1.55fr .8fr .6fr .75fr 1fr; gap: 13px; align-items: center; min-height: 54px; padding: 10px 24px; border: 0; border-top: 1px solid #d4e1e7; background: #f8fbfd; color: #172b3d; text-align: left; font-size: 12px; }
 button.software-ticket-row { cursor: pointer; }
 button.software-ticket-row:nth-child(even) { background: #edf5f8; }
 button.software-ticket-row:hover { background: #e2f2f8; }
@@ -449,7 +457,7 @@ button.software-ticket-row:hover { background: #e2f2f8; }
 :root[data-theme="dark"] .ticket-hero,:root[data-theme="dark"] .ticket-panel,:root[data-theme="dark"] .ticket-metrics>div,:root[data-theme="dark"] .ticket-note { background: #1c3039; border-color: #39515c; }
 :root[data-theme="dark"] .ticket-note.private { background: #30283b; }
 :root[data-theme="dark"] .ticket-hero h1,:root[data-theme="dark"] .ticket-panel-head h2 { color: #e8f4f8; }
-@media(max-width:1200px){.ticket-work-grid{grid-template-columns:1fr}.ticket-metrics{grid-template-columns:1fr 1fr}.software-ticket-row{grid-template-columns:.65fr 1fr .9fr 1.5fr .8fr .65fr .9fr}}
+@media(max-width:1200px){.ticket-work-grid{grid-template-columns:1fr}.ticket-metrics{grid-template-columns:1fr 1fr}.software-ticket-row{grid-template-columns:.6fr .9fr .8fr 1.3fr .75fr .6fr .7fr .9fr}}
 .ticket-expense-dock { position: fixed; right: 26px; bottom: 24px; z-index: 21; width: 340px; max-height: 300px; overflow: auto; padding: 18px; border: 1px solid #bcd6e1; border-radius: 22px; background: #f5fafc; color: var(--kindred-ink); box-shadow: 0 20px 55px #17374638; }
 .ticket-expense-dock>div:first-child { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
 .ticket-expense-dock>div:first-child span>* { display: block; }
@@ -472,6 +480,8 @@ html { zoom: 80%; }
 .show-closed-check { display: inline-flex; align-items: center; gap: 7px; padding: 0 8px; color: var(--kindred-muted); font-size: 10px; font-weight: 700; white-space: nowrap; }
 .show-closed-check input { width: 15px; height: 15px; accent-color: #35a9d5; }
 .client-ticket-actions { display:flex; align-items:center; gap:12px; }
+.client-detail-row.client-ticket-row { grid-template-columns: .75fr 1.1fr .9fr .9fr .7fr .85fr; }
+.client-ticket-balance { text-align: right; }
 .client-subscription-list { overflow-x:auto; }
 .client-subscription-row { width:100%; min-width:920px; display:grid; grid-template-columns:1.55fr .65fr .55fr .55fr .65fr .7fr .85fr; gap:14px; align-items:center; padding:15px 10px; border:0; border-top:1px solid #d3e2e9; background:transparent; color:var(--kindred-ink); text-align:left; }
 button.client-subscription-row { cursor:pointer; }
@@ -848,3 +858,60 @@ aside { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scro
 :root[data-theme="dark"] .client-payment-action{border-color:var(--dark-border);background:#12313e}
 @media(max-width:720px){.client-payment-action{align-items:stretch;flex-direction:column}.client-payment-action button{width:100%}.ticket-payment-host button{font-size:10px}}
 .inline-status-host{display:inline-flex;max-width:100%}.inline-status-select{min-width:105px;max-width:100%;height:30px;padding:4px 25px 4px 9px;border:1px solid #b7cfda;border-radius:8px;background:#edf6fa;color:#173746;font-size:9px;font-weight:800;text-transform:capitalize}.inline-status-select.paid,.inline-status-select.approved,.inline-status-select.closed{border-color:#8acbb5;background:#e5f7f0;color:#176a50}.inline-status-select.overdue,.inline-status-select.declined{border-color:#e0aaa2;background:#fff0ed;color:#a43f32}.inline-status-select.waiting_customer,.inline-status-select.waiting_vendor{border-color:#ddc17e;background:#fff8e4;color:#755a18}:root[data-theme="dark"] .inline-status-select{border-color:var(--dark-border);background:#173746;color:var(--dark-text)}
+
+/* Accessible, site-wide status palette. Dark fills use white; pale fills use navy. */
+.status,
+.inline-status-select {
+  border: 1px solid transparent;
+  font-weight: 800;
+  line-height: 1.15;
+  text-shadow: none;
+}
+.status.active,.status.sent,
+.inline-status-select.active,.inline-status-select.sent {
+  border-color: #066585!important;
+  background: #087fa9!important;
+  color: #fff!important;
+}
+.status.open,.status.paid,.status.approved,.status.completed,.status.billed,.status.reimbursed,
+.inline-status-select.open,.inline-status-select.paid,.inline-status-select.approved,.inline-status-select.completed,.inline-status-select.billed,.inline-status-select.reimbursed {
+  border-color: #125d3b!important;
+  background: #197447!important;
+  color: #fff!important;
+}
+.status.closed,.status.overdue,.status.declined,.status.rejected,.status.void,.status.cancelled,.status.ended,
+.inline-status-select.closed,.inline-status-select.overdue,.inline-status-select.declined,.inline-status-select.rejected,.inline-status-select.void,.inline-status-select.cancelled,.inline-status-select.ended {
+  border-color: #842d29!important;
+  background: #a63a32!important;
+  color: #fff!important;
+}
+.status.in_progress,.status.converted,
+.inline-status-select.in_progress,.inline-status-select.converted {
+  border-color: #51377d!important;
+  background: #6b4aa0!important;
+  color: #fff!important;
+}
+.status.waiting_customer,
+.inline-status-select.waiting_customer {
+  border-color: #d2a538!important;
+  background: #f3c969!important;
+  color: #172b3a!important;
+}
+.status.waiting_vendor,
+.inline-status-select.waiting_vendor {
+  border-color: #91470f!important;
+  background: #b85c16!important;
+  color: #fff!important;
+}
+.status.draft,.status.paused,.status.unbilled,
+.inline-status-select.draft,.inline-status-select.paused,.inline-status-select.unbilled {
+  border-color: #a9bec8!important;
+  background: #d8e5eb!important;
+  color: #172b3a!important;
+}
+.status.inactive,
+.inline-status-select.inactive {
+  border-color: #3d4d55!important;
+  background: #52646e!important;
+  color: #fff!important;
+}

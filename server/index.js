@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeSubscription, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTicketStatus, workspaceFor } from './store.js';
+import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeSubscription, removeTicketTime, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTicketStatus, updateTicketTime, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -38,6 +38,8 @@ app.post('/api/tickets', action(body => addTicket(body)));
 app.patch('/api/tickets/:id/status', action((body,params)=>updateTicketStatus(params.id,body.status)));
 app.post('/api/tickets/:id/notes', (req,res)=>{try{res.status(201).json(addTicketNote(req.params.id,req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
 app.post('/api/tickets/:id/time', (req,res)=>{try{res.status(201).json(addTicketTime(req.params.id,req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
+app.patch('/api/ticket-time-entries/:id', action((body,params)=>updateTicketTime(params.id,body)));
+app.delete('/api/ticket-time-entries/:id', action((body,params)=>removeTicketTime(params.id)));
 app.patch('/api/invoices/:id/status', action((body, params) => updateInvoiceStatus(params.id, body.status)));
 app.patch('/api/invoices/:id/items', action((body, params) => updateInvoiceItems(params.id, body)));
 app.post('/api/estimates', action(body => {
