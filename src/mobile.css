@@ -153,6 +153,13 @@
     flex-wrap: nowrap!important; overflow-x: auto; overscroll-behavior-inline: contain;
     scrollbar-width: none;
   }
+  .ticket-module-tabs-host { top: 0; padding: 5px 0; }
+  .ticket-module-tabs-host .ticket-module-tabs {
+    display: flex; width: max-content; min-width: 100%;
+  }
+  .ticket-module-tabs-host .ticket-module-tabs button {
+    flex: 1 0 108px; width: auto; min-height: 44px;
+  }
   .detail-tab-row::-webkit-scrollbar,.client-record-tabs::-webkit-scrollbar { display: none; }
   .detail-tab-row button,.client-record-tabs button { flex: 0 0 auto; min-height: 44px; white-space: nowrap; }
 

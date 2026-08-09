@@ -953,9 +953,33 @@ aside { overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scro
   display: none;
 }
 
-/* The ticket workspace no longer uses the secondary module strip. */
+/* Keep the ticket workspace navigation visible, evenly spaced, and pinned below the record header. */
 .ticket-module-tabs-host {
-  display: none;
+  display: block;
+  position: sticky;
+  top: 72px;
+  z-index: 12;
+  margin: 0 0 18px;
+  padding: 6px 0;
+  background: linear-gradient(145deg,#e6f1f6 0%,#e1eef4 100%);
+}
+.ticket-module-tabs-host .ticket-module-tabs {
+  display: grid;
+  grid-template-columns: repeat(6,minmax(0,1fr));
+  width: 100%;
+  flex-wrap: nowrap;
+}
+.ticket-module-tabs-host .ticket-module-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  text-align: center;
+}
+:root[data-theme="dark"] .ticket-module-tabs-host {
+  background: linear-gradient(145deg,#152830 0%,#102129 100%);
 }
 .ticket-note-count-hidden {
   display: none!important;
