@@ -1,4 +1,11 @@
-nav button[aria-label="Contacts"] i::before { content: none; }
+nav button[aria-label="Contacts"] i::before,
+nav button[aria-label="Items"] i::before,
+nav button[aria-label="Subscriptions"] i::before,
+nav button[aria-label="Expenses"] i::before,
+nav button[aria-label="Tickets"] i::before,
+nav button[aria-label="Tasks"] i::before { content: none; display: none; }
+
+nav button[aria-label="Contacts"] i svg { display: block; }
 
 @media (max-width: 767px) {
   .shell.collapsed .mobile-tab-bar span,

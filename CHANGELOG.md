@@ -2,6 +2,26 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.25.2] - 2026-08-08
+
+### Fixed
+
+- Removed legacy desktop navigation symbols that overlapped the new functional SVG icons.
+- Made document saves resilient to a follow-up workspace refresh failure and select newly created documents by their returned ID.
+- Added more reliable D1 document existence checks before saving edits.
+- Extended the blue workspace canvas through the full viewport and all scrollable content instead of exposing the legacy tan background.
+- Added secure editing and permanent deletion for client credential records, including password and MFA replacement or removal.
+- Hid the floating ticket-expense dock on mobile and centered confirmation dialogs within mobile safe areas.
+- Repaired legacy D1 invoice workflow schemas automatically and added existing-estimate line editing for hour and rate changes.
+- Added explicit in-app confirmation before converting estimates to invoices or invoices back to estimates.
+- Redesigned report PDF exports with Kindred Innovia branding, graphical KPI cards, structured tables, alternating rows, and page footers.
+- Added `@` documentation and client-scoped `#` credential references to text fields without exposing stored passwords or MFA secrets.
+- Added guarded client deletion and exposed existing delete actions directly inside credential edit forms.
+- Redesigned full-page record creation as a spacious workspace with grouped fields, contextual summaries, and a persistent action bar.
+- Added ticket receivables and payments, live hourly ticket balances, client-level payment entry, and searchable payment allocation across open invoices and tickets.
+- Added inline status dropdowns to invoice, estimate, and ticket preview lists with immediate persistence and paid-balance safeguards.
+- Made documentation folders real navigable locations with folder-specific URLs, headings, filtering, and visible active-folder treatment.
+
 ## [0.25.1] - 2026-08-08
 
 ### Fixed

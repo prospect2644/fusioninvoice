@@ -27,3 +27,8 @@
   min-height: 38px;
   padding: 7px 10px;
 }
+
+.documentation-folder-list button{position:relative;min-width:0;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.documentation-folder-list button.active{padding-left:14px;background:#dff2f9!important;color:#0b6586!important;box-shadow:inset 3px 0 #25a8d4}
+.documentation-folder-list button.active:after{content:'Open';margin-left:auto;color:#418095;font-size:7px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+:root[data-theme="dark"] .documentation-folder-list button.active{background:#173d4c!important;color:#8bdcf5!important}

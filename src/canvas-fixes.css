@@ -1,0 +1,40 @@
+:root {
+  --workspace-canvas: linear-gradient(145deg, #e6f1f6 0%, #d5e7ef 100%);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: #e6f1f6;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--workspace-canvas);
+}
+
+#root,
+.shell,
+.shell > main,
+.shell.collapsed > main {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--workspace-canvas);
+}
+
+.shell {
+  align-items: stretch;
+  align-content: stretch;
+}
+
+:root[data-theme="dark"] {
+  --workspace-canvas: linear-gradient(145deg, #152332 0%, #12202d 100%);
+}
+
+@media print {
+  body::before { display: none; }
+}
