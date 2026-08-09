@@ -2,6 +2,12 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.25.4] - 2026-08-08
+
+### Fixed
+
+- Included the exact missing table or column in safe database-schema error responses so failed saves can be repaired without access to retained Worker logs.
+
 ## [0.25.3] - 2026-08-08
 
 ### Added

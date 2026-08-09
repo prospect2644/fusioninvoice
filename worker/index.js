@@ -377,10 +377,10 @@ export async function handleApi(request, env) {
     return await api(request, env);
   } catch (error) {
     if (error instanceof Response) return error;
-    const reference=crypto.randomUUID().slice(0,8),detail=String(error?.message||error),code=/no such (table|column)/i.test(detail)?'DATABASE_SCHEMA_OUTDATED':/constraint failed|foreign key constraint/i.test(detail)?'DATABASE_CONSTRAINT':/d1_error|database/i.test(detail)?'DATABASE_WRITE_FAILED':'SERVICE_FAILURE';
-    console.error('Invoice API request failed',{reference,code,method:request.method,path:new URL(request.url).pathname,error});
-    const message=code==='DATABASE_SCHEMA_OUTDATED'?'The database schema is being updated. Retry this change once.':code==='DATABASE_CONSTRAINT'?'This change conflicts with a linked record. Refresh the page and retry.':'The invoice service could not complete this request.';
-    return json({error:`${message} [${code}:${reference}]`,code,reference},500);
+    const reference=crypto.randomUUID().slice(0,8),detail=String(error?.message||error),missing=detail.match(/no such (table|column):\s*(?:main\.)?([A-Za-z_][\w.]*)/i),code=missing?'DATABASE_SCHEMA_OUTDATED':/constraint failed|foreign key constraint/i.test(detail)?'DATABASE_CONSTRAINT':/d1_error|database/i.test(detail)?'DATABASE_WRITE_FAILED':'SERVICE_FAILURE',schemaTarget=missing?.[2]||null;
+    console.error('Invoice API request failed',{reference,code,schemaTarget,method:request.method,path:new URL(request.url).pathname,error});
+    const message=code==='DATABASE_SCHEMA_OUTDATED'?`The database schema is missing ${schemaTarget}.`:code==='DATABASE_CONSTRAINT'?'This change conflicts with a linked record. Refresh the page and retry.':'The invoice service could not complete this request.';
+    return json({error:`${message} [${code}:${reference}]`,code,reference,schemaTarget},500);
   }
 }
 
