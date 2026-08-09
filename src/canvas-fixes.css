@@ -30,11 +30,12 @@ body::before {
 .shell > aside {
   position: fixed;
   top: 0;
-  bottom: 0;
+  bottom: auto;
   left: 0;
   z-index: 30;
-  height: 100vh;
-  height: 100dvh;
+  /* The desktop UI is rendered at 80%; paint through the scaled viewport edge. */
+  height: 125vh;
+  height: 125dvh;
   overflow: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;

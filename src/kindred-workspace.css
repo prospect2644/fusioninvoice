@@ -1,0 +1,195 @@
+/* Unified Kindred Innovia workspace language. Sidebar intentionally excluded. */
+:root {
+  --ki-navy: #0b304d;
+  --ki-ink: #132d3c;
+  --ki-teal: #087fae;
+  --ki-sky: #35a9d5;
+  --ki-canvas: #dcecf3;
+  --ki-surface: #f7fbfd;
+  --ki-surface-strong: #ffffff;
+  --ki-border: #bcd3de;
+  --ki-muted: #597482;
+  --ki-shadow: 0 18px 42px rgba(16, 61, 81, .10);
+  --ki-font: "Avenir Next", Avenir, "DM Sans", Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.shell > main {
+  color: var(--ki-ink);
+  font-family: var(--ki-font);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.shell > main :where(button,input,select,textarea) { font-family: var(--ki-font); }
+.shell > main :where(h1,h2,h3,h4,h5,h6) { margin-top: 0; color: var(--ki-ink); font-family: var(--ki-font); font-weight: 720; letter-spacing: -.025em; line-height: 1.16; }
+.shell > main :where(p,li,td,dd) { font-size: 14px; line-height: 1.58; }
+
+.shell > main > header {
+  min-height: 76px;
+  height: auto;
+  border-bottom: 1px solid rgba(137, 173, 188, .55);
+  background: rgba(247, 251, 253, .92);
+  box-shadow: 0 8px 24px rgba(22, 63, 80, .05);
+  backdrop-filter: blur(14px);
+}
+
+.shell > main > header h1 { color: var(--ki-ink); font-size: 27px; font-weight: 760; }
+.shell > main > header small,
+.shell > main .index-heading nav { color: var(--ki-muted); font-size: 11px; }
+
+.shell > main .index-heading,
+.shell > main .dashboard-heading { margin-bottom: 20px; padding-top: 30px; }
+.shell > main .index-heading h2,
+.shell > main .dashboard-heading h2 { color: var(--ki-ink); font-size: clamp(28px, 2.2vw, 38px); font-weight: 730; letter-spacing: -.035em; }
+.shell > main .index-heading .index-icon { color: var(--ki-teal); }
+.shell > main .dashboard-heading p,
+.shell > main .dashboard-heading span { color: var(--ki-muted); font-size: 13px; }
+.shell > main .home-crumb,
+.shell > main .record-link,
+.shell > main .client-link,
+.shell > main .directory-client-link { color: var(--ki-teal); }
+
+.shell > main :where(.panel,.client-list,.setting,.report-controls,.report-table,.core-asset-record-panel,.core-asset-record-hero,.asset-modal,.modal,.app-confirm) {
+  border: 1px solid var(--ki-border);
+  border-top-width: 1px;
+  border-radius: 24px;
+  background: rgba(247, 251, 253, .97);
+  box-shadow: var(--ki-shadow);
+}
+
+.shell > main :where(.panel,.setting,.report-controls,.report-table) { padding: 24px; }
+.shell > main .panel-head { gap: 16px; }
+.shell > main .panel-head h3 { color: var(--ki-ink); font-size: 21px; font-weight: 720; }
+.shell > main :where(.panel-head small,.client-record-heading small,.core-asset-record small,.creation-form small,.app-confirm>small,.report-controls label,.modal label) {
+  color: var(--ki-teal);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.shell > main :where(.primary,.quiet,.mini,.text-btn,.modal-actions button,.app-confirm-actions button,.core-asset-record-actions button) {
+  min-height: 42px;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: .01em;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.shell > main .primary { border: 1px solid var(--ki-teal); background: var(--ki-teal); color: #fff; box-shadow: 0 8px 18px rgba(8, 127, 174, .18); }
+.shell > main .primary:hover { background: #056f98; transform: translateY(-1px); }
+.shell > main .quiet,
+.shell > main .mini,
+.shell > main .modal-actions button:not(.primary) { border: 1px solid #a9c4d0; background: transparent; color: var(--ki-ink); }
+.shell > main :where(.quiet,.mini):hover { border-color: var(--ki-teal); color: var(--ki-teal); background: #ebf7fb; }
+.shell > main button:focus-visible,
+.shell > main input:focus-visible,
+.shell > main select:focus-visible,
+.shell > main textarea:focus-visible { outline: 3px solid rgba(53, 169, 213, .24); outline-offset: 2px; }
+
+.shell > main :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) {
+  min-height: 44px;
+  border: 1px solid #abc7d3;
+  border-radius: 12px;
+  background: var(--ki-surface-strong);
+  color: var(--ki-ink);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.shell > main textarea { min-height: 112px; padding: 12px 14px; resize: vertical; }
+.shell > main label { color: #315465; font-size: 11px; font-weight: 760; letter-spacing: .055em; }
+.shell > main :where(input,select,textarea)::placeholder { color: #8197a2; opacity: 1; }
+
+.shell > main .invoice-toolbar {
+  min-height: 84px;
+  padding: 18px 22px;
+  border-bottom-color: var(--ki-border);
+  background: rgba(255,255,255,.52);
+}
+.shell > main .invoice-search > span { height: 44px; border-color: #abc7d3; border-radius: 12px 0 0 12px; color: var(--ki-teal); }
+.shell > main .invoice-search input { height: 44px; border-color: #abc7d3; border-radius: 0 12px 12px 0; }
+.shell > main .invoice-filters :where(input,select,.primary) { min-height: 44px; height: 44px; }
+
+.shell > main :where(.software-invoice-row,.software-item-row,.software-subscription-row,.software-payment-row,.software-expense-row,.software-task-row,.global-directory-row,.tr) {
+  min-height: 58px;
+  border-color: rgba(171, 199, 211, .65);
+  color: var(--ki-ink);
+  font-size: 13px;
+}
+.shell > main :where(.software-invoice-head,.directory-head,.tr.th) {
+  min-height: 50px;
+  background: #e5f2f7 !important;
+  color: #245468;
+  font-size: 11px;
+  font-weight: 820;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+.shell > main :where(.software-invoice-row,.software-item-row,.software-subscription-row,.software-payment-row,.software-expense-row,.software-task-row,.global-directory-row):nth-child(even) { background: rgba(237, 246, 249, .6); }
+.shell > main :where(button.software-invoice-row,.core-asset-row,.account-directory-link):hover { background: #deeff6 !important; }
+.shell > main .status,
+.shell > main .core-category { min-width: 64px; min-height: 25px; display: inline-grid; place-items: center; border-radius: 999px; padding: 5px 10px; font-size: 10px; font-weight: 800; line-height: 1.1; }
+
+.shell > main .dashboard-stats { gap: 18px; }
+.shell > main .dashboard-stats .stat { min-height: 150px; border: 1px solid rgba(126, 163, 177, .45); border-radius: 24px; padding: 22px; box-shadow: var(--ki-shadow); }
+.shell > main .dashboard-stats .stat strong { font-family: var(--ki-font); font-size: 31px; font-weight: 720; }
+.shell > main .dashboard-stats .stat small { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.shell > main .dashboard-stats .stat span { font-size: 11px; font-weight: 700; }
+
+.shell > main :where(.asset-modal-bg,.modal-bg,.app-confirm-bg) { background: rgba(5, 31, 45, .58); backdrop-filter: blur(6px); }
+.shell > main :where(.asset-modal,.modal,.app-confirm) { color: var(--ki-ink); }
+.shell > main :where(.asset-modal,.modal) h2 { font-size: 27px; }
+.shell > main .creation-form { width: min(1120px, calc(100vw - 80px)); padding: 30px; }
+.shell > main .creation-form :where(input,select,textarea) { font-size: 14px; }
+.shell > main .creation-form .two { gap: 18px; }
+.shell > main .client-record-heading { padding-bottom: 18px; border-bottom-color: var(--ki-border); }
+.shell > main .client-record-heading h2 { font-size: 26px; }
+
+.shell > main .core-asset-record { gap: 22px; }
+.shell > main .core-asset-record-hero { padding: 28px 30px; }
+.shell > main .core-asset-record-hero h1 { font-size: clamp(30px, 3vw, 44px); }
+.shell > main .core-asset-record-panel { padding: 26px; }
+.shell > main .core-asset-detail-grid small,
+.shell > main :where(.configuration-asset-fields,.wireless-asset-fields) :where(dt,small) { font-size: 10px; letter-spacing: .1em; }
+.shell > main :where(.configuration-asset-fields,.wireless-asset-fields) :where(dd,p,li) { font-size: 13px; }
+
+/* Invoice line items: one type scale and no decorative row fill. */
+.shell > main .software-line-panel { overflow: hidden; }
+.shell > main .software-line-panel .software-panel-title { min-height: 58px; padding: 0 22px; border-bottom: 1px solid var(--ki-border); }
+.shell > main .software-line-panel .software-panel-title h3 { margin: 0; color: var(--ki-ink); font-family: var(--ki-font); font-size: 18px; font-weight: 720; letter-spacing: -.02em; }
+.shell > main .software-line-panel .invoice-items { margin: 0; padding: 0 22px 18px; }
+.shell > main .software-line-panel .invoice-item,
+.shell > main .software-line-panel .invoice-item.subscription-reference,
+.shell > main .software-line-panel .invoice-item.expense-reference { min-height: 58px; padding: 13px 10px; border-bottom: 1px solid rgba(171,199,211,.7); background: transparent; color: var(--ki-ink); font-family: var(--ki-font); font-size: 13px; }
+.shell > main .software-line-panel .invoice-item-head { min-height: 46px; padding-top: 15px; padding-bottom: 9px; background: transparent !important; color: #315465; font-family: var(--ki-font); font-size: 10px; font-weight: 820; letter-spacing: .1em; }
+.shell > main .software-line-panel .invoice-item > span:first-child { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-family: var(--ki-font); font-size: 14px; font-weight: 650; }
+.shell > main .software-line-panel .invoice-item strong { font-family: var(--ki-font); font-size: 14px; font-weight: 760; }
+.shell > main .software-line-panel .reference-badge { display: inline-flex; align-items: center; min-height: 22px; margin: 0; padding: 4px 8px; border: 1px solid #acd5e5; border-radius: 999px; background: transparent; color: var(--ki-teal); font-family: var(--ki-font); font-size: 9px; font-weight: 820; letter-spacing: .08em; line-height: 1; }
+
+:root[data-theme="dark"] .shell > main {
+  --ki-ink: #e8f4f8;
+  --ki-muted: #a7c0ca;
+  --ki-surface: #142d3a;
+  --ki-surface-strong: #102734;
+  --ki-border: #365969;
+  --ki-shadow: 0 18px 42px rgba(0,0,0,.22);
+}
+:root[data-theme="dark"] .shell > main > header,
+:root[data-theme="dark"] .shell > main :where(.panel,.client-list,.setting,.report-controls,.report-table,.core-asset-record-panel,.core-asset-record-hero,.asset-modal,.modal,.app-confirm) { background: rgba(20,45,58,.96); }
+:root[data-theme="dark"] .shell > main :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { border-color: #426373; background: #102734; color: #e8f4f8; }
+:root[data-theme="dark"] .shell > main :where(.software-invoice-head,.directory-head,.tr.th) { background: #183d4d !important; color: #a9d9e9; }
+:root[data-theme="dark"] .shell > main :where(.software-invoice-row,.software-item-row,.software-subscription-row,.software-payment-row,.software-expense-row,.software-task-row,.global-directory-row):nth-child(even) { background: rgba(24,61,77,.48); }
+
+@media (max-width: 900px) {
+  .shell > main { font-size: 16px; }
+  .shell > main .index-heading,
+  .shell > main .dashboard-heading { padding-top: 20px; }
+  .shell > main .index-heading h2,
+  .shell > main .dashboard-heading h2 { font-size: 30px; }
+  .shell > main :where(.panel,.setting,.report-controls,.report-table,.core-asset-record-panel) { border-radius: 20px; padding: 19px; }
+  .shell > main .creation-form { width: calc(100vw - 24px); padding: 20px; }
+  .shell > main .creation-form .two { grid-template-columns: 1fr; }
+  .shell > main :where(input:not([type="checkbox"]):not([type="radio"]),select,textarea) { min-height: 48px; font-size: 16px; }
+  .shell > main :where(.primary,.quiet,.mini,.modal-actions button) { min-height: 46px; font-size: 14px; }
+}

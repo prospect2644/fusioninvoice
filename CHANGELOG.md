@@ -2,6 +2,26 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.27.0] - 2026-08-09
+
+### Added
+
+- Added full-page Core Asset records and creation with expanded configuration, wireless, printing, LAN, WAN, application, and credential fields.
+- Added client-filtered directory routing and client-level metrics for contacts, billing, Core Assets, tickets, subscriptions, invoices, and estimates.
+- Added consistent in-app save confirmations and unsaved-change protection for record forms, documentation, ticket time, statuses, and service-board changes.
+
+### Changed
+
+- Standardized workspace typography, cards, forms, tables, and record layouts around the Kindred Innovia interface system while preserving the existing navigation.
+- Updated credential and MFA records with automatic 30-second refresh, a circular expiration indicator, and clearer password-record behavior.
+- Reworked Documentation saves and record editing to use consistent Save changes actions and confirmation prompts.
+
+### Fixed
+
+- Prevented edited records from being discarded silently when navigating, closing a form, refreshing, or leaving the app.
+- Corrected Core Asset schema compatibility for wireless, configuration, and category-specific details.
+- Improved client-linked navigation and removed unnecessary client-facing internal identifiers.
+
 ## [0.26.0] - 2026-08-09
 
 ### Added
