@@ -109,6 +109,23 @@ const ensureInvoiceWorkflowSchema = db => {
   })().catch(error=>{invoiceWorkflowSchemaPromise=null;throw error});
   return invoiceWorkflowSchemaPromise;
 };
+let documentationSchemaPromise;
+const ensureDocumentationSchema = db => {
+  if(!documentationSchemaPromise)documentationSchemaPromise=(async()=>{
+    await db.prepare("CREATE TABLE IF NOT EXISTS document_folders (id TEXT PRIMARY KEY, workspace_id TEXT NOT NULL, parent_id TEXT, name TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE, FOREIGN KEY (parent_id) REFERENCES document_folders(id) ON DELETE RESTRICT)").run();
+    await db.prepare("CREATE TABLE IF NOT EXISTS documents (id TEXT PRIMARY KEY, workspace_id TEXT NOT NULL, folder_id TEXT, title TEXT NOT NULL, content_html TEXT NOT NULL DEFAULT '', created_by_email TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (workspace_id) REFERENCES workspaces(id) ON DELETE CASCADE, FOREIGN KEY (folder_id) REFERENCES document_folders(id) ON DELETE SET NULL)").run();
+    const folderColumns=new Set((await all(db.prepare('PRAGMA table_info(document_folders)'))).map(column=>column.name)),documentColumns=new Set((await all(db.prepare('PRAGMA table_info(documents)'))).map(column=>column.name));
+    const addColumn=async sql=>{try{await db.prepare(sql).run()}catch(error){if(!/duplicate column name/i.test(String(error?.message||error)))throw error}};
+    if(!folderColumns.has('parent_id'))await addColumn('ALTER TABLE document_folders ADD COLUMN parent_id TEXT');
+    if(!folderColumns.has('updated_at'))await addColumn('ALTER TABLE document_folders ADD COLUMN updated_at TEXT');
+    if(!documentColumns.has('folder_id'))await addColumn('ALTER TABLE documents ADD COLUMN folder_id TEXT');
+    if(!documentColumns.has('content_html'))await addColumn("ALTER TABLE documents ADD COLUMN content_html TEXT NOT NULL DEFAULT ''");
+    if(!documentColumns.has('updated_at'))await addColumn('ALTER TABLE documents ADD COLUMN updated_at TEXT');
+    await db.prepare('CREATE INDEX IF NOT EXISTS idx_document_folders_workspace ON document_folders(workspace_id, name)').run();
+    await db.prepare('CREATE INDEX IF NOT EXISTS idx_documents_workspace_folder ON documents(workspace_id, folder_id, updated_at DESC)').run();
+  })().catch(error=>{documentationSchemaPromise=null;throw error});
+  return documentationSchemaPromise;
+};
 async function readWorkspace(db, workspaceId, identity) {
   const [clients, clientAddresses, invoices, invoiceItems, estimates, estimateItems, payments, ticketPayments, items, subscriptions, expenses, tasks, tickets, ticketNotes, ticketTime, ticketEmailPreferences, ticketNoteDelivery, assets, accounts, contacts, fields, values, documentFolders, documents] = await Promise.all([
     all(db.prepare('SELECT id, name, city, state, zip, hourly_rate_cents, status FROM clients WHERE workspace_id = ? ORDER BY created_at DESC').bind(workspaceId)),
@@ -171,7 +188,7 @@ async function customValueStatements(db, workspaceId, entityType, recordId, supp
 
 async function api(request, env) {
   const identity = await identityFor(request, env), workspaceId = await workspaceForIdentity(env.DB, identity);
-  await ensureInvoiceWorkflowSchema(env.DB);
+  await Promise.all([ensureInvoiceWorkflowSchema(env.DB),ensureDocumentationSchema(env.DB)]);
   const path = new URL(request.url).pathname, method = request.method;
   if (!['GET', 'HEAD', 'OPTIONS'].includes(method) && request.headers.get('Sec-Fetch-Site') === 'cross-site') return json({ error: 'Cross-site writes are not allowed.' }, 403);
   if (method === 'GET' && path === '/api/workspace') return json(await readWorkspace(env.DB, workspaceId, identity));
@@ -331,8 +348,9 @@ async function api(request, env) {
   const ticketPaymentRecord=path.match(/^\/api\/ticket-payments\/([^/]+)$/);
   if(method==='PATCH'&&ticketPaymentRecord){const id=decodeURIComponent(ticketPaymentRecord[1]),date=String(body.date||''),methodName=String(body.method||''),amount=cents(body.amount);if(!date||!['cash','check','credit_card'].includes(methodName)||!(amount>0))return json({error:'Enter a valid payment date, method, and amount.'},400);const payment=await env.DB.prepare('SELECT ticket_id,amount_cents FROM ticket_payments WHERE id = ? AND workspace_id = ?').bind(id,workspaceId).first();if(!payment)return json({error:'Ticket payment not found.'},404);const ticket=await env.DB.prepare('SELECT hourly_rate_cents FROM tickets WHERE id = ? AND workspace_id = ?').bind(payment.ticket_id,workspaceId).first(),time=await env.DB.prepare('SELECT COALESCE(SUM(minutes),0) AS value FROM ticket_time_entries WHERE ticket_id = ? AND workspace_id = ?').bind(payment.ticket_id,workspaceId).first(),other=await env.DB.prepare('SELECT COALESCE(SUM(amount_cents),0) AS value FROM ticket_payments WHERE ticket_id = ? AND workspace_id = ? AND id != ?').bind(payment.ticket_id,workspaceId,id).first(),maximum=Math.round(Number(time?.value||0)/60*Number(ticket?.hourly_rate_cents||0))-Number(other?.value||0);if(amount>maximum)return json({error:'Payment cannot exceed the ticket balance due.'},400);await env.DB.prepare('UPDATE ticket_payments SET payment_date = ?, method = ?, amount_cents = ? WHERE id = ? AND workspace_id = ?').bind(date,methodName,amount,id,workspaceId).run();return json({id});}
   if(method==='DELETE'&&ticketPaymentRecord){const id=decodeURIComponent(ticketPaymentRecord[1]),result=await env.DB.prepare('DELETE FROM ticket_payments WHERE id = ? AND workspace_id = ?').bind(id,workspaceId).run();if(!result.meta?.changes)return json({error:'Ticket payment not found.'},404);return json({id,deleted:true});}
-  if(method==='POST'&&path==='/api/document-folders'){const name=String(body.name||'').trim();if(!name||name.length>100)return json({error:'Enter a folder name up to 100 characters.'},400);const id=`folder_${crypto.randomUUID()}`;await env.DB.prepare('INSERT INTO document_folders (id, workspace_id, name) VALUES (?, ?, ?)').bind(id,workspaceId,name).run();return json({id},201);}
+  if(method==='POST'&&path==='/api/document-folders'){const name=String(body.name||'').trim(),parentId=String(body.parentId||'')||null;if(!name||name.length>100)return json({error:'Enter a folder name up to 100 characters.'},400);if(parentId&&!await env.DB.prepare('SELECT id FROM document_folders WHERE id = ? AND workspace_id = ?').bind(parentId,workspaceId).first())return json({error:'Parent folder not found.'},404);const id=`folder_${crypto.randomUUID()}`;await env.DB.prepare('INSERT INTO document_folders (id, workspace_id, parent_id, name) VALUES (?, ?, ?, ?)').bind(id,workspaceId,parentId,name).run();return json({id},201);}
   const folderRecord=path.match(/^\/api\/document-folders\/([^/]+)$/);
+  if(method==='PATCH'&&folderRecord){const id=decodeURIComponent(folderRecord[1]),name=String(body.name||'').trim(),parentId=String(body.parentId||'')||null;if(!name||name.length>100)return json({error:'Enter a folder name up to 100 characters.'},400);if(parentId===id)return json({error:'A folder cannot contain itself.'},400);if(!await env.DB.prepare('SELECT id FROM document_folders WHERE id = ? AND workspace_id = ?').bind(id,workspaceId).first())return json({error:'Folder not found.'},404);if(parentId&&!await env.DB.prepare('SELECT id FROM document_folders WHERE id = ? AND workspace_id = ?').bind(parentId,workspaceId).first())return json({error:'Parent folder not found.'},404);let cursor=parentId;while(cursor){if(cursor===id)return json({error:'A folder cannot be moved inside one of its subfolders.'},400);const parent=await env.DB.prepare('SELECT parent_id FROM document_folders WHERE id = ? AND workspace_id = ?').bind(cursor,workspaceId).first();cursor=parent?.parent_id||null}await env.DB.prepare('UPDATE document_folders SET name = ?, parent_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND workspace_id = ?').bind(name,parentId,id,workspaceId).run();return json({id,saved:true});}
   if(method==='DELETE'&&folderRecord){const id=decodeURIComponent(folderRecord[1]),count=await env.DB.prepare('SELECT COUNT(*) AS value FROM documents WHERE folder_id = ? AND workspace_id = ?').bind(id,workspaceId).first();if(Number(count?.value||0)>0)return json({error:'Move or delete the documents in this folder first.'},409);const result=await env.DB.prepare('DELETE FROM document_folders WHERE id = ? AND workspace_id = ?').bind(id,workspaceId).run();if(!result.meta.changes)return json({error:'Folder not found.'},404);return json({id,deleted:true});}
   if(method==='POST'&&path==='/api/documents'){const title=String(body.title||'Untitled document').trim(),folderId=String(body.folderId||'')||null;if(!title||title.length>180)return json({error:'Enter a document title up to 180 characters.'},400);if(folderId&&!await env.DB.prepare('SELECT id FROM document_folders WHERE id = ? AND workspace_id = ?').bind(folderId,workspaceId).first())return json({error:'Folder not found.'},404);const id=`doc_${crypto.randomUUID()}`;await env.DB.prepare('INSERT INTO documents (id, workspace_id, folder_id, title, content_html, created_by_email) VALUES (?, ?, ?, ?, ?, ?)').bind(id,workspaceId,folderId,title,cleanDocumentHtml(body.contentHtml),identity.email).run();return json({id},201);}
   const documentRecord=path.match(/^\/api\/documents\/([^/]+)$/);
@@ -359,8 +377,10 @@ export async function handleApi(request, env) {
     return await api(request, env);
   } catch (error) {
     if (error instanceof Response) return error;
-    console.error(error);
-    return json({ error: 'The invoice service could not complete this request.' }, 500);
+    const reference=crypto.randomUUID().slice(0,8),detail=String(error?.message||error),code=/no such (table|column)/i.test(detail)?'DATABASE_SCHEMA_OUTDATED':/constraint failed|foreign key constraint/i.test(detail)?'DATABASE_CONSTRAINT':/d1_error|database/i.test(detail)?'DATABASE_WRITE_FAILED':'SERVICE_FAILURE';
+    console.error('Invoice API request failed',{reference,code,method:request.method,path:new URL(request.url).pathname,error});
+    const message=code==='DATABASE_SCHEMA_OUTDATED'?'The database schema is being updated. Retry this change once.':code==='DATABASE_CONSTRAINT'?'This change conflicts with a linked record. Refresh the page and retry.':'The invoice service could not complete this request.';
+    return json({error:`${message} [${code}:${reference}]`,code,reference},500);
   }
 }
 

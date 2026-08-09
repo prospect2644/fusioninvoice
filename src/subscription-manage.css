@@ -1,7 +1,25 @@
 .subscription-detail-actions {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+}
+
+.subscription-detail-actions button,
+.client-screen-actions button,
+.ticket-screen-bar > div:last-child button,
+.invoice-screen-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-height: 42px;
+  margin: 0;
+  padding: 9px 17px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .subscription-detail-actions .danger {
@@ -9,6 +27,40 @@
   margin: 0;
   border-color: #b85d52;
   background: #fff4f1;
+  color: #a84233;
+  border-radius: 999px;
+}
+
+.subscription-detail-actions .primary {
+  border: 1px solid #35a9d5;
+  background: #35a9d5;
+  color: #082a3a;
+}
+
+.subscription-detail-actions .quiet {
+  border: 1px solid #b8d1dc;
+  background: #f6fbfd;
+  color: #173746;
+}
+
+.subscription-detail-actions button:hover:not(:disabled),
+.client-screen-actions button:hover:not(:disabled),
+.ticket-screen-bar > div:last-child button:hover:not(:disabled),
+.invoice-screen-actions button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(.98);
+}
+
+:root[data-theme="dark"] .subscription-detail-actions .danger {
+  border-color: #83544d;
+  background: #3b2927;
+  color: #ffaaa0;
+}
+
+:root[data-theme="dark"] .subscription-detail-actions .quiet {
+  border-color: #49636e;
+  background: #17313c;
+  color: #e5f3f8;
 }
 
 .subscription-edit-form {

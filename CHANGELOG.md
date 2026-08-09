@@ -2,6 +2,20 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.25.3] - 2026-08-08
+
+### Added
+
+- Added an Explorer-style documentation library with nested folders and folder breadcrumbs.
+- Added drag-and-drop document filing, document and folder renaming, and subfolder creation.
+- Added an in-app unsaved-changes guard when switching documents, opening folders, or leaving Documentation.
+
+### Fixed
+
+- Added automatic repair for incomplete Documentation tables and diagnostic references for failed write requests.
+- Extended scaled creation pages through the full viewport and contained form fields in a rounded canvas without border bleed.
+- Standardized record-header actions with consistent pill sizing, spacing, typography, and destructive, primary, and neutral button treatments.
+
 ## [0.25.2] - 2026-08-08
 
 ### Fixed
