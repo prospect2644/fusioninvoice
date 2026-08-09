@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeSubscription, removeTicketTime, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTicketStatus, updateTicketTime, workspaceFor } from './store.js';
+import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketBoard, addTicketCategory, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeInvoice, removePayment, removeSubscription, removeTicketBoard, removeTicketCategory, removeTicketTime, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTicketBilling, updateTicketStatus, updateTicketTime, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -36,12 +36,14 @@ app.post('/api/expenses', action(body => addExpense(body)));
 app.post('/api/tasks', (req, res) => { try { res.status(201).json(addTask(req.body || {}, req.identity.email)); } catch (error) { res.status(400).json({ error: error.message }); } });
 app.post('/api/tickets', action(body => addTicket(body)));
 app.patch('/api/tickets/:id/status', action((body,params)=>updateTicketStatus(params.id,body.status)));
+app.patch('/api/tickets/:id/billing', action((body,params)=>updateTicketBilling(params.id,body)));
 app.post('/api/tickets/:id/notes', (req,res)=>{try{res.status(201).json(addTicketNote(req.params.id,req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
 app.post('/api/tickets/:id/time', (req,res)=>{try{res.status(201).json(addTicketTime(req.params.id,req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
 app.patch('/api/ticket-time-entries/:id', action((body,params)=>updateTicketTime(params.id,body)));
 app.delete('/api/ticket-time-entries/:id', action((body,params)=>removeTicketTime(params.id)));
 app.patch('/api/invoices/:id/status', action((body, params) => updateInvoiceStatus(params.id, body.status)));
 app.patch('/api/invoices/:id/items', action((body, params) => updateInvoiceItems(params.id, body)));
+app.delete('/api/invoices/:id', action((body, params) => removeInvoice(params.id)));
 app.post('/api/estimates', action(body => {
   if (!required(body, ['clientId','validUntil','quote','amount']) || !Number.isFinite(Number(body.amount))) throw new Error('Complete all estimate fields.');
   return addEstimate(body);
@@ -51,8 +53,13 @@ app.post('/api/payments', action(body => {
   if (!required(body, ['invoiceId','date','method','amount']) || !['cash','check','credit_card'].includes(body.method)) throw new Error('Complete all payment fields.');
   return addPayment(body);
 }));
+app.delete('/api/payments/:id', action((body, params) => removePayment(params.id)));
 app.post('/api/settings/custom-fields', action(body => addCustomField(body)));
 app.delete('/api/settings/custom-fields/:id', action((body, params) => removeCustomField(params.id)));
+app.post('/api/settings/ticket-boards', action(body=>addTicketBoard(body)));
+app.post('/api/settings/ticket-categories', action(body=>addTicketCategory(body)));
+app.delete('/api/settings/ticket-boards/:id', action((body,params)=>removeTicketBoard(params.id)));
+app.delete('/api/settings/ticket-categories/:id', action((body,params)=>removeTicketCategory(params.id)));
 app.post('/api/document-folders', action(body => addDocumentFolder(body)));
 app.delete('/api/document-folders/:id', action((body, params) => removeDocumentFolder(params.id)));
 app.post('/api/documents', (req,res)=>{try{res.status(201).json(addDocument(req.body||{},req.identity.email))}catch(error){res.status(400).json({error:error.message})}});
