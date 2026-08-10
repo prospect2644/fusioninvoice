@@ -2,6 +2,18 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.27.2] - 2026-08-09
+
+### Changed
+
+- Removed the redundant Core Asset credential reveal action from the visible record header.
+- Enlarged credential labels, values, links, and action controls on desktop and mobile.
+
+### Security
+
+- Added a password-free credential details route for username and URL display.
+- Kept password decryption behind the explicit, audited Show password action instead of loading the secret with the record.
+
 ## [0.27.1] - 2026-08-09
 
 ### Changed

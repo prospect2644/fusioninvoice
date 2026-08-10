@@ -70,6 +70,13 @@
     .account-detail-status strong,
     .account-detail-notes
   ) { font-size: 14px; }
+
+  .core-asset-screen .core-asset-record-actions .quiet { display: none; }
+  .core-asset-screen .credential-vault-fields > div { min-height: 66px; padding: 17px 20px; }
+  .core-asset-screen .credential-vault-fields small { font-size: 13px; letter-spacing: .07em; }
+  .core-asset-screen .credential-vault-fields :where(strong,p,a) { font-size: 16px; line-height: 1.5; }
+  .core-asset-screen .credential-vault-fields button { min-height: 38px; padding: 8px 14px; font-size: 13px; }
+  .core-asset-screen .credential-vault-fields .credential-copy-icon { min-width: 38px; }
 }
 
 @media (max-width: 800px) {
@@ -80,4 +87,8 @@
   .shell > main :where(small) { font-size: 11px; }
   .mobile-tab-bar button span,
   .mobile-more-grid span { font-size: 11px; }
+  .core-asset-screen .core-asset-record-actions .quiet { display: none; }
+  .core-asset-screen .credential-vault-fields small { font-size: 12px; }
+  .core-asset-screen .credential-vault-fields :where(strong,p,a) { font-size: 16px; }
+  .core-asset-screen .credential-vault-fields button { min-height: 42px; font-size: 14px; }
 }
