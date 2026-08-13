@@ -2,6 +2,18 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.27.3] - 2026-08-13
+
+### Changed
+
+- Standardized record-page headers, sidebar alignment, action buttons, Core Asset creation, and data tables across the workspace.
+- Centered payment methods, payment amounts, and invoice numbers within the Payments table.
+- Added an in-app warning when a Managed IT subscription does not cover a newly selected ticket service board.
+
+### Fixed
+
+- Atomically switches an uncovered subscription ticket to hourly billing only after the user confirms the service-board change.
+
 ## [0.27.2] - 2026-08-09
 
 ### Changed
