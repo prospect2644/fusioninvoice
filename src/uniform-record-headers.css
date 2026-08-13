@@ -1,0 +1,129 @@
+/* Carry the primary white title rail into every full-page record workspace. */
+@media (min-width: 801px) {
+  .shell :where(
+    .software-invoice-screen .invoice-screen-bar,
+    .client-screen .client-screen-bar,
+    .ticket-screen .ticket-screen-bar,
+    .core-asset-screen .core-asset-screen-bar,
+    .subscription-detail-screen > header
+  ) {
+    box-sizing: border-box;
+    min-height: var(--workspace-bar-height);
+    height: var(--workspace-bar-height);
+    padding: 0 34px;
+    border: 0;
+    border-bottom: 1px solid var(--ki-border);
+    background: rgba(248, 252, 254, .97);
+    box-shadow: 0 8px 24px rgba(16, 61, 81, .05);
+    color: var(--ki-ink);
+    backdrop-filter: blur(14px);
+  }
+
+  .shell :where(
+    .software-invoice-screen .invoice-screen-bar,
+    .client-screen .client-screen-bar,
+    .ticket-screen .ticket-screen-bar,
+    .core-asset-screen .core-asset-screen-bar,
+    .subscription-detail-screen > header
+  ) > div:first-child {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .shell :where(
+    .software-invoice-title strong,
+    .client-screen-bar strong,
+    .ticket-screen-bar > div:first-child strong,
+    .core-asset-screen-bar strong,
+    .subscription-detail-screen > header h1
+  ) {
+    margin: 0;
+    color: var(--ki-ink);
+    font-family: var(--ki-font);
+    font-size: 22px;
+    font-weight: 780;
+    letter-spacing: -.03em;
+    line-height: 1.1;
+  }
+
+  .shell .software-invoice-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .shell .software-invoice-title > span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    color: var(--ki-teal);
+    font-size: 20px;
+  }
+
+  .shell .software-invoice-title b {
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #e0edf3;
+    color: var(--ki-ink);
+    font-weight: 760;
+  }
+
+  .shell :where(
+    .client-screen-bar small,
+    .ticket-screen-bar > div:first-child small,
+    .core-asset-screen-bar small,
+    .subscription-detail-screen > header small,
+    .subscription-detail-screen > header > div:first-child > span
+  ) { display: none; }
+
+  .shell :where(
+    .invoice-screen-actions,
+    .client-screen-actions,
+    .ticket-screen-bar > div:last-child,
+    .subscription-detail-actions
+  ) {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+  }
+
+  .shell :where(.ticket-screen-bar select,.invoice-screen-bar select) {
+    min-height: 40px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #a9cfdf;
+    border-radius: 999px;
+    background: var(--action-pale);
+    color: var(--action-blue);
+    font-size: 12px;
+    font-weight: 750;
+  }
+}
+
+:root[data-theme="dark"] .shell :where(
+  .software-invoice-screen .invoice-screen-bar,
+  .client-screen .client-screen-bar,
+  .ticket-screen .ticket-screen-bar,
+  .core-asset-screen .core-asset-screen-bar,
+  .subscription-detail-screen > header
+) {
+  border-color: #365a69;
+  background: rgba(15, 43, 56, .97);
+  color: #e8f4f8;
+}
+
+:root[data-theme="dark"] .shell :where(
+  .software-invoice-title strong,
+  .client-screen-bar strong,
+  .ticket-screen-bar > div:first-child strong,
+  .core-asset-screen-bar strong,
+  .subscription-detail-screen > header h1
+) { color: #e8f4f8; }
+
+:root[data-theme="dark"] .shell .software-invoice-title b {
+  background: #1b4050;
+  color: #e8f4f8;
+}

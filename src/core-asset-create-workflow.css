@@ -1,0 +1,238 @@
+/* Category-first, full-page Core Asset creation workflow. */
+@media (min-width: 801px) {
+  .core-asset-choice-screen,
+  .core-asset-creation-screen {
+    background: var(--ki-canvas) !important;
+  }
+
+  .creation-form.core-asset-choice-panel,
+  .creation-form.core-asset-create-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    width: 100% !important;
+    min-height: 100vh !important;
+    padding: 0 42px 118px !important;
+    background: var(--ki-canvas) !important;
+  }
+
+  .creation-form.core-asset-choice-panel::before,
+  .creation-form.core-asset-create-form::before { content: none; }
+
+  .creation-form.core-asset-choice-panel > .client-record-heading,
+  .creation-form.core-asset-create-form > .client-record-heading {
+    grid-column: 1;
+    margin: 0 -42px 30px !important;
+    padding: 22px 42px !important;
+    border-bottom: 1px solid var(--ki-border) !important;
+    background: rgba(248, 252, 254, .96);
+  }
+
+  .creation-form.core-asset-choice-panel > .client-record-heading p,
+  .creation-form.core-asset-create-form > .client-record-heading p {
+    margin: 5px 0 0;
+    color: var(--ki-muted);
+    font-size: 13px;
+  }
+
+  .core-asset-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    width: min(1180px, 100%);
+    margin: 26px auto 0;
+  }
+
+  .core-asset-choice-grid > button {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    min-height: 150px;
+    padding: 24px;
+    border: 1px solid var(--ki-border);
+    border-radius: 24px;
+    background: rgba(248, 252, 254, .97);
+    box-shadow: var(--ki-shadow);
+    color: var(--ki-ink);
+    text-align: left;
+    cursor: pointer;
+    transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+  }
+
+  .core-asset-choice-grid > button:hover,
+  .core-asset-choice-grid > button:focus-visible {
+    border-color: var(--ki-sky);
+    box-shadow: 0 20px 42px rgba(16, 61, 81, .15);
+    transform: translateY(-3px);
+    outline: none;
+  }
+
+  .core-asset-choice-grid i {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #d9edf5;
+    color: var(--ki-teal);
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  .core-asset-choice-grid span,
+  .core-asset-choice-grid strong,
+  .core-asset-choice-grid small { display: block; }
+  .core-asset-choice-grid strong { font-size: 18px; font-weight: 780; }
+  .core-asset-choice-grid small {
+    margin-top: 7px;
+    color: var(--ki-muted) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0 !important;
+    line-height: 1.5;
+    text-transform: none !important;
+  }
+  .core-asset-choice-grid b { color: var(--ki-teal); font-size: 21px; }
+
+  .core-asset-choice-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: min(1180px, 100%);
+    margin: 24px auto;
+  }
+
+  .core-asset-client-section,
+  .core-asset-form-section,
+  .core-asset-create-form > fieldset,
+  .core-asset-create-form > .form-error {
+    grid-column: 1;
+    width: min(1180px, 100%);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .core-asset-client-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: end;
+    margin-bottom: 20px;
+    padding: 22px 26px;
+    border: 1px solid var(--ki-border);
+    border-radius: 20px;
+    background: rgba(248, 252, 254, .92);
+  }
+
+  .core-asset-client-section label,
+  .creation-field-grid label {
+    display: grid;
+    gap: 8px;
+    color: #294858;
+    font-size: 11px;
+    font-weight: 820;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+  }
+
+  .core-asset-client-section select { min-width: 420px; }
+  .core-asset-client-section .quiet { min-height: 54px; white-space: nowrap; }
+
+  .core-asset-form-section,
+  .core-asset-create-form > fieldset {
+    margin-bottom: 20px;
+    padding: 28px;
+    border: 1px solid var(--ki-border);
+    border-radius: 24px;
+    background: rgba(248, 252, 254, .97);
+    box-shadow: var(--ki-shadow);
+  }
+
+  .creation-section-heading { margin-bottom: 22px; }
+  .creation-section-heading small { color: var(--ki-teal); }
+  .creation-section-heading h3 { margin: 4px 0 0; font-size: 22px; }
+  .creation-section-heading p { margin: 7px 0 0; color: var(--ki-muted); font-size: 13px; }
+
+  .creation-field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 22px;
+  }
+
+  .creation-field-grid .wide { grid-column: 1 / -1; }
+  .creation-field-grid :where(input,select,textarea),
+  .core-asset-client-section select {
+    width: 100%;
+    min-height: 54px;
+    padding: 13px 15px;
+    border: 1px solid var(--ki-border);
+    border-radius: 13px;
+    background: #fff;
+    color: var(--ki-ink);
+    font-size: 15px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .creation-field-grid textarea { min-height: 130px !important; resize: vertical; }
+
+  .core-asset-create-form > :where(.wireless-create-fields,.configuration-create-fields) {
+    display: grid;
+    gap: 18px;
+    padding: 28px;
+  }
+
+  .core-asset-create-form > :where(.wireless-create-fields,.configuration-create-fields) legend {
+    padding: 0 10px;
+    color: var(--ki-teal);
+    font-size: 11px;
+    font-weight: 850;
+    letter-spacing: .08em;
+  }
+
+  .core-asset-create-form > .modal-actions {
+    grid-column: 1;
+    justify-content: flex-end;
+  }
+}
+
+:root[data-theme="dark"] :where(.core-asset-choice-screen,.core-asset-creation-screen),
+:root[data-theme="dark"] :where(.creation-form.core-asset-choice-panel,.creation-form.core-asset-create-form) {
+  background: var(--dark-canvas) !important;
+}
+
+:root[data-theme="dark"] :where(.core-asset-choice-grid > button,.core-asset-client-section,.core-asset-form-section,.core-asset-create-form > fieldset) {
+  border-color: var(--dark-border);
+  background: var(--dark-surface-soft);
+  color: var(--dark-text);
+}
+
+:root[data-theme="dark"] :where(.creation-field-grid input,.creation-field-grid select,.creation-field-grid textarea,.core-asset-client-section select) {
+  border-color: #49636e;
+  background: #132831;
+  color: var(--dark-text);
+}
+
+@media (min-width: 801px) and (max-width: 1180px) {
+  .core-asset-choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 800px) {
+  .creation-form.core-asset-choice-panel,
+  .creation-form.core-asset-create-form {
+    display: block;
+    min-width: 0;
+    padding: 0 16px 110px !important;
+  }
+  .core-asset-choice-grid { display: grid; grid-template-columns: 1fr; gap: 12px; padding: 16px 0; }
+  .core-asset-choice-grid > button { display: grid; grid-template-columns: 44px 1fr auto; gap: 13px; align-items: center; width: 100%; padding: 18px; border: 1px solid var(--ki-border); border-radius: 18px; background: var(--ki-surface); text-align: left; }
+  .core-asset-choice-grid i { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: #d9edf5; color: var(--ki-teal); font-style: normal; }
+  .core-asset-choice-grid span,.core-asset-choice-grid strong,.core-asset-choice-grid small { display: block; }
+  .core-asset-choice-grid small { margin-top: 4px; color: var(--ki-muted); text-transform: none; letter-spacing: 0; }
+  .core-asset-choice-actions { display: flex; justify-content: flex-end; padding-bottom: 20px; }
+  .core-asset-client-section { display: grid; gap: 12px; margin: 16px 0; padding: 18px; border: 1px solid var(--ki-border); border-radius: 18px; background: var(--ki-surface); }
+  .core-asset-form-section,.core-asset-create-form > fieldset { margin: 16px 0; padding: 18px; border: 1px solid var(--ki-border); border-radius: 18px; background: var(--ki-surface); }
+  .creation-field-grid,.industry-fields-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .creation-field-grid .wide { grid-column: auto; }
+}

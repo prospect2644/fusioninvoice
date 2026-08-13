@@ -1,0 +1,295 @@
+/* Consistent compact pill actions throughout the workspace. */
+:root {
+  --action-blue: #0787b6;
+  --action-blue-hover: #066f98;
+  --action-pale: #dceff6;
+  --action-pale-hover: #c9e6f1;
+  --action-danger: #c44f45;
+  --action-danger-pale: #fff0ed;
+}
+
+.shell :where(
+  button.primary,
+  button.quiet,
+  button.danger,
+  button.danger-outline,
+  button.danger-fill,
+  button.mini,
+  .modal-actions > button,
+  .app-confirm-actions > button,
+  .payment-actions > button,
+  .ticket-time-actions > button,
+  .subscription-detail-actions > button,
+  .client-screen-actions > button,
+  .documentation-editor-actions > button,
+  .core-asset-record-actions > button,
+  .core-asset-choice-actions > button
+) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  min-width: 72px;
+  min-height: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  box-shadow: none;
+  font-family: var(--ki-font);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+.shell :where(button.primary,.modal-actions > button:last-child,.documentation-editor-actions > button:last-child) {
+  border-color: var(--action-blue);
+  background: var(--action-blue);
+  color: #fff;
+}
+
+.shell :where(button.primary,.modal-actions > button:last-child,.documentation-editor-actions > button:last-child):hover:not(:disabled) {
+  border-color: var(--action-blue-hover);
+  background: var(--action-blue-hover);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Cancel and ordinary secondary actions share the same pale-blue treatment. */
+.shell :where(
+  button.quiet,
+  button.mini,
+  .modal-actions > button:not(.primary):not(.danger):not(.danger-fill),
+  .app-confirm-actions > button:not(.primary):not(.danger):not(.danger-fill),
+  .payment-actions > button:not(.delete),
+  .ticket-time-actions > button:not(.danger),
+  .subscription-detail-actions > button.quiet,
+  .core-asset-choice-actions > button
+) {
+  border-color: #a9cfdf;
+  background: var(--action-pale);
+  color: var(--action-blue);
+}
+
+.shell :where(
+  button.quiet,
+  button.mini,
+  .modal-actions > button:not(.primary):not(.danger):not(.danger-fill),
+  .app-confirm-actions > button:not(.primary):not(.danger):not(.danger-fill),
+  .payment-actions > button:not(.delete),
+  .ticket-time-actions > button:not(.danger),
+  .core-asset-choice-actions > button
+):hover:not(:disabled) {
+  border-color: #8fc2d7;
+  background: var(--action-pale-hover);
+  color: var(--action-blue-hover);
+}
+
+.shell :where(button.danger,button.danger-outline,.payment-actions > button.delete,.ticket-time-actions > button.danger) {
+  border-color: #e08f87;
+  background: var(--action-danger-pale);
+  color: var(--action-danger);
+}
+
+.shell :where(button.danger-fill,.app-confirm-actions > button.danger-fill) {
+  border-color: var(--action-danger);
+  background: var(--action-danger);
+  color: #fff;
+}
+
+.shell :where(button.danger,button.danger-outline,.payment-actions > button.delete,.ticket-time-actions > button.danger):hover:not(:disabled) {
+  border-color: var(--action-danger);
+  background: #ffe2dd;
+  color: #a93c33;
+}
+
+.shell :where(button.danger-fill,.app-confirm-actions > button.danger-fill):hover:not(:disabled) {
+  border-color: #a93c33;
+  background: #a93c33;
+}
+
+.shell :where(
+  button.primary,
+  button.quiet,
+  button.danger,
+  button.danger-outline,
+  button.danger-fill,
+  button.mini,
+  .modal-actions > button,
+  .app-confirm-actions > button
+):focus-visible {
+  outline: 3px solid rgba(53, 169, 213, .30);
+  outline-offset: 2px;
+}
+
+.shell :where(button.primary,button.quiet,button.danger,button.danger-outline,button.danger-fill,button.mini,.modal-actions > button,.app-confirm-actions > button):disabled {
+  opacity: .48;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Toolbar actions retain the same component even where older rules set a square height. */
+.shell :where(.invoice-filters,.header-actions,.line-panel-actions,.software-panel-title) > button.primary,
+.shell > main > .workspace-title-bar .primary {
+  min-height: 40px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* Invoice deletion belongs to the same action group, not as a floating legacy control. */
+.shell .invoice-screen-actions .invoice-delete-action {
+  position: static;
+  inset: auto;
+  z-index: auto;
+  display: inline-flex;
+  margin: 0;
+}
+
+:root[data-theme="dark"] {
+  --action-pale: #183d4d;
+  --action-pale-hover: #214f61;
+  --action-danger-pale: #472b2d;
+}
+
+:root[data-theme="dark"] .shell :where(button.quiet,button.mini,.modal-actions > button:not(.primary):not(.danger):not(.danger-fill),.app-confirm-actions > button:not(.primary):not(.danger):not(.danger-fill)) {
+  border-color: #477286;
+  color: #76d0ef;
+}
+
+@media (max-width: 800px) {
+  .shell :where(button.primary,button.quiet,button.danger,button.danger-outline,button.danger-fill,button.mini,.modal-actions > button,.app-confirm-actions > button) {
+    min-width: 76px;
+    min-height: 44px;
+    height: 44px;
+    padding: 0 17px;
+    font-size: 13px;
+  }
+}
+
+/* Compact record actions use the restrained outlined Edit/Delete treatment. */
+.shell :where(
+  .payment-actions > button,
+  .ticket-time-actions > button,
+  .credential-account-actions > button:nth-last-child(-n+2),
+  .subscription-detail-actions > button.primary,
+  .subscription-detail-actions > button.danger,
+  .invoice-screen-actions > button.quiet,
+  .invoice-screen-actions > .invoice-delete-action,
+  .ticket-delete-button,
+  .documentation-editor-actions > button.quiet
+) {
+  flex: 0 0 auto;
+  min-width: 0;
+  min-height: 30px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1px solid #a9cfdf;
+  border-radius: 8px;
+  background: #f8fcfe;
+  color: #087fae;
+  font-family: var(--ki-font);
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.shell :where(
+  .payment-actions > button:not(.delete),
+  .ticket-time-actions > button:not(.danger),
+  .credential-account-actions > button:nth-last-child(2),
+  .subscription-detail-actions > button.primary,
+  .invoice-screen-actions > button.quiet
+):hover:not(:disabled) {
+  border-color: #78b6cf;
+  background: #eaf6fb;
+  color: #066f98;
+  transform: none;
+}
+
+.shell :where(
+  .payment-actions > button.delete,
+  .ticket-time-actions > button.danger,
+  .credential-account-actions > button.delete,
+  .subscription-detail-actions > button.danger,
+  .invoice-screen-actions > .invoice-delete-action,
+  .ticket-delete-button,
+  .documentation-editor-actions > button.quiet
+) {
+  border-color: #e3a49b;
+  background: #fff8f6;
+  color: #b14438;
+}
+
+.shell :where(
+  .payment-actions > button.delete,
+  .ticket-time-actions > button.danger,
+  .credential-account-actions > button.delete,
+  .subscription-detail-actions > button.danger,
+  .invoice-screen-actions > .invoice-delete-action,
+  .ticket-delete-button,
+  .documentation-editor-actions > button.quiet
+):hover:not(:disabled) {
+  border-color: #cf776c;
+  background: #ffebe7;
+  color: #96372e;
+  transform: none;
+}
+
+:root[data-theme="dark"] .shell :where(
+  .payment-actions > button,
+  .ticket-time-actions > button,
+  .credential-account-actions > button:nth-last-child(-n+2),
+  .subscription-detail-actions > button.primary,
+  .subscription-detail-actions > button.danger,
+  .invoice-screen-actions > button.quiet,
+  .invoice-screen-actions > .invoice-delete-action,
+  .ticket-delete-button,
+  .documentation-editor-actions > button.quiet
+) {
+  border-color: #477286;
+  background: #17313c;
+  color: #76d0ef;
+}
+
+:root[data-theme="dark"] .shell :where(
+  .payment-actions > button.delete,
+  .ticket-time-actions > button.danger,
+  .credential-account-actions > button.delete,
+  .subscription-detail-actions > button.danger,
+  .invoice-screen-actions > .invoice-delete-action,
+  .ticket-delete-button,
+  .documentation-editor-actions > button.quiet
+) {
+  border-color: #83544d;
+  background: #3b2927;
+  color: #ffaaa0;
+}
+
+@media (max-width: 800px) {
+  .shell :where(
+    .payment-actions > button,
+    .ticket-time-actions > button,
+    .credential-account-actions > button:nth-last-child(-n+2),
+    .subscription-detail-actions > button.primary,
+    .subscription-detail-actions > button.danger,
+    .invoice-screen-actions > button.quiet,
+    .invoice-screen-actions > .invoice-delete-action,
+    .ticket-delete-button,
+    .documentation-editor-actions > button.quiet
+  ) {
+    min-height: 38px;
+    height: 38px;
+    padding: 0 13px;
+    font-size: 12px;
+  }
+}

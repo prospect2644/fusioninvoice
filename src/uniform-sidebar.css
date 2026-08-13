@@ -1,0 +1,115 @@
+/* Dark Kindred navigation inspired by the public-site masthead. */
+:root {
+  --sidebar-deep: #061820;
+  --sidebar-deeper: #041219;
+  --sidebar-hover: #0b2b38;
+  --sidebar-line: rgba(118, 196, 226, .16);
+  --sidebar-text: #d7e7ee;
+  --sidebar-muted: #8eabb7;
+}
+
+@media (min-width: 801px) {
+  .shell > aside {
+    border-right: 1px solid #0b3546;
+    background: linear-gradient(180deg, var(--sidebar-deeper) 0%, var(--sidebar-deep) 44%, #072332 100%);
+    box-shadow: 10px 0 30px rgba(2, 17, 24, .09);
+  }
+
+  .shell > aside .brand {
+    box-sizing: border-box;
+    min-height: var(--workspace-bar-height);
+    height: var(--workspace-bar-height);
+    border-bottom: 1px solid var(--sidebar-line);
+    background: rgba(4, 18, 25, .88);
+  }
+
+  .shell > aside .brand > * { align-self: center; }
+
+  .shell > aside .brand .collapse {
+    position: static;
+    top: auto;
+    align-self: center;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .shell > aside .brand-copy strong { color: #edf7fa; }
+  .shell > aside .brand-copy span,
+  .shell > aside .brand-copy small { color: #75b8d0; }
+
+  .shell > aside .brand-logo {
+    border-radius: 50%;
+    filter: drop-shadow(0 7px 16px rgba(0, 0, 0, .25));
+  }
+
+  .shell > aside .collapse {
+    border: 1px solid rgba(53, 169, 213, .25);
+    background: rgba(53, 169, 213, .08);
+    color: #66c5e8;
+  }
+
+  .shell > aside .collapse:hover {
+    border-color: rgba(53, 169, 213, .48);
+    background: rgba(53, 169, 213, .17);
+    color: #a8e5fa;
+  }
+
+  .shell > aside nav { gap: 5px; }
+
+  .shell > aside nav > button {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--sidebar-text);
+    font-weight: 650;
+    transition: background-color .14s ease, border-color .14s ease, color .14s ease, transform .14s ease;
+  }
+
+  .shell > aside nav > button i { color: #a8cfe0; }
+
+  .shell > aside nav > button:hover {
+    border-color: rgba(91, 180, 215, .10);
+    background: var(--sidebar-hover);
+    color: #fff;
+    transform: translateX(2px);
+  }
+
+  .shell > aside nav > button:hover i { color: #57bde3; }
+
+  .shell > aside nav > button.active {
+    border-color: rgba(123, 215, 247, .24);
+    background: linear-gradient(90deg, #269bc6 0%, #38add6 100%) !important;
+    box-shadow: 0 8px 20px rgba(1, 113, 156, .22);
+    color: #031923 !important;
+  }
+
+  .shell > aside nav > button.active i { color: #042330; }
+
+  .shell > aside .report-submenu {
+    margin-left: 12px;
+    border-left: 1px solid var(--sidebar-line);
+  }
+
+  .shell > aside .report-submenu button {
+    color: var(--sidebar-muted);
+  }
+
+  .shell > aside .report-submenu button:hover,
+  .shell > aside .report-submenu button.active {
+    background: rgba(53, 169, 213, .11) !important;
+    color: #eaf8fc !important;
+  }
+
+  .shell > aside .report-submenu button i { border-color: #309fc8; }
+
+  .shell.collapsed > aside {
+    background: linear-gradient(180deg, var(--sidebar-deeper) 0%, var(--sidebar-deep) 44%, #072332 100%);
+  }
+
+  .shell.collapsed > aside nav > button:hover { transform: none; }
+}
+
+:root[data-theme="dark"] {
+  --sidebar-deep: #04151d;
+  --sidebar-deeper: #020d12;
+  --sidebar-hover: #092531;
+}

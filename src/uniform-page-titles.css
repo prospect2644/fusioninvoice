@@ -1,0 +1,134 @@
+/* One title-bar language for every primary workspace page. */
+:root { --workspace-bar-height: 76px; }
+
+@media (min-width: 801px) {
+  .shell > main > .workspace-title-bar {
+    position: sticky;
+    top: 0;
+    z-index: 38;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: var(--workspace-bar-height);
+    height: var(--workspace-bar-height);
+    padding: 0 34px;
+    border-bottom: 1px solid var(--ki-border);
+    background: rgba(248, 252, 254, .97);
+    box-shadow: 0 8px 24px rgba(16, 61, 81, .05);
+    backdrop-filter: blur(14px);
+  }
+
+  .shell > main > .workspace-title-bar > div:first-child {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .shell > main > .workspace-title-bar small { display: none; }
+
+  .shell > main > .workspace-title-bar h1,
+  .page-invoices > .workspace-title-bar h1,
+  .page-items > .workspace-title-bar h1,
+  .page-subscriptions > .workspace-title-bar h1,
+  .page-payments > .workspace-title-bar h1,
+  .page-expenses > .workspace-title-bar h1,
+  .page-tickets > .workspace-title-bar h1,
+  .page-tasks > .workspace-title-bar h1 {
+    visibility: visible;
+    margin: 0;
+    color: var(--ki-ink);
+    font-family: var(--ki-font);
+    font-size: 24px;
+    font-weight: 780;
+    letter-spacing: -.035em;
+    line-height: 1;
+  }
+
+  .shell > main > .workspace-title-bar .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  .shell > main > .workspace-title-bar .primary {
+    min-height: 44px;
+    padding: 11px 23px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--ki-teal);
+    box-shadow: 0 10px 24px rgba(8, 127, 174, .18);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .01em;
+    white-space: nowrap;
+  }
+
+  .shell > main > .workspace-title-bar .primary:hover {
+    background: #066d96;
+    transform: translateY(-1px);
+  }
+
+  .shell > main > .workspace-title-bar .primary:focus-visible {
+    outline: 3px solid rgba(53, 169, 213, .32);
+    outline-offset: 3px;
+  }
+
+  /* The title bar replaces the older duplicate title/breadcrumb row. */
+  .shell > main :where(
+    .invoice-index,
+    .items-index,
+    .subscriptions-index,
+    .payments-index,
+    .expenses-index,
+    .tasks-index,
+    .tickets-index,
+    .contacts-index,
+    .directory-page
+  ) > .index-heading {
+    display: none;
+  }
+
+  .shell > main :where(
+    .invoice-index,
+    .items-index,
+    .subscriptions-index,
+    .payments-index,
+    .expenses-index,
+    .tasks-index,
+    .tickets-index,
+    .contacts-index,
+    .directory-page
+  ) {
+    padding-top: 28px;
+  }
+
+  /* Creation is now anchored consistently in the title bar. */
+  .shell > main :where(
+    .invoice-index,
+    .items-index,
+    .subscriptions-index,
+    .payments-index,
+    .expenses-index,
+    .tasks-index,
+    .tickets-index
+  ) .invoice-filters > .primary {
+    display: none;
+  }
+}
+
+:root[data-theme="dark"] .shell > main > .workspace-title-bar {
+  border-color: #365a69;
+  background: rgba(15, 43, 56, .97);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+}
+
+:root[data-theme="dark"] .shell > main > .workspace-title-bar h1 {
+  color: #e8f4f8;
+}
+
+@media (max-width: 800px) {
+  .shell > main > .workspace-title-bar { display: none; }
+}
