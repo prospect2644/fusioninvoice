@@ -1,4 +1,8 @@
 /* Category-first, full-page Core Asset creation workflow. */
+.core-asset-create-form > .core-asset-client-section > label:last-child {
+  display: none;
+}
+
 @media (min-width: 801px) {
   .core-asset-choice-screen,
   .core-asset-creation-screen {
@@ -123,6 +127,10 @@
     border: 1px solid var(--ki-border);
     border-radius: 20px;
     background: rgba(248, 252, 254, .92);
+  }
+
+  .core-asset-create-form > .core-asset-client-section {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .core-asset-client-section label,

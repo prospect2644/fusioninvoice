@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 
 const dataFile = path.resolve('server/data.json');
 const defaultTicketBoards=[{id:'technical_support',name:'Technical Support',position:0},{id:'projects',name:'Projects',position:1},{id:'maintenance',name:'Maintenance',position:2}],defaultTicketCategories=[{id:'general',boardId:'technical_support',name:'General',position:0},{id:'project_work',boardId:'projects',name:'Project work',position:0},{id:'scheduled_maintenance',boardId:'maintenance',name:'Scheduled maintenance',position:0}];
-const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], items: [], subscriptions: [], subscriptionInvoiceRuns: [], expenses: [], tasks: [], tickets: [], documentFolders: [], documents: [], settings: { customFields: [],ticketBoards:defaultTicketBoards,ticketCategories:defaultTicketCategories } };
+const emptyStore = { clients: [], invoices: [], estimates: [], payments: [], taxes: [], items: [], subscriptions: [], subscriptionInvoiceRuns: [], expenses: [], tasks: [], tickets: [], documentFolders: [], documents: [], settings: { customFields: [],ticketBoards:defaultTicketBoards,ticketCategories:defaultTicketCategories } };
 
 function read() {
   if (!fs.existsSync(dataFile)) fs.writeFileSync(dataFile, JSON.stringify(emptyStore, null, 2));
@@ -87,6 +87,11 @@ export function removePayment(id) {
   write(data);
   return { id, invoiceId: payment.invoiceId, deleted: true };
 }
+
+const normalizeTax=input=>{const tax={name:String(input.name||'').trim(),percent:Number(input.percent),company:String(input.company||'').trim(),category:String(input.category||'sales_tax'),included:input.included==='yes'||input.included===true,compound:input.compound==='yes'||input.compound===true};if(!tax.name||tax.name.length>120||!Number.isFinite(tax.percent)||tax.percent<0||tax.percent>100||tax.company.length>160||!['sales_tax','vat_gst','other'].includes(tax.category))throw new Error('Enter a tax name, percentage from 0 to 100, and valid category.');return tax};
+export function addTax(input){const data=read(),tax=normalizeTax(input);if(data.taxes.some(item=>item.name.toLowerCase()===tax.name.toLowerCase()))throw new Error('A tax rate with this name already exists.');const record={id:`tax_${crypto.randomUUID()}`,...tax,createdAt:new Date().toISOString()};data.taxes.push(record);write(data);return record;}
+export function updateTax(id,input){const data=read(),record=data.taxes.find(item=>item.id===id),tax=normalizeTax(input);if(!record)throw new Error('Tax rate not found.');if(data.taxes.some(item=>item.id!==id&&item.name.toLowerCase()===tax.name.toLowerCase()))throw new Error('A tax rate with this name already exists.');Object.assign(record,tax,{updatedAt:new Date().toISOString()});write(data);return record;}
+export function removeTax(id){const data=read();if(!data.taxes.some(item=>item.id===id))throw new Error('Tax rate not found.');data.taxes=data.taxes.filter(item=>item.id!==id);write(data);return{id,deleted:true};}
 export function updateInvoiceItems(id, input) {
   const data = read(), invoice = data.invoices.find(item => item.id === id);
   if (!invoice) throw new Error('Invoice not found');

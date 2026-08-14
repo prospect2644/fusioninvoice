@@ -2,7 +2,7 @@
 :root { --workspace-bar-height: 76px; }
 
 @media (min-width: 801px) {
-  .shell > main > .workspace-title-bar {
+  .shell > main > header:first-child {
     position: sticky;
     top: 0;
     z-index: 38;
@@ -19,22 +19,22 @@
     backdrop-filter: blur(14px);
   }
 
-  .shell > main > .workspace-title-bar > div:first-child {
+  .shell > main > header:first-child > div:first-child {
     display: flex;
     align-items: center;
     min-width: 0;
   }
 
-  .shell > main > .workspace-title-bar small { display: none; }
+  .shell > main > header:first-child small { display: none; }
 
-  .shell > main > .workspace-title-bar h1,
-  .page-invoices > .workspace-title-bar h1,
-  .page-items > .workspace-title-bar h1,
-  .page-subscriptions > .workspace-title-bar h1,
-  .page-payments > .workspace-title-bar h1,
-  .page-expenses > .workspace-title-bar h1,
-  .page-tickets > .workspace-title-bar h1,
-  .page-tasks > .workspace-title-bar h1 {
+  .shell > main > header:first-child h1,
+  .page-invoices > header:first-child h1,
+  .page-items > header:first-child h1,
+  .page-subscriptions > header:first-child h1,
+  .page-payments > header:first-child h1,
+  .page-expenses > header:first-child h1,
+  .page-tickets > header:first-child h1,
+  .page-tasks > header:first-child h1 {
     visibility: visible;
     margin: 0;
     color: var(--ki-ink);
@@ -45,14 +45,14 @@
     line-height: 1;
   }
 
-  .shell > main > .workspace-title-bar .header-actions {
+  .shell > main > header:first-child .header-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 10px;
   }
 
-  .shell > main > .workspace-title-bar .primary {
+  .shell > main > header:first-child .primary {
     min-height: 44px;
     padding: 11px 23px;
     border: 0;
@@ -66,12 +66,12 @@
     white-space: nowrap;
   }
 
-  .shell > main > .workspace-title-bar .primary:hover {
+  .shell > main > header:first-child .primary:hover {
     background: #066d96;
     transform: translateY(-1px);
   }
 
-  .shell > main > .workspace-title-bar .primary:focus-visible {
+  .shell > main > header:first-child .primary:focus-visible {
     outline: 3px solid rgba(53, 169, 213, .32);
     outline-offset: 3px;
   }
@@ -119,16 +119,16 @@
   }
 }
 
-:root[data-theme="dark"] .shell > main > .workspace-title-bar {
+:root[data-theme="dark"] .shell > main > header:first-child {
   border-color: #365a69;
   background: rgba(15, 43, 56, .97);
   box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
 }
 
-:root[data-theme="dark"] .shell > main > .workspace-title-bar h1 {
+:root[data-theme="dark"] .shell > main > header:first-child h1 {
   color: #e8f4f8;
 }
 
 @media (max-width: 800px) {
-  .shell > main > .workspace-title-bar { display: none; }
+  .shell > main > header:first-child { display: none; }
 }

@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'node:path';
 import { requireIdentity } from './auth.js';
-import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTicket, addTicketBoard, addTicketCategory, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeInvoice, removePayment, removeSubscription, removeTicketBoard, removeTicketCategory, removeTicketTime, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTicketBilling, updateTicketClassification, updateTicketStatus, updateTicketTime, workspaceFor } from './store.js';
+import { addClient, addCustomField, addDocument, addDocumentFolder, addEstimate, addExpense, addInvoice, addItem, addPayment, addSubscription, addTask, addTax, addTicket, addTicketBoard, addTicketCategory, addTicketNote, addTicketTime, convertEstimate, removeCustomField, removeDocument, removeDocumentFolder, removeInvoice, removePayment, removeSubscription, removeTax, removeTicketBoard, removeTicketCategory, removeTicketTime, updateDocument, updateInvoiceItems, updateInvoiceStatus, updateSubscription, updateTax, updateTicketBilling, updateTicketClassification, updateTicketStatus, updateTicketTime, workspaceFor } from './store.js';
 
 const app = express();
 app.disable('x-powered-by');
@@ -55,6 +55,9 @@ app.post('/api/payments', action(body => {
   return addPayment(body);
 }));
 app.delete('/api/payments/:id', action((body, params) => removePayment(params.id)));
+app.post('/api/taxes', action(body => addTax(body)));
+app.patch('/api/taxes/:id', action((body,params)=>updateTax(params.id,body)));
+app.delete('/api/taxes/:id', action((body,params)=>removeTax(params.id)));
 app.post('/api/settings/custom-fields', action(body => addCustomField(body)));
 app.delete('/api/settings/custom-fields/:id', action((body, params) => removeCustomField(params.id)));
 app.post('/api/settings/ticket-boards', action(body=>addTicketBoard(body)));

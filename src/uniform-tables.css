@@ -8,6 +8,202 @@
   --table-heading: #075f83;
   --table-link: #007fae;
   --table-text: #102a39;
+  --table-radius: 16px;
+  --table-body-size: 17.5px;
+  --table-heading-size: 13.75px;
+  --table-secondary-size: 13.75px;
+}
+
+/* Every table uses one clipped outer silhouette; individual rows remain flush. */
+.shell > main :where(
+  .software-invoice-table,
+  .software-items-table,
+  .software-subscription-table,
+  .software-payment-table,
+  .software-expense-table,
+  .software-task-table,
+  .software-ticket-table,
+  .contacts-directory,
+  .global-directory-table,
+  .client-list,
+  .client-detail-table,
+  .client-subscription-list,
+  .report-rows,
+  .table,
+  .contact-list,
+  .subscription-ticket-list,
+  .invoice-items,
+  .invoice-payments,
+  .ticket-time-list,
+  .linked-task-list,
+  .documentation-explorer-list
+) {
+  overflow: hidden;
+  border-radius: var(--table-radius);
+}
+
+.shell > main :where(
+  .software-invoice-row,
+  .software-item-row,
+  .software-subscription-row,
+  .software-payment-row,
+  .software-expense-row,
+  .software-task-row,
+  .software-ticket-row,
+  .contacts-directory-row,
+  .global-directory-row,
+  .client-list-row,
+  .client-detail-row,
+  .client-subscription-row,
+  .report-row,
+  .tr,
+  .contact-row,
+  .subscription-ticket-row,
+  .invoice-item,
+  .invoice-payment-row,
+  .ticket-time-list > div,
+  .linked-task-list > div,
+  .documentation-explorer-row
+) {
+  font-family: var(--ki-font);
+  font-size: var(--table-body-size);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.shell > main :where(
+  .software-invoice-row,
+  .software-item-row,
+  .software-subscription-row,
+  .software-payment-row,
+  .software-expense-row,
+  .software-task-row,
+  .software-ticket-row,
+  .contacts-directory-row,
+  .global-directory-row,
+  .client-list-row,
+  .client-detail-row,
+  .client-subscription-row,
+  .report-row,
+  .tr,
+  .contact-row,
+  .subscription-ticket-row,
+  .invoice-item,
+  .invoice-payment-row,
+  .ticket-time-list > div,
+  .linked-task-list > div,
+  .documentation-explorer-row
+) > :not(.status):not(.core-category):not(.inline-status-select):not(.payment-actions):not(.ticket-time-actions) {
+  font-family: inherit;
+  font-size: var(--table-body-size) !important;
+  line-height: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.shell > main :where(
+  .software-invoice-row,
+  .software-item-row,
+  .software-subscription-row,
+  .software-payment-row,
+  .software-expense-row,
+  .software-task-row,
+  .software-ticket-row,
+  .contacts-directory-row,
+  .global-directory-row,
+  .client-list-row,
+  .client-detail-row,
+  .client-subscription-row,
+  .report-row,
+  .tr,
+  .contact-row,
+  .subscription-ticket-row,
+  .invoice-item,
+  .invoice-payment-row,
+  .ticket-time-list > div,
+  .linked-task-list > div,
+  .documentation-explorer-row
+) > :not(.payment-actions):not(.ticket-time-actions) > :where(a,button,strong) {
+  font-family: inherit;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.shell > main :where(
+  .software-invoice-row,
+  .software-item-row,
+  .software-subscription-row,
+  .software-payment-row,
+  .software-expense-row,
+  .software-task-row,
+  .software-ticket-row,
+  .contacts-directory-row,
+  .global-directory-row,
+  .client-list-row,
+  .client-detail-row,
+  .client-subscription-row,
+  .report-row,
+  .tr,
+  .contact-row,
+  .subscription-ticket-row,
+  .invoice-item,
+  .invoice-payment-row,
+  .ticket-time-list > div,
+  .linked-task-list > div,
+  .documentation-explorer-row
+) small {
+  font-family: inherit;
+  font-size: var(--table-secondary-size) !important;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.shell > main :where(
+  .software-invoice-head,
+  .directory-head,
+  .contacts-directory-head,
+  .detail-head,
+  .client-list-head,
+  .client-subscription-head,
+  .report-head,
+  .tr.th,
+  .contact-head,
+  .subscription-ticket-head,
+  .invoice-item-head,
+  .documentation-column-head
+) {
+  font-family: var(--ki-font);
+  font-size: var(--table-heading-size) !important;
+  font-weight: 850;
+  line-height: 1.2;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+
+.shell > main :where(
+  .software-invoice-head,
+  .directory-head,
+  .contacts-directory-head,
+  .detail-head,
+  .client-list-head,
+  .client-subscription-head,
+  .report-head,
+  .tr.th,
+  .contact-head,
+  .subscription-ticket-head,
+  .invoice-item-head,
+  .documentation-column-head
+) > * {
+  font-family: inherit;
+  font-size: inherit !important;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
 }
 
 @media (min-width: 801px) {
@@ -29,7 +225,7 @@
   ) {
     overflow: hidden;
     border: 1px solid var(--table-border);
-    border-radius: 0;
+    border-radius: var(--table-radius);
     background: var(--table-row);
   }
 
@@ -244,7 +440,7 @@
   ) {
     overflow: hidden;
     border: 1px solid var(--table-border);
-    border-radius: 0;
+    border-radius: var(--table-radius);
     background: var(--table-row);
   }
 
@@ -400,6 +596,127 @@
   ) {
     color: var(--table-link);
     font-weight: 780;
+  }
+
+  /* Content hierarchy: ordinary values, emphasized figures, then true links. */
+  .shell > main :where(
+    .software-invoice-row,
+    .software-item-row,
+    .software-subscription-row,
+    .software-payment-row,
+    .software-expense-row,
+    .software-task-row,
+    .software-ticket-row,
+    .contacts-directory-row,
+    .global-directory-row,
+    .client-list-row,
+    .client-detail-row,
+    .client-subscription-row,
+    .report-row,
+    .tr,
+    .contact-row,
+    .subscription-ticket-row,
+    .invoice-item,
+    .invoice-payment-row,
+    .ticket-time-list > div,
+    .linked-task-list > div,
+    .documentation-explorer-row
+  ):not(.software-invoice-head):not(.directory-head):not(.contacts-directory-head):not(.detail-head):not(.client-list-head):not(.client-subscription-head):not(.report-head):not(.th):not(.contact-head):not(.subscription-ticket-head):not(.invoice-item-head):not(.documentation-column-head) {
+    color: var(--table-text);
+    font-weight: 400;
+  }
+
+  .shell > main :where(
+    .software-invoice-row,
+    .software-item-row,
+    .software-subscription-row,
+    .software-payment-row,
+    .software-expense-row,
+    .software-task-row,
+    .software-ticket-row,
+    .contacts-directory-row,
+    .global-directory-row,
+    .client-list-row,
+    .client-detail-row,
+    .client-subscription-row,
+    .report-row,
+    .tr,
+    .contact-row,
+    .subscription-ticket-row,
+    .invoice-item,
+    .invoice-payment-row,
+    .ticket-time-list > div,
+    .linked-task-list > div,
+    .documentation-explorer-row
+  ):not(.software-invoice-head):not(.directory-head):not(.contacts-directory-head):not(.detail-head):not(.client-list-head):not(.client-subscription-head):not(.report-head):not(.th):not(.contact-head):not(.subscription-ticket-head):not(.invoice-item-head):not(.documentation-column-head) > :not(.status):not(.core-category):not(.inline-status-select):not(.payment-actions):not(.ticket-time-actions) {
+    color: var(--table-text);
+    font-weight: 400;
+  }
+
+  .shell > main :where(
+    .software-invoice-row,
+    .software-item-row,
+    .software-subscription-row,
+    .software-payment-row,
+    .software-expense-row,
+    .software-task-row,
+    .software-ticket-row,
+    .contacts-directory-row,
+    .global-directory-row,
+    .client-list-row,
+    .client-detail-row,
+    .client-subscription-row,
+    .report-row,
+    .tr,
+    .contact-row,
+    .subscription-ticket-row,
+    .invoice-item,
+    .invoice-payment-row,
+    .ticket-time-list > div,
+    .linked-task-list > div,
+    .documentation-explorer-row
+  ):not(.software-invoice-head):not(.directory-head):not(.contacts-directory-head):not(.detail-head):not(.client-list-head):not(.client-subscription-head):not(.report-head):not(.th):not(.contact-head):not(.subscription-ticket-head):not(.invoice-item-head):not(.documentation-column-head) strong {
+    color: var(--table-text);
+    font-weight: 760;
+  }
+
+  .shell > main :where(
+    .record-link,
+    [role="link"],
+    a[href],
+    .client-link,
+    .directory-client-link,
+    .contacts-directory-row > button,
+    .software-payment-row > button,
+    button.client-list-row > span:first-child strong,
+    button.software-ticket-row > strong:first-of-type,
+    button.global-directory-row > strong:first-of-type,
+    .global-directory-row[role="button"] > strong:first-of-type,
+    .software-subscription-row[role="button"] > strong:first-of-type
+  ) {
+    color: var(--table-link) !important;
+    font-weight: 780 !important;
+  }
+
+  .shell > main :where(.record-link,[role="link"],a[href],.client-link,.directory-client-link) :where(strong,b) {
+    color: inherit !important;
+    font-weight: inherit !important;
+  }
+
+  .shell > main :where(
+    .software-invoice-row:not(.software-invoice-head) > :last-child,
+    .software-subscription-row:not(.software-invoice-head) > :last-child,
+    .software-payment-row:not(.software-invoice-head) > :nth-child(5),
+    .software-payment-row:not(.software-invoice-head) > :nth-child(6),
+    .software-ticket-row:not(.software-invoice-head) > :nth-child(7),
+    .client-list-row:not(.client-list-head) > :nth-child(4),
+    .client-list-row:not(.client-list-head) > :nth-child(5),
+    .report-row:not(.report-head) > :last-child,
+    .tr:not(.th) > :last-child
+  ) {
+    color: var(--table-text) !important;
+    font-weight: 760 !important;
+    font-variant-numeric: tabular-nums;
   }
 
   .shell > main :where(

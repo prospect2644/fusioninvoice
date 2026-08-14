@@ -2,6 +2,20 @@
 
 Every production push that changes application behavior must add a versioned entry here and update the version in `package.json`.
 
+## [0.27.4] - 2026-08-14
+
+### Added
+
+- Added a category-first Core Asset creation menu with dedicated full-page forms for configurations, passwords, applications, printing, wireless, LAN, and WAN records.
+- Added Taxes beneath Payments with searchable tax-rate management, full-page create/edit forms, delete confirmation, local storage support, and D1 persistence.
+- Added the `0027_tax_rates.sql` migration and automatic tax-table compatibility setup.
+
+### Changed
+
+- Enlarged the Core Assets category navigation, labels, count badges, spacing, and click targets.
+- Standardized table containers, typography, link emphasis, important values, rounded corners, and page titles throughout the workspace.
+- Increased invoice and directory table text for more consistent readability.
+
 ## [0.27.3] - 2026-08-13
 
 ### Changed

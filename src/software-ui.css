@@ -640,6 +640,13 @@ main>header { position: sticky; top: 0; z-index: 16; box-shadow: 0 7px 20px #082
 .report-submenu button i { width: 13px; height: 13px; flex: 0 0 13px; border: 2px solid var(--accent); border-radius: 50%; }
 .report-submenu button.active { background: oklch(68% .115 228 / .13)!important; box-shadow: none; color: #fff!important; }
 .report-submenu button:hover { background: oklch(68% .115 228 / .1); color: #fff; }
+.payment-submenu { margin-bottom: 8px; }
+.taxes-index-panel { margin-top: 0; padding: 0!important; overflow: hidden; }
+.taxes-index-panel .invoice-toolbar { margin: 0; }
+.taxes-table .global-directory-row { grid-template-columns: 1.15fr 1.25fr 1fr .7fr .75fr .65fr .9fr; min-width: 1040px; }
+.tax-creation-screen .tax-create-form { align-content: start; }
+.tax-create-form > .two { max-width: 1180px; }
+.tax-create-form label > small { color: #617d8b; font-size: 11px; font-weight: 520; letter-spacing: 0; line-height: 1.5; text-transform: none; }
 .shell.collapsed .report-submenu,.shell.collapsed .submenu-chevron { display: none; }
 .report-placeholder-page { padding-top: 26px; }
 .report-placeholder-page .index-heading { margin-bottom: 20px; }
@@ -1550,25 +1557,25 @@ button.global-directory-row:hover { background: #e6f4f9; }
 /* Unified IT documentation directory */
 .core-assets-layout {
   display: grid;
-  grid-template-columns: 210px minmax(0,1fr);
+  grid-template-columns: 250px minmax(0,1fr);
   align-items: start;
-  gap: 18px;
+  gap: 22px;
 }
 .core-assets-sections {
   position: sticky;
   top: 94px;
   display: grid;
-  gap: 5px;
-  padding: 18px 12px;
+  gap: 7px;
+  padding: 22px 14px;
   border: 1px solid #c9dbe4;
   border-radius: 20px;
   background: #f5fafc;
   box-shadow: 0 14px 35px #466d8012;
 }
 .core-assets-sections>small {
-  padding: 2px 12px 10px;
+  padding: 2px 14px 12px;
   color: #087fae;
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 900;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -1578,13 +1585,13 @@ button.global-directory-row:hover { background: #e6f4f9; }
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 42px;
+  min-height: 52px;
   border: 0;
   border-radius: 12px;
-  padding: 9px 12px;
+  padding: 11px 14px;
   background: transparent;
   color: #476878;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 800;
   text-align: left;
   cursor: pointer;
@@ -1594,12 +1601,12 @@ button.global-directory-row:hover { background: #e6f4f9; }
 .core-assets-sections button b {
   display: inline-grid;
   place-items: center;
-  min-width: 25px;
-  height: 22px;
+  min-width: 31px;
+  height: 28px;
   border-radius: 999px;
   background: #dcecf2;
   color: #4c6c7a;
-  font-size: 8px;
+  font-size: 10px;
 }
 .core-assets-sections button.active b { background: #ffffff78; color: #082332; }
 .core-assets-panel { margin-top: 0; }
